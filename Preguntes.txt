@@ -1,0 +1,3 @@
+Lògica a seguir amb el límit de submissions del Jutge.
+Tenir ja la llista de problemes.
+Fer més d'una prova per problema per solucionar-lo, i si pot ser canviant el prompt d'alguna manera.
