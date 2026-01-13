@@ -25,9 +25,15 @@ Para ejecutar las pruebas descritas de nuevo, es necesario tener en cuenta las s
 5. La ubicación de los resultados estarán en:
 
     ./FEEDBACKS = los resultados de Feedback en Python junto con los prompts.
+
     ./SOLVING = los resultados de Resolución
+
     ./FEEDBACKS_CC = los resultados de Feedback en C++ junto con los prompts.
+
     time_log_feedback.txt = los resultados de cálculo temporal para feedback.
+
     time_log_solving.txt = los resultados de cálculo temporal para resolución.
+
     ./DENDOGRAMA/DENDORGRAMAS = los dendrogramas generados para Python.
+    
     ./DENDROGRAMA_CC/DENDROGRAMAS = los dendrogramas generados para C++.
