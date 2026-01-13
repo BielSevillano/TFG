@@ -1,0 +1,75 @@
+## Feedback for the Fusion of Sorted Lists Program
+
+### 1. Summary of the Problem and Solution Approach
+
+The problem "Fusió de taules" requires implementing a function `fusio` that merges two pre-sorted lists (`v1` and `v2`) of numbers into a single new sorted list. The resulting list must include all elements from both input lists, preserving duplicates. For example, merging `[2, 3, 5]` and `[3, 5, 5, 7]` should yield `[2, 3, 3, 5, 5, 5, 7]`.
+
+The provided Python code effectively addresses this problem using a classic **two-pointer merge algorithm**. It initializes two pointers (`i1` and `i2`), one for each input list. These pointers advance through the lists, comparing the elements they point to. The smaller element is appended to a `llista_definitiva` (definitive list), and its corresponding pointer is incremented. This process continues until one of the lists is exhausted. Finally, any remaining elements from the other list are efficiently appended to the result list.
+
+### 2. Analysis of the Code's Strengths and Weaknesses
+
+**Strengths:**
+
+*   **Correct Algorithm Implementation:** The `fusio` function correctly implements the two-pointer merge algorithm. This is an optimal approach for merging sorted lists, ensuring the resulting list is also sorted and contains all elements.
+*   **Efficiency:** The algorithm has a time complexity of O(n + m), where n and m are the lengths of `v1` and `v2` respectively. This is highly efficient as it requires only a single pass through both lists. The space complexity is also optimal, O(n + m), as a new list of that size is created.
+*   **Clear Variable Names:** Variables like `llista_definitiva`, `i1`, and `i2` are well-named and contribute to the readability of the code.
+*   **Correct Handling of Remaining Elements:** The use of `llista_definitiva.extend(v1[i1:])` and `llista_definitiva.extend(v2[i2:])` correctly appends any remaining elements from the lists after the main `while` loop finishes, ensuring all elements are included.
+
+**Weaknesses and Cause of "Presentation Error":**
+
+*   **Extraneous Code and Output:** The primary weakness, and the direct cause of the "Presentation Error", is the presence of the `main` function and the auxiliary `llegir_dades` function, along with their associated input reading (`read`) and output printing (`print`) statements.
+    *   The problem statement explicitly notes: "Només cal enviar el procediment demanat; el programa principal serà ignorat." (Only the requested procedure needs to be submitted; the main program will be ignored.)
+    *   On platforms like Jutge.org, when a problem asks for a specific function to be implemented (e.g., `fusio(v1, v2) -> list[float]`), the platform expects *only* that function definition. It will handle calling the function with test data and evaluating its return value. Any additional code that reads input or prints output (like the `print(n1+n2)` and `print(*fusio(v1,v2))` in your `main` function) will produce output not expected by the testing system, leading to a "Presentation Error". The platform likely calls `fusio` and then processes its returned list in a specific way, not by parsing output from `print` statements.
+
+### 3. Suggestions for Improvement
+
+*   **Remove all extraneous code:** To resolve the "Presentation Error" and fully comply with the problem's requirements, you must **remove the `main` function, the `llegir_dades` function, and all calls to `read` and `print`**.
+    *   Your submission should consist *only* of the `def fusio(v1: list[float], v2: list[float]) -> list[float]:` function definition and its body.
+*   **Adhere to Interface Specifications:** Always pay close attention to the "Interfície" section and any notes like "Només cal enviar el procediment demanat". This specifies exactly what function signature is expected and whether additional code is allowed or ignored.
+
+**Corrected Submission Structure (Example):**
+
+```python
+# from yogi import read # Not needed if only the function is submitted
+
+def fusio(v1: list[float], v2: list[float]) -> list[float]:
+    i1 = 0
+    i2 = 0
+    llista_definitiva = []
+    while i1 < len(v1) and i2 < len(v2):
+        if v1[i1] <= v2[i2]: # Changed to <= to handle duplicates from v2 appearing after v1 if equal
+            llista_definitiva.append(v1[i1])
+            i1 += 1
+        else:
+            llista_definitiva.append(v2[i2])
+            i2 += 1
+    llista_definitiva.extend(v1[i1:])
+    llista_definitiva.extend(v2[i2:])
+    return llista_definitiva
+
+# The following main function and helper functions should NOT be submitted
+# def llegir_dades(n:int)->list[int]:
+#     L = []
+#     for i in range(n):
+#         x = read(float)
+#         L.append(x)
+#     return L
+#
+# def main():
+#     n1 = read(int)
+#     v1 = llegir_dades(n1)
+#     n2 = read(int)
+#     v2 = llegir_dades(n2)
+#     print(n1+n2)
+#     print(" ",end="")
+#     print(*fusio(v1,v2))
+#
+# if __name__ == '__main__':
+#     main()
+```
+*(Self-correction: The original code `if v1[i1] < v2[i2]` vs `else` implies that if `v1[i1] == v2[i2]`, `v2[i2]` would be picked first. This is technically fine as it maintains order, but `v1[i1] <= v2[i2]` makes it explicit that `v1`'s element is preferred if equal, which can sometimes matter for stability but not strict correctness here. The problem description doesn't specify stability requirements for equal elements from different lists, so either is fine. I'll revert to the original logic for the feedback, as it's not a bug.)*
+
+**Final thought on the original logic `if v1[i1] < v2[i2]`:**
+If `v1[i1] == v2[i2]`, the `else` branch is taken, meaning `v2[i2]` is appended first. This is perfectly valid as it maintains the sorted order. Both `v1[i1]` and `v2[i2]` are equal, so the order in which they appear relative to each other doesn't break the sorted property of the merged list. So the original code for `fusio` is indeed correct in its logic.
+
+The crucial point is **removing the `main` function and its I/O**.

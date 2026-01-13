@@ -1,0 +1,51 @@
+Here's a feedback text for your program:
+
+### Feedback on "Múltiple més petit" Program
+
+**1. Problem Summary and Solution Approach:**
+
+The problem "Múltiple més petit" asks you to write a program that, for given pairs of natural numbers `a` and `b` (with `b ≥ 1`), finds and prints the smallest natural number `x` such that `x` is greater than or equal to `a` and `x` is a multiple of `b`. The output should be formatted with a case number.
+
+Your solution approaches this by using the mathematical formula `x = (a + b - 1) // b * b`. This formula correctly calculates the smallest multiple of `b` that is greater than or equal to `a` using integer division (`//`).
+
+**2. Analysis of the Code's Strengths and Weaknesses:**
+
+**Strengths:**
+*   **Correct Mathematical Logic:** The core calculation `x = (a + b - 1) // b * b` is mathematically sound and efficient for finding the smallest multiple of `b` that is greater than or equal to `a`. This formula is robust for the given constraints (`a` natural, `b >= 1`).
+*   **Clear Output Formatting:** The `print("#{} : {}".format(i, x))` statement correctly adheres to the specified output format, including the case number.
+*   **Readability:** The code is straightforward and easy to understand.
+
+**Weaknesses:**
+*   **Input Handling Mismatch (Most Probable Cause of "Wrong Answer"):** The problem description states, "L’entrada consisteix en una seqüència de parells de naturals a i b". This phrasing typically implies that the program should read pairs of `a` and `b` until the end of input (EOF), without an explicit count of test cases given on the first line. Your program, however, starts by reading `casos = int(input())`, assuming the first line of input provides the total number of test cases. If the actual test system uses an EOF-terminated input, your program will either misinterpret the first `a` value as the number of cases or raise an error if no initial integer is provided, leading to a "Wrong Answer".
+
+**3. Suggestions for Improvement:**
+
+1.  **Clarify Input Specification:**
+    *   **If the number of cases IS provided on the first line:** Your current input handling is correct, and the "Wrong Answer" might stem from a very subtle edge case not immediately obvious, or a misinterpretation of "natural numbers" (e.g., if `a=0` is allowed and somehow breaks the formula, though it seems to work correctly).
+    *   **If input is EOF-terminated (more likely based on description):** Modify your input loop to read lines until EOF. Here's how you can do it in Python:
+
+        ```python
+        import sys
+
+        i = 1
+        for line in sys.stdin: # Reads each line from standard input until EOF
+            a, b = map(int, line.split())
+            x = (a + b - 1) // b * b
+            print("#{} : {}".format(i, x))
+            i += 1
+        ```
+        Alternatively, using a `try-except` block for `input()`:
+        ```python
+        i = 1
+        while True:
+            try:
+                line = input() # Reads a line, will raise EOFError at end of file
+                a, b = map(int, line.split())
+                x = (a + b - 1) // b * b
+                print("#{} : {}".format(i, x))
+                i += 1
+            except EOFError:
+                break # Exit the loop when EOF is reached
+        ```
+
+By adjusting the input reading to match the problem's implicit "sequence until EOF" pattern, your program is very likely to pass, given the correctness of its core logic.

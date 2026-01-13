@@ -1,0 +1,37 @@
+Here's a feedback text for the provided Python program:
+
+---
+
+### Feedback on "Fusió de taules" Program
+
+**Problem Summary:**
+The problem asks to implement a function, `fusio`, that merges two pre-sorted lists (or vectors/arrays) of numbers into a single sorted list. The merged list should preserve all elements, including duplicates, from both input lists. For example, merging `[2, 3, 5]` and `[3, 5, 5, 7]` should result in `[2, 3, 3, 5, 5, 5, 7]`. The input lists `v1` and `v2` are guaranteed to be sorted in ascending order. The problem explicitly states that only the requested procedure (`fusio`) should be submitted, and any main program will be ignored.
+
+**Solution Approach:**
+The `fusio` function employs a classic two-pointer (or merge) algorithm. It initializes two pointers, `i1` and `i2`, to the beginning of `v1` and `v2` respectively. It then iteratively compares the elements pointed to by `i1` and `i2`, appending the smaller element to a `llista_definitiva` (final list) and advancing the corresponding pointer. Once one of the lists is exhausted, the remaining elements of the other list are appended to `llista_definitiva` using `extend`.
+
+**Code Analysis:**
+
+*   **Strengths:**
+    *   **Correct Algorithm:** The `fusio` function correctly implements the two-pointer merge algorithm. This approach is highly efficient for merging sorted lists.
+    *   **Time Complexity:** The `fusio` function has an optimal time complexity of O(N + M), where N and M are the lengths of `v1` and `v2`, respectively, as it iterates through each list at most once.
+    *   **Clarity:** The logic within `fusio` is clear and easy to understand. Variable names like `llista_definitiva`, `i1`, `i2` are descriptive.
+    *   **Precondition Handling:** The algorithm correctly leverages the precondition that input lists are already sorted.
+
+*   **Weaknesses & Cause of "Presentation Error":**
+    *   **Extra Code (Main Program):** The primary reason for the "Presentation Error" is the inclusion and execution of the `main()` function and all related input/output code (`read`, `llegir_dades`, `print` statements). The problem statement clearly says: "Només cal enviar el procediment demanat; el programa principal serà ignorat." (Only the requested procedure needs to be submitted; the main program will be ignored). Despite being "ignored" for correctness checks, its output will still be captured, and if it doesn't match an expected (empty) output or specific format, it leads to a "Presentation Error".
+    *   **Incorrect Output Format in `main()`:** Even if a `main` function were allowed for testing, its output format is incorrect:
+        *   `print(n1+n2)`: This line prints the sum of the lengths of the input lists, which is not requested by the problem.
+        *   `print(" ",end="")`: This adds an unnecessary leading space before the merged list. Output usually expects space-separated values without a leading space.
+        *   The combined output of `n1+n2` and the merged list with an extra space would definitely not match the expected output format for this type of problem, hence the "Presentation Error".
+
+**Suggestions for Improvement:**
+
+1.  **Remove `main()` and I/O Code:** For submission, delete the `main()` function, `llegir_dades`, and any `read` or `print` calls. Submit *only* the `fusio` function. This is crucial for adhering to the problem statement and resolving the "Presentation Error".
+2.  **(For local testing, if `main` were allowed):**
+    *   Ensure that any `print` statements exactly match the problem's specified output format. This typically means space-separated numbers on a single line, without any leading/trailing spaces or extra lines.
+    *   The correct way to print space-separated elements of a list in Python (without an initial space) is typically `print(*list_name)`.
+
+The core `fusio` function itself is well-implemented and correct. The issue lies entirely with the surrounding code responsible for input and output, which should not have been part of the submission according to the problem's interface.
+
+---

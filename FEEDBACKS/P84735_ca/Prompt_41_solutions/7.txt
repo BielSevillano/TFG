@@ -1,0 +1,52 @@
+The problem "Múltiple més petit" (Smallest multiple) asks you to find the smallest natural number `x` that is greater than or equal to `a` and is also a multiple of `b`, for a given pair of natural numbers `a` and `b` (where `b >= 1`). The output should include a case number, starting from 1.
+
+**Summary of the Problem and Solution Approach:**
+
+The program aims to solve this problem by taking advantage of integer division properties. For each pair `(a, b)`, it calculates `x` using the formula `(a + b - 1) // b * b`. This formula is a standard and efficient way to compute the smallest multiple of `b` that is greater than or equal to `a`. Essentially, `(a + b - 1) // b` calculates the ceiling of `a / b`, and then multiplying by `b` gives the desired smallest multiple.
+
+**Analysis of the Code's Strengths and Weaknesses:**
+
+*   **Strengths:**
+    *   **Correct Mathematical Logic:** The core calculation `x = (a + b - 1) // b * b` is mathematically sound and correctly solves the problem for valid inputs. It works efficiently in O(1) time per test case.
+    *   **Clarity and Readability:** The variable names (`a`, `b`, `x`, `casos`, `i`) are clear, and the code is easy to understand.
+    *   **Pythonic Style:** The use of `map(int, input().split())` and f-strings for output (`"#{} : {}".format(i, x)`) are idiomatic Python.
+
+*   **Weaknesses:**
+    *   **Incorrect Input Handling:** The primary reason for the "Wrong Answer" verdict is likely a mismatch in how the program expects to receive input compared to the problem's actual input format on Jutge.org.
+        *   The current code starts by reading `casos = int(input())`, which implies that the very first line of input should be an integer indicating the total number of test cases.
+        *   However, problem descriptions like "L’entrada consisteix en una seqüència de parells de naturals a i b" typically mean that pairs `a` and `b` are provided on separate lines, and the program should continue reading these pairs until the End-Of-File (EOF) is reached.
+        *   If the input does not start with the number of cases, `int(input())` will attempt to parse the first `a` value as the number of cases. This will cause the program to misinterpret subsequent inputs, leading to incorrect calculations and output, hence the "Wrong Answer".
+
+*(Note: The "other possible solutions" provided in the prompt are for a completely different problem involving word frequencies and sorting. They are not relevant to "Múltiple més petit" and were not used in this analysis.)*
+
+**Suggestions for Improvement:**
+
+To fix the "Wrong Answer", you need to adjust the input reading mechanism to continuously read `a` and `b` pairs until there are no more lines to read (EOF).
+
+1.  **Adopt EOF-based Input Reading:** Replace the `casos = int(input())` and `while i <= casos:` loop with a `while True` loop that attempts to read input, and uses a `try-except EOFError` block to gracefully exit when the input stream ends.
+2.  **Remove Unnecessary `casos` Variable:** Since the number of test cases will not be provided explicitly at the beginning, the `casos` variable becomes redundant and should be removed.
+
+Here's how the corrected program should look:
+
+```python
+i = 1 # Initialize case counter
+
+while True:
+    try:
+        # Read a line containing two integers a and b
+        a, b = map(int, input().split())
+        
+        # Calculate the smallest multiple of b that is >= a
+        # This formula is correct.
+        x = (a + b - 1) // b * b
+        
+        # Print the result in the specified format
+        print("#{} : {}".format(i, x))
+        
+        # Increment the case counter for the next iteration
+        i += 1
+    except EOFError:
+        # Break the loop when End-Of-File is reached (no more input)
+        break
+
+```

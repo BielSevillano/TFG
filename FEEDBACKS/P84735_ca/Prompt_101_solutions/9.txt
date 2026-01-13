@@ -1,0 +1,50 @@
+Here's a feedback text for the provided Python program:
+
+---
+
+### Feedback for "Múltiple més petit" Program
+
+**1. Problem Summary and Solution Approach:**
+The problem "Múltiple més petit" asks to find, for given natural numbers `a` and `b` (with `b ≥ 1`), the smallest natural number `x` such that `x` is greater than or equal to `a` and `x` is a multiple of `b`. The output for each `(a, b)` pair should be formatted with a case number.
+
+The provided Python program attempts to solve this problem by:
+*   Reading an initial integer `casos`, presumably the number of test cases.
+*   Iterating `casos` times.
+*   In each iteration, reading a pair of integers `a` and `b`.
+*   Calculating `x` using the formula `x = (a + b - 1) // b * b`.
+*   Printing the result in the specified format `"#case_number : x"`.
+
+**2. Analysis of the Code's Strengths and Weaknesses:**
+
+**Strengths:**
+*   **Efficient Calculation:** The core logic `x = (a + b - 1) // b * b` is an elegant and mathematically correct way to determine the smallest multiple of `b` that is greater than or equal to `a`. This formula leverages integer division properties to directly compute the desired value.
+*   **Correct Output Format:** The `print("#{} : {}".format(i, x))` statement accurately adheres to the specified output format, including the case numbering.
+
+**Weaknesses:**
+*   **Incorrect Input Handling for Test Cases:** This is the primary reason for the "Wrong Answer". The problem description states, "L’entrada consisteix en una seqüència de parells de naturals a i b", which typically implies reading input pairs until the end of the input stream (EOF), rather than reading an explicit number of test cases first. The line `casos = int(input())` incorrectly assumes that the first line of input will be a count of subsequent pairs. If the input starts directly with `a b` pairs, this line will either fail or misinterpret the first `a` value as the case count.
+
+**3. Suggestions for Improvement:**
+
+1.  **Adjust Input Loop to Read Until EOF:** Modify the program to continuously read pairs of `a` and `b` until there is no more input. In Python, a common way to handle this in competitive programming is to iterate over `sys.stdin` or use a `try-except` block with `input()` to catch `EOFError`.
+
+    Here's an example using `sys.stdin`:
+    ```python
+    import sys
+
+    case_number = 1
+    for line in sys.stdin:
+        # Split the line and convert parts to integers
+        a, b = map(int, line.split())
+        
+        # Calculate the smallest multiple of b that is >= a
+        x = (a + b - 1) // b * b
+        
+        # Print the result in the required format
+        print("#{} : {}".format(case_number, x))
+        
+        case_number += 1
+    ```
+
+By making this adjustment to the input reading mechanism, the program will correctly process the sequence of `(a, b)` pairs as described in the problem statement.
+
+---

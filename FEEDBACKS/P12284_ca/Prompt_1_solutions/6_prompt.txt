@@ -1,0 +1,145 @@
+
+                Write a feedback text for the following program that solves the problem described below.
+                
+                Paraules més freqüents
+
+Feu un programa que llegeixi una seqüència de n paraules, i n’escrigui
+les k més freqüents (en cas d’empat, les més petites en ordre
+alfabètic).
+
+Entrada
+
+L’entrada consisteix en diversos casos. Cada cas comença amb n i k,
+seguides de n paraules només amb lletres minúscules. Podeu suposar que k
+està entre 1 i el nombre de paraules diferents.
+
+Sortida
+
+Per a cada cas, escriviu les k paraules més freqüents en ordre. Primer
+cal escriure les paraules més freqüents, i en cas d’empat les paraules
+més petites en ordre lexicogràfic. Escriviu una línia amb 10 guions al
+final de cada cas.
+
+Autor
+
+Salvador Roura
+
+© Jutge.org, 2006–2025.
+                
+
+                This is the program:
+
+                from yogi import * 
+
+def novallista(lst: list[str], a: str) -> list[str]:
+    """Retorna la llista original sense el valor més frequent"""
+    while a in lst:
+        lst.remove(a)
+    return lst
+
+def mesfreq(lst: list[str]) -> str:
+    """Retorna la paraula més frequent d'una llista de paraules"""
+    max = 0
+    act = 0
+    primer = True
+    n = len(lst)
+    if n > 1:
+        for i in range(n):
+            if primer:
+                primer = False
+                if lst[i] == lst[i + 1]:
+                    act += 1
+                    if act > max:
+                        max = i
+            else:
+                if lst[i] == lst[i-1]:
+                    act += 1
+                    if act > max:
+                        max = i
+                else:
+                    act = 0
+    return lst[max]
+
+
+def main() -> None:
+    for n in tokens(int):
+        k = read(int)
+        lst: list[str] = []
+        for i in range(n):
+            lst.append(read(str))
+        lst.sort()
+        while k > 0:
+            k -= 1
+            a = mesfreq(lst)
+            print(a)
+            lst = novallista(lst, a)
+        print("-" * 10)
+main()
+
+                The result of the program is: Execution Error
+
+                The feedback should include:
+                - A brief summary of the problem and the solution approach.
+                - An analysis of the code's strengths and weaknesses.
+                - Suggestions for improvement, if any.
+
+                You can rely on the following other possible solutions to the same problem for reference:
+                #include<iostream>
+#include<vector>
+#include<algorithm>
+using namespace std;
+
+struct Paraula {
+	string s;
+	int f;
+};
+
+
+bool ordena (const Paraula& a, const Paraula& b) {
+	if (a.f > b.f) return true;
+	if (b.f > a.f) return false;
+	
+	return a.s < b.s;
+}
+
+
+int main() {
+	
+	int n, k;
+	while (cin >> n >> k) {
+		
+		//Llegim totes les paraules
+		vector<string> paraules(n);
+		for (int i = 0; i < n; i++) {
+			cin >> paraules[i];
+		}
+		
+		//Ordenem el vector de paraules
+		sort(paraules.begin(), paraules.end());
+		
+		//Fem un vector buit de paraules i les seves repeticions
+		vector<Paraula> frequencies(0);
+		
+		Paraula aux = {paraules[0], 1};
+		for (int i = 1; i < n; i++) {
+			
+			if (aux.s == paraules[i]) aux.f++;
+			else {
+				frequencies.push_back(aux);
+				aux = {paraules[i], 1};
+			}
+		}
+		frequencies.push_back(aux);
+		
+		//Ordenem el vector en funcio de les repeticions
+		sort(frequencies.begin(), frequencies.end(), ordena);
+		
+		//Imprimim les k paraules mes repetides
+		for (int i = 0; i < k; i++)
+			cout << frequencies[i].s << endl;
+		cout << "----------" << endl;
+	}
+	
+}
+
+                

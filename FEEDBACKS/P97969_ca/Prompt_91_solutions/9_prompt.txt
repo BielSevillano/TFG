@@ -1,0 +1,1118 @@
+
+                Write a feedback text for the following program that solves the problem described below.
+                
+               
+                Comptant as (1)
+
+Feu un programa que llegeixi una seqüència de caràcters acabada en punt
+i que escrigui quantes lletres ‘a’ conté.
+
+Entrada
+
+L’entrada consisteix en una seqüència de caràcters acabada en punt.
+
+Sortida
+
+Cal escriure el nombre de vegades que ‘a’ apareix a la seqüència.
+
+Autor
+
+Salvador Roura
+
+© Jutge.org, 2006–2025.
+
+
+                
+
+                This is the program:
+
+                def contar (s):
+    contador=0
+    for i in s:
+        if i== 'a':
+            contador= contador+1
+    return contador
+
+
+
+
+
+                The result of the program is: Wrong Answer
+
+                The feedback should include:
+                - A brief summary of the problem and the solution approach.
+                - An analysis of the code's strengths and weaknesses.
+                - Suggestions for improvement, if any.
+
+                You can rely on the following other possible solutions to the same problem for reference:
+                word = input()
+pos = 0
+suma = 0
+while ((word[pos] != '.')):
+	if (word[pos] == 'a')	:
+		suma += 1
+	pos += 1
+print(suma)	
+
+a=input()
+num=0
+for i in a:
+    if i=="a":
+        num+=1
+print(num)
+
+a = input()
+conta = 0
+for i in a:
+    if(i == 'a'): conta += 1
+print(conta)
+var1 = input()
+var0 = 0 
+a = 0 
+ 
+while  var0 < len (var1) : 
+    if  var1[var0] == 'a' :
+        a += 1 
+
+    var0 += 1 
+
+print(a)
+
+
+
+
+fuego, agua   = input().split()
+fuego = int(fuego)
+agua = int(agua)
+
+if fuego > agua : 
+    for  i in range(fuego , agua - 1 , -1 ):
+         print(i)
+
+
+else :
+    for i in range(agua, fuego -1 , -1 ):
+        print(i)
+
+
+
+
+ 
+
+from easyinput import *
+
+n = str(input())
+
+print(n.count('a'))
+
+from easyinput import *
+
+n=read_line()
+a=' '.join(n)
+llista=a.split(' ')
+num=0
+for lletra in (llista):
+    if lletra=='a':
+        num+=1   
+print(num)
+print(llista)
+
+
+from easyinput import *
+
+n=read_line()
+a=' '.join(n)
+llista=a.split(' ')
+num=0
+for lletra in (llista):
+    if lletra=='a':
+        num+=1   
+print(num)
+
+
+
+from easyinput import*
+llista=[]
+for n in read_many(str):
+    n=list(n)
+    for i in range (0,len(n)):
+        if("a"==n[i]):
+            llista.append(n[i])
+
+print(len(llista))
+    
+
+from easyinput import *
+
+n = read_line()
+contador = 0
+for i in (n):
+    if i == "a":
+        contador = contador +1
+
+
+print(contador)
+
+from easyinput import *
+
+frase = read_line()
+
+
+
+a = frase.count('a')
+
+print(a)
+
+
+from easyinput import *
+frase = read()
+print(frase.count("a"))
+
+from easyinput import *
+frase = input()
+frase = frase.replace(" ","")
+print(frase.count("a"))
+
+frase = str(input())
+a = 0
+for i in range (len(frase)):
+    if frase[i] == "a":
+        a+=1
+print (a)
+from yogi import read
+a=input()
+x=int(0)
+for n in range(len(a)):
+    z=a[n]
+    if z=="a":
+        x=x+1
+print(str(x))
+from yogi import read
+entrada = read(str)
+num_a = entrada.count('a')
+print(num_a)
+from yogi import tokens
+a=""
+for i in tokens(str):
+    a+=i
+print(a.count("a"))
+
+entrada = input("Introdueix una cadena de text: ")
+num_a = entrada.count('a')
+print(num_a)
+entrada = input("")
+num_a = entrada.count('a')
+print(num_a)
+frase = input()
+na = 0
+
+for lletraa in frase:
+    if lletraa == 'a':
+        na += 1
+
+print(na)
+#en aquest programa no he utilitzat la funcio read de yogi perque no em llegia les frases si eren de més d'una paraula#
+entrada=input("")
+x=entrada.count("a")
+print(x)
+a = input()
+count = 0
+for i in a:
+    if i == 'a':
+        count+=1
+print(count)
+
+import sys
+
+line = sys.stdin.readlines()[0]
+cnt = 0
+i = 0
+while line[i] != '.': 
+  if line[i] == 'a': cnt += 1
+  i += 1
+print(cnt)
+
+
+
+import yogi 
+yogi.llista("Ingresa una llista de caracters: ")
+lletra_a = "a"
+originals = 0
+duplicats = 0
+for caracter in yogi.llista:
+    if caracter == lletra_a: 
+        originals = originals +1
+    else:
+        duplicats = duplicats + 1
+print(originals)
+import yogi 
+llista = yogi.read(str)
+lletra_a = "a"
+originals = 0
+duplicats = 0
+for caracter in yogi.llista:
+    if caracter == lletra_a: 
+        originals = originals +1
+    else:
+        duplicats = duplicats + 1
+print(originals)
+import yogi 
+llista = yogi.read()
+lletra_a = "a"
+originals = 0
+duplicats = 0
+for caracter in llista:
+    if caracter == lletra_a: 
+        originals = originals +1
+    else:
+        duplicats = duplicats + 1
+print(originals)
+import yogi 
+llista = yogi.read(str)
+lletra_a = "a"
+originals = 0
+duplicats = 0
+for caracter in llista:
+    if caracter == lletra_a: 
+        originals = originals +1
+    else:
+        duplicats = duplicats + 1
+print(originals)
+import yogi 
+llista = yogi.read(str)
+lletra_a = "a"
+originals = 0
+duplicats = 0
+for caracter in llista:
+    if caracter == lletra_a: 
+        originals = originals + 1
+    else:
+        duplicats = duplicats + 1
+print(originals)
+llista = input()
+lletra_a = "a"
+originals = 0
+duplicats = 0
+for caracter in llista:
+    if caracter == lletra_a: 
+        originals = originals +1
+    else:
+        duplicats = duplicats + 1
+print(originals)
+x = input()
+contador = 0
+
+if(x.count("a")):
+    contador = contador + 1*(x.count("a"))
+print(contador)
+
+text = input()
+b = 1
+lletra = "a"
+
+if(lletra not in text):
+    print("0")
+else:
+    for lletra in text:
+        lletra = b+1
+    
+    print(lletra)
+text = input()
+b = 0
+lletra = "a"
+
+for lletra in text:
+    if(lletra == "a"):
+        b = b+1
+    
+print(b)
+from yogi import read
+
+heacabat = False
+nombreas = 0
+while(not heacabat):
+	paraula=read(str)
+	nombreas += paraula.count("a")
+	if paraula[-1]==".":
+		heacabat = True
+print(nombreas)
+
+from yogi import read
+
+#llegir frase
+frase = read(str)
+
+#contem les 'a'
+contador = 0
+x = 0
+while x < len(frase):
+    #la lletra en la posicio x es una a?
+    if frase[x] == 'a':
+        contador = contador + 1
+
+    #augmentem x
+    x = x + 1
+
+#resultat
+print(contador)
+
+from yogi import read
+
+a=input()
+ases=0
+for i in a:
+    if i=="a":
+        ases=ases+1
+print(ases)
+from yogi import scan
+
+#cotador a 0
+contador = 0
+
+#llegir paraula
+paraula = scan(str)
+
+#bucle fins que trobem el .
+while paraula not None:
+    #llegir paraula
+    paraula = scan(str)
+
+    #contem les 'a' i busquem el .
+    x = 0
+    while x < len(paraula):
+        #la lletra en la posicio x es una a?
+        if paraula[x] == 'a':
+            contador = contador + 1
+
+        #augmentem x
+        x = x + 1
+
+#resultat
+print(contador)
+
+from yogi import scan
+
+#cotador a 0
+contador = 0
+
+#llegir paraula
+paraula = scan(str)
+
+#bucle fins que trobem el .
+while paraula is not None:
+    #llegir paraula
+    paraula = scan(str)
+
+    #contem les 'a' i busquem el .
+    x = 0
+    while x < len(paraula):
+        #la lletra en la posicio x es una a?
+        if paraula[x] == 'a':
+            contador = contador + 1
+
+        #augmentem x
+        x = x + 1
+
+#resultat
+print(contador)
+
+from yogi import read
+
+seq = read(str)
+
+na = 0
+
+for caracter in seq:
+    if caracter == 'a':
+        na = na + 1
+
+print(na)
+from yogi import read
+
+#cotador a 0
+contador = 0
+
+#bool per detecar el .
+final = False
+
+#bucle fins que trobem el .
+while not final:
+    #llegir paraula
+    paraula = read(str)
+
+    #contem les 'a' i busquem el .
+    x = 0
+    while x < len(paraula):
+        #la lletra en la posicio x es una a?
+        if paraula[x] == 'a':
+            contador = contador + 1
+        
+        #la lletra en la posicio x es un .
+        if paraula[x] == '.':
+            final = True
+
+        #augmentem x
+        x = x + 1
+
+#resultat
+print(contador)
+
+from yogi import scan
+
+sCadena = scan(str)
+while sCadena is not None:
+    miLetra = "a"
+    contador = 0
+    for letra in sCadena:
+        if letra == miLetra:
+            contador += 1
+    sCadena = scan(str)
+
+print(str(contador))
+from yogi import read
+
+#cotador a 0
+contador = 0
+
+#bool per detecar el .
+final = False
+
+#bucle fins que trobem el .
+while not final:
+    #llegir paraula
+    paraula = read(str)
+
+    #contem les 'a' i busquem el .
+    x = 0
+    while x < len(paraula):
+        #la lletra en la posicio x es una a?
+        if paraula[x] == 'a':
+            contador = contador + 1
+        
+        #la lletra en la posicio x es un .
+        if paraula[x] == '.':
+            final = True
+
+        #augmentem x
+        x = x + 1
+
+#resultat
+print(contador)
+
+
+
+
+
+
+from yogi import read
+    
+na = 0
+
+final = False
+
+while not final:
+    p = read(str)
+
+    x = 0
+
+    while x<=len(p)-1:
+        if p[x] =='a':
+            na = na + 1
+
+        if p[x] == ".":
+            final = True
+        
+        x = x+1
+        
+        
+
+print(na)
+
+
+from yogi import read
+
+
+c = 0
+
+bp = 0
+
+while bp < 1:
+    
+    p = read(str)
+
+    x = 0
+
+    while len(p) > x:
+
+        if p[x] == "a":
+            c = c + 1
+        
+        elif p[x]== ".":
+            bp = bp + 1
+
+        x = x + 1
+    
+    if bp == 0:
+        bp = bp + 1
+
+    print(c)
+
+
+
+
+from yogi import read
+
+
+c = 0
+
+bp = 0
+
+while bp < 1:
+    
+    p = read(str)
+
+    x = 0
+
+    while len(p) > x:
+
+        if p[x] == "a":
+            c = c + 1
+        
+        elif p[x]== ".":
+            bp = bp + 1
+
+        x = x + 1
+    
+   
+
+print(c)
+
+
+
+
+from yogi import read 
+
+contador = 0
+
+final = False
+
+while not final:
+    frase = read(str)
+    x = 0 
+    while x < len(frase):
+        if frase[x] == 'a':
+            contador = contador + 1 
+        
+        if frase[x] == '.':
+            final = True
+        
+        x = x + 1 
+print(contador)
+    
+# Inicializar el contador de 'a'
+contador_a = 0
+
+# Solicitar al usuario una secuencia de caracteres acabada en punto
+print("Introduce una secuencia de caracteres acabada en punto:")
+caracter = input()
+
+# Leer caracteres hasta que se ingrese un punto
+while caracter != '.':
+    # Contar las letras 'a'
+    contador_a += caracter.count('a')
+    
+    # Leer el siguiente caracter
+    caracter = input()
+
+# Mostrar el resultado
+print(f"El número de veces que 'a' aparece en la secuencia es: {contador_a}")
+# Inicializar el contador de 'a'
+contador_a = 0
+
+caracter = input()
+
+# Leer caracteres hasta que se ingrese un punto
+while caracter != '.':
+    # Contar las letras 'a'
+    contador_a += caracter.count('a')
+    
+    # Leer el siguiente caracter
+    caracter = input()
+
+# Mostrar el resultado
+print( {contador_a})
+# Inicializar el contador de 'a'
+contador_a = 0
+
+# Solicitar al usuario una secuencia de caracteres acabada en punto
+secuencia = input
+
+# Inicializar el índice para recorrer la secuencia
+indice = 0
+
+# Iterar mientras haya caracteres en la secuencia
+while indice < len(secuencia):
+    if secuencia[indice] == 'a':
+        contador_a += 1
+    indice += 1
+
+# Mostrar el resultado
+print(contador_a)
+# Inicializar el contador de 'a'
+contador_a = 0
+
+# Solicitar al usuario una secuencia de caracteres acabada en punto
+secuencia = input("Introduce una secuencia de caracteres acabada en punto: ")
+
+# Inicializar el índice para recorrer la secuencia
+indice = 0
+
+# Iterar mientras haya caracteres en la secuencia
+while indice < len(secuencia):
+    if secuencia[indice] == 'a':
+        contador_a += 1
+    indice += 1
+
+# Mostrar el resultado
+print(contador_a)
+# Inicializar el contador de 'a'
+contador_a = 0
+
+# Solicitar al usuario una secuencia de caracteres acabada en punto
+secuencia = input("")
+
+# Inicializar el índice para recorrer la secuencia
+indice = 0
+
+# Iterar mientras haya caracteres en la secuencia
+while indice < len(secuencia):
+    if secuencia[indice] == 'a':
+        contador_a += 1
+    indice += 1
+
+# Mostrar el resultado
+print(contador_a)
+# Funció per comptar les lletres 'a' en una seqüència
+def comptar_lletres_a(seq):
+    comptador = 0
+    for caracters in seq:
+        if caracters == 'a':
+            comptador += 1
+    return comptador
+
+# Lectura de la seqüència de l'usuari
+seq = input("Introdueix una seqüència de caràcters acabada en punt: ")
+
+# Crida a la funció i mostra el resultat
+resultat = comptar_lletres_a(seq)
+print(f"El nombre de vegades que 'a' apareix a la seqüència és: {resultat}")
+
+from yogi import read
+
+contador = 0
+final = False
+
+while not final:
+    paraula = read(str)
+    x = 0
+    while x < len(paraula):
+        if paraula[x] == 'a':
+            contador = contador + 1
+        if paraula[x] == '.' or paraula[x] ==' ':
+            final = True
+        x = x + 1
+
+print(contador)
+
+from yogi import read
+
+final = False
+numa = 0
+
+while final == False : 
+    y = 0
+    x = read (str)
+    z = len(x)-1
+    while z >= y:
+
+      if x[y] == "a":
+          numa = numa + 1
+     
+      
+      if x[y] == ".":
+          final = True
+      y = y + 1 
+
+print(numa)
+
+from yogi import read
+
+contador = 0
+
+final = False
+
+while not final:
+    paraula = read(str)
+    x = 0
+    while x < len(paraula):
+
+        if paraula[x] == 'a':
+            contador = contador + 1
+        
+        if paraula[x] == '.':
+            final = True
+        x = x + 1
+print(contador)
+
+import sys
+
+line = sys.stdin.readlines()[0]
+cnt = 0
+i = 0
+while line[i] != '.':
+    if line[i] == 'a':
+        cnt += 1
+    i += 1
+print(cnt)
+
+# -*- coding: utf-8 -*-
+"""
+Created on Sun Jun  2 10:10:09 2024
+
+@author: imora
+"""
+
+from yogi import read
+
+frase = read(str)
+l_frase = list(frase)
+
+res=0
+
+for x in range(len(l_frase)):
+    if l_frase[x] == "a":
+        res=res+1
+    else:
+        continue
+
+print(res)
+
+# -*- coding: utf-8 -*-
+"""
+Created on Sun Jun  2 10:10:09 2024
+
+@author: imora
+"""
+
+from yogi import read
+
+frase = read(str)
+#frase = input()
+l_frase = list(frase)
+
+res=0
+
+for x in range(len(l_frase)):
+    if l_frase[x] == "a":
+        res=res+1
+    else:
+        continue
+
+print(res)
+
+# -*- coding: utf-8 -*-
+"""
+Created on Sun Jun  2 10:10:09 2024
+
+@author: imora
+"""
+
+from yogi import read
+
+frase = input()
+l_frase = list(frase)
+
+res=0
+
+for x in range(len(l_frase)):
+    if l_frase[x] == "a":
+        res=res+1
+    else:
+        continue
+
+print(res)
+
+frase=input()
+asa=0
+for x in frase:
+    if x==".":
+        break
+    else:
+        if x=="a":
+            asa=asa+1
+print(asa)
+
+import yogi
+exit = False
+count = 0
+while not exit:
+    s = yogi.read(str)
+    for c in s:
+        if c == 'a':
+            count += 1
+            _hy_anon_var_2 = None
+        else:
+            if c == '.':
+                exit = True
+                _hy_anon_var_1 = None
+            else:
+                _hy_anon_var_1 = None
+            _hy_anon_var_2 = _hy_anon_var_1
+print(count)
+
+frase = input()
+counter= 0
+i=0
+while(i<len(frase)):
+    if (frase[i]=="a"):
+        counter=counter+1
+    i+=1
+
+print(counter)
+
+s = input()
+
+cont = 0
+for x in s:
+    if x == 'a': cont += 1
+
+print(cont)
+
+import sys, re
+
+input = sys.stdin.readline()
+numAs = re.findall('a+', input)
+
+print(len(numAs))
+frase = input()
+a = frase.count("a")
+
+print(a)
+dato1 = dato1 = input()
+l = list(dato1)
+a = 0
+
+for n in range(len(l)):
+    if(l[n] == "a"):
+        a = a + 1
+print(a)
+
+
+dato1 = dato1 = input()
+l = list(dato1)
+a = 0
+
+for n in range(len(l)):
+    if(l[n] == "a"):
+        a = int(a) + 1
+print(str(a))
+
+
+# readline solution
+#import sys
+
+#line = sys.stdin.readlines()[0]
+#cnt = 0
+#i = 0
+#while line[i] != '.': 
+#  if line[i] == 'a': cnt += 1
+#  i += 1
+#print(cnt)
+
+
+# read char solution
+from jutge import read
+
+c = 0
+x = read(chr)
+while x != '.':
+  if x == 'a': c += 1
+  x = read(chr)
+print(c)
+s = input()
+print(s.count('a'))
+
+def comptara(s):
+  c=0
+  for e in s:
+    if e=='a':
+      c+=1
+    else:
+      c==0
+  return c
+
+      
+
+s = input()
+c = 0
+for e in s:
+    if e == 'a':
+        c+=1
+print(c)
+
+s = input()
+c = 0
+for e in s:
+    if e == 'a':
+        c += 1
+print(c)
+
+n = str(input())
+a = 0
+for e in n:
+    if e == 'a':
+        a += 1
+print(a)
+
+x = float(input())
+l = [float(e) for e in input().split( )] 
+c = 0
+s = 0
+for e in l:
+    s += e * x ** c
+    c += 1
+print('{0:1.4f}'.format(s))
+
+s = str(input(' '))
+c = 0
+for e in s:
+    if e == 'a':
+        c += 1
+print(c)
+
+s = str(input())
+c = 0
+for e in s:
+    if e == 'a':
+        c += 1
+print(c)
+
+s=input()
+c=0
+for e in s:
+    if e=='a':
+        c+=1
+print(c)
+
+a = str(input())
+n = 0
+for e in a:
+    if e=='a':
+        n+=1
+print (n)
+    
+
+s=input()
+c=0
+ant=''
+for e in s:
+    if e=='a':
+        c+=1
+    ant=e
+print(c)
+
+seq=input('')
+s=0
+for e in seq:
+    if e=='a':
+        s+=1
+print (s)
+    
+
+s = str(input())
+c = 0
+a = 'a'
+for e in s:
+    if e == a:
+        c += 1
+print(c)
+
+l=str(input())
+c=0
+for e in l:
+    if e=='a':
+        c+=1
+print(c)
+        
+
+t = input()
+ca = 0
+for e in t:
+    if e == 'a':
+        ca += 1
+print(ca)
+
+s = input()
+c = 0
+for e in s:
+    if e == 'a':
+        c += 1
+print (c)
+
+def contar (s):
+    contador=0
+    for i in s:
+        if i== 'a':
+            contador= contador+1
+    return contador
+
+
+
+
+s=input ()
+contador=0
+for i in s:
+        if i== 'a':
+            contador= contador+1
+print(contador)
+
+
+
+
+s=input()
+print(s.count('a'))
+
+text=input('')
+cont=0
+for i in text:
+    if i=='a':
+        cont=cont+1
+print(cont)
+    
+    
+
+s = str (input(''))
+c = 0
+for e in s:
+    if e == 'a' or e == 'à' or e == 'á' or e == 'A' or e == 'À' or e == 'Á':
+        c+=1
+print (c)
+    
+
+s = str (input())
+c = 0
+for e in s:
+    if e == 'a' or e == 'A':
+        c+= 1
+print (c)
+    
+
+s = str (input())
+c = 0
+for e in s:
+    if e == chr(97):
+        c+= 1
+print (c)
+    
+
+                

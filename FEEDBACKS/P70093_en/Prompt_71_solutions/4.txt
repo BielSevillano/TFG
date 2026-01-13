@@ -1,0 +1,66 @@
+```markdown
+### Feedback for `merge(v1, v2)` function
+
+**Problem Summary:**
+The problem "Array merge" requires implementing a function that merges two already sorted lists (or vectors/arrays), `v1` and `v2`, into a single new sorted list. The resulting list should include all elements from both input lists, maintaining their sorted order and including any repeated elements. For example, merging `[2, 3, 5]` and `[3, 5, 5, 7]` should yield `[2, 3, 3, 5, 5, 5, 7]`. The precondition states that both `v1` and `v2` are sorted in non-decreasing order.
+
+**Solution Approach in the provided code:**
+The student's `merge` function attempts to iterate through both input lists using nested `for` loops. Inside these loops, it tries to compare elements from `v1` and `v2` to determine a "minimum" element and conditionally append elements to a `resultat` list.
+
+**Code Analysis:**
+
+*   **Strengths:**
+    *   The function correctly initializes an empty list `resultat` to store the merged elements.
+    *   It attempts to iterate through the input lists, which is a necessary step for merging.
+
+*   **Weaknesses:**
+    *   **Incorrect Logic for Merging:** The core logic within the nested loops is flawed. Merging two sorted lists efficiently typically uses a two-pointer approach, comparing the current elements of both lists and adding the smaller one to the result. The current implementation's nested loop structure and comparison logic (`if/elif/else` assigning to `minim`) do not correctly implement this sequential merging.
+    *   **Premature Return:** The most critical error is `return resultat.append(minim)` being inside the *first* `for` loop (`for i in range(len(v1))`). The `append()` method of a list returns `None`. Therefore, the function will return `None` after processing only the first element of `v1` (i.e., `v1[0]`) against all elements of `v2`, effectively ignoring the rest of the lists. This is the primary reason for the "Wrong Answer" verdict.
+    *   **Inefficient Iteration:** Even if the logic inside the loops were correct, using nested `for` loops to iterate through `len(v1)` and `len(v2)` is not the optimal strategy for merging two *already sorted* lists. The standard approach (using two pointers) has a time complexity of O(len(v1) + len(v2)), whereas a nested loop could lead to O(len(v1) * len(v2)) if the logic were different.
+    *   **Incomplete Merging:** The current logic does not account for the case where one list runs out of elements before the other. A correct merge algorithm needs to append any remaining elements from the longer list after the main comparison loop finishes.
+
+**Suggestions for Improvement:**
+
+1.  **Implement the Two-Pointer Approach:** This is the standard and most efficient algorithm for merging two sorted lists.
+    *   Initialize two pointers, `p1` for `v1` and `p2` for `v2`, both starting at index 0.
+    *   Create an empty list `merged_list`.
+    *   **While** both `p1` is within `v1`'s bounds and `p2` is within `v2`'s bounds:
+        *   Compare `v1[p1]` and `v2[p2]`.
+        *   Append the smaller element to `merged_list`. If they are equal, you can append either one (e.g., `v1[p1]`) and then advance its pointer. (Using `<=` for the comparison `v1[p1] <= v2[p2]` is a common way to handle equal elements and maintain stability).
+        *   Increment the pointer of the element that was just added.
+    *   **After** the loop, one or both of the input lists might still have remaining elements. Append all remaining elements from `v1` (starting from `p1`) to `merged_list`.
+    *   Append all remaining elements from `v2` (starting from `p2`) to `merged_list`.
+    *   Finally, `return merged_list`.
+
+2.  **Correct Return Statement Placement:** Ensure that `return resultat` is the *very last* statement in your function, outside of all loops, to return the complete merged list. Remember that `list.append()` modifies the list in place and returns `None`.
+
+**Example of an improved approach (Python):**
+
+```python
+def merge_improved(v1, v2):
+    result = []
+    p1 = 0  # Pointer for v1
+    p2 = 0  # Pointer for v2
+    
+    # Loop while both pointers are within their respective list bounds
+    while p1 < len(v1) and p2 < len(v2):
+        if v1[p1] <= v2[p2]:
+            result.append(v1[p1])
+            p1 += 1
+        else:
+            result.append(v2[p2])
+            p2 += 1
+            
+    # Append any remaining elements from v1
+    while p1 < len(v1):
+        result.append(v1[p1])
+        p1 += 1
+        
+    # Append any remaining elements from v2
+    while p2 < len(v2):
+        result.append(v2[p2])
+        p2 += 1
+        
+    return result
+```
+```

@@ -1,0 +1,26 @@
+
+                Paraules més freqüents
+
+Feu un programa que llegeixi una seqüència de n paraules, i n’escrigui
+les k més freqüents (en cas d’empat, les més petites en ordre
+alfabètic).
+
+Entrada
+
+L’entrada consisteix en diversos casos. Cada cas comença amb n i k,
+seguides de n paraules només amb lletres minúscules. Podeu suposar que k
+està entre 1 i el nombre de paraules diferents.
+
+Sortida
+
+Per a cada cas, escriviu les k paraules més freqüents en ordre. Primer
+cal escriure les paraules més freqüents, i en cas d’empat les paraules
+més petites en ordre lexicogràfic. Escriviu una línia amb 10 guions al
+final de cada cas.
+
+Autor
+
+Salvador Roura
+
+© Jutge.org, 2006–2025.
+                

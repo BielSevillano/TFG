@@ -1,0 +1,97 @@
+The program aims to solve the "Most Frequent Words" problem. It needs to read a sequence of `n` words and output the `k` most frequent ones. In case of a tie in frequency, words should be sorted alphabetically in ascending order. The problem specifies handling multiple test cases.
+
+### Summary of the Problem and Solution Approach
+
+The provided program implements the following logic:
+1.  **Read Input:** It continuously reads `n` and `k` for multiple test cases, followed by `n` words.
+2.  **Store Words:** All `n` words are stored in a list `P`.
+3.  **Initial Sort:** `P` is sorted alphabetically. This is a crucial step to group identical words together.
+4.  **Count Frequencies:** The program then iterates through the sorted list `P` to count the occurrences of each unique word. For each unique word, it creates an `Info` object, storing the word (`par`) and its count (`num`), and appends it to a list `V`.
+5.  **Custom Sort:** The list `V` (containing `Info` objects) is then sorted using a custom comparison function `comp`. This function is intended to sort primarily by frequency in descending order, and secondarily by word alphabetically in ascending order.
+6.  **Print Output:** Finally, the program prints the `par` attribute (the word) of the first `k` elements from the sorted list `V`, followed by a "----------" separator for each test case.
+
+### Analysis of the Code's Strengths and Weaknesses
+
+**Strengths:**
+
+*   **Clear Data Structure:** The `Info` class is well-defined and effectively pairs the word with its frequency, making the data management straightforward.
+*   **Efficient Frequency Counting:** The approach of first sorting the input words (`P.sort()`) and then iterating through the sorted list to count consecutive identical words is an efficient and standard way to determine frequencies. It avoids repeatedly searching for words.
+*   **Correct Comparison Logic (Conceptually):** The logic within the `comp` function correctly reflects the problem's sorting criteria: `a.num > b.num` for descending frequency, and `a.par < b.par` for ascending alphabetical order in case of ties.
+*   **Handles Multiple Test Cases:** The `while n is not None and k is not None:` loop correctly processes multiple input cases as required.
+
+**Weaknesses & Root Cause of "Wrong Answer":**
+
+*   **Incorrect Use of `key` in `list.sort()`:** The primary reason for the "Wrong Answer" is the line `V.sort(key=comp, reverse=True)`.
+    *   In standard Python 3, the `key` argument for `list.sort()` (or `sorted()`) expects a function that takes *one argument* (an element from the list being sorted, e.g., an `Info` object) and returns a value (or a tuple of values) to use for sorting.
+    *   Your `comp` function, however, is a traditional comparison function that takes *two arguments* (`a` and `b`) and returns a boolean indicating their relative order.
+    *   When `comp` is passed directly as `key`, Python will try to call `comp(an_info_object)`, which will raise a `TypeError` because `comp` expects two arguments. Even if the `yogi` environment somehow suppresses this error or implements a non-standard `sort` behavior, it is unlikely to perform the intended sort correctly. The `reverse=True` further complicates this non-standard interpretation, likely reversing the entire (possibly misconstrued) comparison outcome.
+
+### Suggestions for Improvement
+
+1.  **Correct the Sorting of `V`:**
+    The `comp` function's logic is sound, but it needs to be applied in a Pythonic way using the `key` argument. The most direct and correct way to implement multi-criteria sorting (descending frequency, then ascending alphabetical for ties) is to use a `lambda` function that returns a tuple as the `key`.
+
+    **Current problematic code:**
+    ```python
+    # define comparator function
+    def comp(a, b):
+      if a.num != b.num:
+        return a.num > b.num
+      return a.par < b.par
+    # ...
+    V.sort(key=comp, reverse=True)
+    ```
+
+    **Suggested correction:**
+    You can remove the `comp` function entirely. Replace the sorting line with:
+    ```python
+    # Sort V using a lambda function as the key for multi-criteria sorting.
+    # The tuple (-x.num, x.par) ensures:
+    # 1. Primary sort by frequency in descending order (by using -x.num).
+    # 2. Secondary sort by word in ascending alphabetical order (x.par) for ties.
+    V.sort(key=lambda x: (-x.num, x.par))
+    ```
+    With this change, `reverse=True` is no longer needed because `-x.num` naturally handles the descending order for the primary sort key. This will align the program's sorting behavior with standard Python and correctly solve the problem's requirements.
+
+2.  **Consider `collections.Counter` (Optional, for conciseness):**
+    While your manual frequency counting loop is correct, for brevity and often improved readability, Python's `collections.Counter` can be used.
+    ```python
+    import yogi
+    from collections import Counter # Add this import
+
+    class Info:
+      def __init__(self, par, num):
+        self.par = par
+        self.num = num
+
+    def main():
+      n = yogi.read(int)
+      k = yogi.read(int)
+      while n is not None and k is not None:
+        all_words = []
+        for _ in range(n):
+          all_words.append(yogi.read(str))
+
+        # Use Counter to get frequencies
+        word_counts = Counter(all_words)
+
+        V = []
+        for word, count in word_counts.items():
+            V.append(Info(word, count))
+
+        V.sort(key=lambda x: (-x.num, x.par))
+
+        for j in range(k):
+          print(V[j].par)
+
+        print("----------")
+
+        n = yogi.read(int)
+        k = yogi.read(int)
+
+    if __name__ == "__main__":
+      main()
+    ```
+    This version would remove the need for `P.sort()` and the manual `while` loop for frequency counting, making the code more concise. However, the manual counting method is perfectly acceptable.
+
+By applying the first suggestion (correcting the `V.sort()` line), the program should pass the test cases.

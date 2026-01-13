@@ -1,0 +1,27 @@
+
+                Most frequent words
+
+Write a program that reads a sequence of n words and prints the k most
+frequent (in case of a tie, the smallest in alphabetical order).
+
+Input
+
+Input consists of several cases. Every case starts with n and k,
+followed by n words made up of only lowercase letters. You can assume
+that k is between 1 and the number of different words.
+
+Output
+
+For every case, print the k most frequent words in order. Print first
+the most frequent words, and in case of a tie, the smallest words in
+lexicographical order. Print a line with 10 dashes at the end of each
+case.
+
+Author
+
+Salvador Roura (en: Salvador Roura)
+
+© Jutge.org, 2006–2025.
+
+
+             

@@ -1,0 +1,26 @@
+
+                                Smallest multiple
+
+Write a program that reads pairs of natural numbers a and b, and for
+each one prints the smallest natural number that is greater than or
+equal to a and also a multiple of b.
+
+Input
+
+Input consists of a sequence of pairs of natural numbers a and b with
+b ≥ 1.
+
+Output
+
+For each a and b, print in a line the smallest natural number x such
+that x ≥ a and x = mb for some natural number m. Precede this with the
+case number starting at 1, following the format of the example.
+
+Author
+
+Salvador Roura (en: Carlos Molina)
+
+© Jutge.org, 2006–2025.
+
+
+                

@@ -1,0 +1,81 @@
+Here's a feedback text for the provided Python program:
+
+---
+
+### Feedback: Nombre de dígits (1)
+
+**Problem Summary:**
+The problem asks to read a natural number `n` and output the count of its digits. For example, if `n` is `123`, the output should be `3`. If `n` is `0`, the output should be `1`.
+
+**Solution Approach:**
+The program implements a common iterative approach to count digits. It reads the input number `n` and keeps a copy `n2`.
+1.  It handles the special case `n = 0` by directly assigning `1` as the digit count.
+2.  For any positive number `n`, it enters a `while` loop, repeatedly performing integer division `n = n // 10` and incrementing a counter `d` until `n` becomes `0`. This effectively counts how many times the number can be divided by `10` before it becomes zero, which corresponds to the number of digits.
+
+**Code Strengths:**
+*   **Correct Logic for Positive Integers:** The core logic using integer division (`//`) and a counter correctly determines the number of digits for any positive integer.
+*   **Handles Zero Correctly:** The special case for `n = 0` (setting `d = 1`) is correctly identified and handled, which is important as the division-based loop would not work for `0`.
+*   **Readability:** The variable names (`n`, `n2`, `d`) are clear, and the overall flow of the program is easy to understand.
+
+**Code Weaknesses and Reason for "Wrong Answer":**
+The primary issue leading to a "Wrong Answer" status lies in the program's output structure and potential mismatches with the expected output format.
+
+1.  **Redundant Output for `n = 0`:**
+    The `print` statement `print('El nombre de digits de', n2, 'es', d)` is present *twice* in the logic for `n = 0`.
+    *   It is inside the `if n == 0:` block.
+    *   It is also at the very end of the script, outside the `if-else` block, meaning it always executes.
+    This results in printing the output for `n = 0` two times, which will cause a "Wrong Answer" if the judge expects a single line of output.
+
+2.  **Output Format (Potential Issue):**
+    The problem statement "Cal escriure el nombre de dígits de n." (You must write the number of digits of n.) usually implies printing *only* the integer digit count (e.g., `3` for input `123`). The current program prints a verbose string: `El nombre de digits de 123 es 3`. If the judge expects only the digit count, this verbose output is incorrect.
+
+**Suggestions for Improvement:**
+
+1.  **Fix the Output Logic:**
+    To resolve the redundant output for `n = 0` and ensure consistent printing, restructure the code so that the `print` statement executes only once after `d` has been determined for all cases.
+
+    ```python
+    from yogi import read
+
+    n = read(int)
+    n2 = n # Store original n for printing
+
+    if n == 0:
+        d = 1
+    else:
+        d = 0
+        while n != 0:
+            n = n // 10
+            d = d + 1
+            
+    # Single print statement after d is determined
+    print('El nombre de digits de', n2, 'es', d)
+    ```
+
+2.  **Verify Expected Output Format:**
+    Clarify whether the expected output is *just the digit count* (e.g., `3`) or the full descriptive string (e.g., `El nombre de digits de 123 es 3`).
+    *   If it's *just the digit count*, change the final `print` to `print(d)`.
+    *   If the verbose string is correct, the above refactoring fixes the `n=0` redundancy.
+
+3.  **More Pythonic Alternative (for consideration):**
+    For Python, converting the number to a string and getting its length is a very concise and often preferred way to count digits, as it naturally handles `0` and negative numbers (if they were allowed).
+
+    ```python
+    from yogi import read
+
+    n = read(int)
+    # Using len(str(n)) is a very concise way to get the digit count
+    # It handles 0 correctly (len(str(0)) is 1)
+    # It would also handle negative numbers if required (e.g., len(str(-123)) is 4, including the minus sign)
+    d = len(str(n)) 
+    
+    # Adjust output based on expected format
+    # If just the number:
+    # print(d)
+    # If the verbose message is required:
+    print('El nombre de digits de', n, 'es', d)
+    ```
+    This `len(str(n))` approach is much simpler and less prone to off-by-one errors or special case handling for `0`.
+
+---
+*(Note: The provided C++ solutions are for a different problem ("Most Frequent Words") and are not relevant to the analysis of this Python code for "Nombre de dígits (1)").*

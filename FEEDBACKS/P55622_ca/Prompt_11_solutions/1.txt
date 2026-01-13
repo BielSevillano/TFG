@@ -1,0 +1,57 @@
+Here's a feedback text for the provided program:
+
+---
+
+**Feedback for Program: "Nombre de dígits (1)"**
+
+**1. Brief Summary of the Problem and Solution Approach:**
+The problem asks to read a natural number `n` and output the total number of digits it contains. The provided Python program implements an iterative approach to solve this. It first reads the integer `n`. It handles the special case where `n` is `0` by directly assigning `1` digit. For any positive integer `n`, it uses a `while` loop that repeatedly performs integer division by `10` (`n = n // 10`) until `n` becomes `0`. A counter `d` is incremented in each iteration, effectively counting how many times a digit was "removed" from the number. The original number is stored in `n2` to be displayed in the output message.
+
+**2. Analysis of the Code's Strengths and Weaknesses:**
+
+*   **Strengths:**
+    *   **Correct Logic for Digit Counting:** The core algorithm of repeatedly dividing by 10 and incrementing a counter correctly determines the number of digits for any positive integer.
+    *   **Correct Handling of Zero:** The explicit `if n == 0:` check for the number zero is a good practice and correctly assigns it one digit, which is often an important edge case.
+    *   **Clarity and Readability:** The variable names (`n`, `n2`, `d`) are simple and the logic is straightforward, making the code easy to understand.
+    *   **Efficiency:** The iterative division approach is efficient, performing operations proportional to the logarithm base 10 of the input number.
+
+*   **Weaknesses:**
+    *   **Output Format (Primary Cause of "Wrong Answer"):** The problem statement "Cal escriure el nombre de dígits de n" (You must write the number of digits of n) typically implies that *only* the digit count should be printed. The current code prints a descriptive sentence, e.g., "El nombre de digits de 123 es 3". Online judges are very strict about output format, and this mismatch is almost certainly the reason for the "Wrong Answer" verdict.
+    *   **Redundant Output Statements:** The `print` statements are duplicated inside both the `if` and `else` branches, which can be refactored for cleaner code.
+    *   **`n2` Variable:** The `n2` variable is used to store the original `n` for the descriptive print statement. If only the digit count is to be printed, this variable becomes unnecessary.
+
+**3. Suggestions for Improvement:**
+
+1.  **Strictly Adhere to Output Format:** This is the most crucial change to resolve the "Wrong Answer".
+    *   Change `print('El nombre de digits de', n, 'es', d)` to `print(d)`.
+    *   Change `print('El nombre de digits de', n2, 'es', d)` to `print(d)`.
+
+2.  **Refactor and Simplify Output:** Combine the logic such that the `print(d)` statement occurs only once at the end. This also removes the need for `n2` if only `d` is printed.
+
+    ```python
+    from yogi import read
+
+    n = read(int)
+
+    if n == 0:
+        d = 1
+    else:
+        d = 0
+        temp_n = n # Or just use 'n' directly if you don't need the original value after loop
+        while temp_n != 0:
+            temp_n = temp_n // 10
+            d = d + 1
+    print(d) # Single print statement for the digit count
+    ```
+
+3.  **Alternative Pythonic Solution (if allowed and desired):** For Python, the simplest way to count digits is often by converting the number to a string and getting its length. This is very concise and handles `0` correctly.
+    ```python
+    from yogi import read
+
+    n = read(int)
+    print(len(str(n)))
+    ```
+    While this is very effective, the iterative division approach might be the intended learning objective for this specific exercise.
+
+---
+*Note: The "other possible solutions" provided in C++ appear to be for a completely different problem ("Paraules més freqüents" - Most frequent words) and are not relevant to solving "Nombre de dígits (1)".*

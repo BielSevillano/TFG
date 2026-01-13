@@ -1,0 +1,58 @@
+Here's a feedback text for the provided Python program:
+
+---
+
+### Feedback: Fusió de taules
+
+**Problem Summary:**
+The problem "Fusió de taules" requires implementing a function `fusio` that takes two pre-sorted lists of floating-point numbers (`v1` and `v2`) as input. The function should merge these two lists into a single new list, which must also be sorted in ascending order and retain all duplicate elements from the original lists. For example, merging `[2, 3, 5]` and `[3, 5, 5, 7]` should result in `[2, 3, 3, 5, 5, 5, 7]`. The problem statement explicitly mentions that only the requested procedure (`fusio` function) should be submitted, and the main program will be ignored.
+
+**Solution Approach:**
+The `fusio` function in the provided code implements a classic two-pointer merge algorithm. It initializes two pointers (`i1` and `i2`) to the beginning of `v1` and `v2` respectively, and an empty list `llista_definitiva` to store the result. It then iteratively compares the elements pointed to by `i1` and `i2`. The smaller of the two elements is appended to `llista_definitiva`, and its corresponding pointer is advanced. If elements are equal, the element from `v2` is appended (which is a valid choice to maintain order and duplicates). After one of the input lists is exhausted, the remaining elements of the other list are simply appended to `llista_definitiva`, as they are already sorted. Finally, the merged list is returned.
+
+**Code Analysis:**
+
+**Strengths:**
+1.  **Correctness of `fusio` function:** The `fusio` function correctly implements the specified merging logic. It handles the pre-sorted nature of the input lists, properly merges them into a single sorted list, and correctly preserves all duplicate elements.
+2.  **Efficiency:** The algorithm used in `fusio` is highly efficient. It operates with a time complexity of O(N + M), where N and M are the lengths of the input lists, as it performs a single pass through both lists. This is optimal for merging sorted lists.
+3.  **Readability:** The code within the `fusio` function is well-structured and uses clear, descriptive variable names (`llista_definitiva`, `i1`, `i2`), making it easy to understand.
+4.  **Pythonic Practices:** The use of `list.extend(sublist)` for appending remaining elements is an efficient and idiomatic Python way to handle this part of the merge process.
+5.  **Type Hinting:** The `fusio` function includes type hints, which improves code clarity and maintainability.
+
+**Weaknesses:**
+1.  **Violation of Submission Requirements (Primary Issue):** The most significant weakness, and the direct cause of the "Presentation Error", is the presence and execution of the `main()` function and its associated input/output logic. The problem statement explicitly says: "Només cal enviar el procediment demanat; el programa principal serà ignorat." (Only the requested procedure needs to be submitted; the main program will be ignored.) The `main()` function prints extra information (`n1+n2` and a leading space before the merged list) that is not expected by the judging system for this specific problem, leading to the format mismatch.
+2.  **Unnecessary Imports for Submission:** The `from yogi import read` import and the `llegir_dades` function are part of the `main` program's input handling and are not necessary for the `fusio` function itself. When submitting just the function, these can be omitted.
+
+**Suggestions for Improvement:**
+
+1.  **Adhere Strictly to Submission Guidelines:** For a successful submission to Jutge.org, you should **remove or comment out** the `main()` function, the `llegir_dades` function, and the `from yogi import read` import. Only the `fusio` function definition should be present in your submitted code. This will resolve the "Presentation Error".
+
+    *   *Example of how to structure your submission:*
+        ```python
+        # (Optional: remove the yogi import if it's not strictly necessary for local testing of the function only)
+        # from yogi import read
+
+        def fusio(v1: list[float], v2: list[float]) -> list[float]:
+            i1 = 0
+            i2 = 0
+            llista_definitiva = []
+            while i1 < len(v1) and i2 < len(v2):
+                if v1[i1] < v2[i2]:
+                    llista_definitiva.append(v1[i1])
+                    i1 += 1
+                else: # Handles v1[i1] >= v2[i2]
+                    llista_definitiva.append(v2[i2])
+                    i2 += 1
+            llista_definitiva.extend(v1[i1:])
+            llista_definitiva.extend(v2[i2:])
+            return llista_definitiva
+
+        # (All code below this point should be removed for submission)
+        # def llegir_dades(n:int)->list[int]: ...
+        # def main(): ...
+        # main()
+        ```
+
+2.  **Minor Naming (Optional):** While `llista_definitiva` is perfectly clear in Catalan, for broader readability in programming contexts, names like `merged_list` or `result` could also be considered. However, this is a minor stylistic point and does not affect correctness or efficiency.
+
+Your `fusio` function is excellent and correctly solves the core problem. The "Presentation Error" is purely an artifact of including and executing additional code not required by the problem's submission specification.

@@ -1,0 +1,48 @@
+Here's a feedback text for your program:
+
+### Feedback: Fusió de taules
+
+**1. Problem Summary and Solution Approach:**
+
+The problem "Fusió de taules" asks you to implement a function that merges two pre-sorted lists (`v1` and `v2`) of numbers into a single new list. This resulting list must also be sorted in ascending order, and all duplicate elements from the original lists should be preserved.
+
+Your `fusio` function correctly employs the standard **two-pointer (or merge) algorithm**. This approach initializes two pointers, one for each input list. It then iteratively compares the elements pointed to by each pointer, appending the smaller element to a new result list and advancing its corresponding pointer. Once one list is exhausted, all remaining elements from the other list are appended to the result.
+
+**2. Code Strengths and Weaknesses:**
+
+**Strengths:**
+
+*   **Correct Algorithm:** The `fusio` function implements the merge algorithm flawlessly. It correctly handles element comparisons, advances pointers, and appends remaining elements.
+*   **Efficiency:** The two-pointer approach is highly efficient for this problem, running in **O(N + M)** time complexity (where N and M are the lengths of `v1` and `v2` respectively). Using `extend` for the remaining elements is also an efficient Pythonic way to avoid individual appends in a loop.
+*   **Clarity:** The logic within `fusio` is straightforward and easy to understand. Variable names like `i1`, `i2`, and `llista_definitiva` are descriptive.
+*   **Type Hinting:** The use of type hints (`v1: list[float], v2: list[float]) -> list[float]`) for the `fusio` function is excellent practice, improving code readability and maintainability.
+
+**Weaknesses / Cause of "Presentation Error":**
+
+*   **Violating Submission Requirements:** The primary reason for the "Presentation Error" is that your submission includes a `main` function and auxiliary functions (`llegir_dades`), along with input/output operations (`from yogi import read`, `print`). The problem statement explicitly says: "Només cal enviar el procediment demanat; el programa principal serà ignorat." (Only the requested procedure needs to be submitted; the main program will be ignored.) The judging system expects *only* the `fusio` function definition, without any external code trying to read input or print output.
+*   **Inconsistent Type Hint in `llegir_dades`:** (This is a minor point and only relevant if `llegir_dades` were meant to be part of the solution, which it isn't). The function `llegir_dades` is declared to return `list[int]` but uses `read(float)` to read values, which means it would actually produce a `list[float]` if float values were provided in the input. While Python handles this dynamically, the type hint is misleading.
+
+**3. Suggestions for Improvement:**
+
+1.  **Remove `main` function and I/O logic:** To fix the "Presentation Error", you *must* remove everything outside the `fusio` function definition. Your submission should look like this:
+
+    ```python
+    def fusio(v1: list[float], v2: list[float]) -> list[float]:
+        i1 = 0
+        i2 = 0
+        llista_definitiva = []
+        while i1 < len(v1) and i2 < len(v2):
+            if v1[i1] < v2[i2]:
+                llista_definitiva.append(v1[i1])
+                i1 += 1
+            else: # This correctly handles v1[i1] >= v2[i2], including equal elements
+                llista_definitiva.append(v2[i2])
+                i2 += 1
+        llista_definitiva.extend(v1[i1:])
+        llista_definitiva.extend(v2[i2:])
+        return llista_definitiva
+    ```
+
+    By removing the `yogi` import, `llegir_dades`, `main`, and the call to `main()`, your code will conform to the submission requirements and pass the "Presentation Error".
+
+Your implementation of the core `fusio` function is excellent; the issue is purely with the surrounding code not being required by the problem statement.

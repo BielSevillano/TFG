@@ -1,0 +1,144 @@
+Here's a feedback text for the provided program:
+
+---
+
+### Feedback: Paraules més freqüents (Most Frequent Words)
+
+**1. Problem Summary and Solution Approach**
+
+The problem asks to read `n` words and then output the `k` most frequent words. If multiple words have the same frequency, they should be sorted alphabetically in ascending order. The output for each test case must end with a line of ten dashes.
+
+The provided Python program implements a solution strategy involving:
+1.  Reading all `n` input words into a list (`P`).
+2.  Sorting this list alphabetically (`P.sort()`) to group identical words together.
+3.  Iterating through the sorted list to count the occurrences of each unique word. These unique words and their counts are stored as `Info` objects (containing the word `par` and its count `num`) in a new list (`V`).
+4.  Sorting the `V` list based on frequency (descending) and then alphabetically (ascending) for ties, using a custom comparator.
+5.  Finally, printing the `par` attribute of the first `k` `Info` objects from the sorted list `V`, followed by the separator.
+
+**2. Analysis of Code's Strengths and Weaknesses**
+
+**Strengths:**
+
+*   **Clear Structure:** The code is well-organized with a dedicated `Info` class for word-frequency pairs and a `main` function to encapsulate the logic. This enhances readability and maintainability.
+*   **Efficient Frequency Counting:** By initially sorting the input words (`P.sort()`), the program efficiently counts frequencies by iterating through consecutive identical words. This is a standard and effective technique.
+*   **Correct Logic for Comparison:** The `comp` function correctly defines the desired sorting criteria: higher frequency first, and for ties, smaller alphabetical order.
+
+**Weaknesses / Reason for "Wrong Answer":**
+
+The primary reason for the "Wrong Answer" is the **incorrect usage of the `key` argument in `list.sort()` in Python 3**.
+
+*   **Misuse of `key` with a comparison function:** In Python 3, the `key` argument for `list.sort()` (or `sorted()`) expects a function that takes *one* element from the list and returns a value to be used for comparison. It does *not* accept a two-argument comparison function (like the `cmp` argument in Python 2 or C++'s `std::sort` comparator).
+*   Your `comp(a, b)` function returns a boolean (`True` or `False`). When `V.sort(key=comp, reverse=True)` is called, Python attempts to sort the list `V` by the boolean values returned by `comp(an_element_from_V)`. Since `comp` requires two arguments, this call structure is fundamentally incorrect and will likely lead to a `TypeError` or unexpected sorting behavior (if `comp` was somehow modified to take one argument and return a boolean, it would sort based on `False` then `True`, not your desired logic).
+
+**3. Suggestions for Improvement**
+
+To fix the sorting issue and improve the code's Pythonic style, you have a few excellent options:
+
+**Option 1: Implement `__lt__` (less than) in the `Info` class (Most Pythonic)**
+
+This is the recommended approach for custom sorting of objects. By defining `__lt__`, `list.sort()` can sort `Info` objects directly without a `key` argument.
+
+```python
+import yogi
+
+class Info:
+  def __init__(self, par, num):
+    self.par = par
+    self.num = num
+
+  # Define custom less-than comparison for sorting
+  def __lt__(self, other):
+    # Sort by frequency (num) in descending order:
+    # 'self' is "less than" 'other' if its frequency is GREATER (so it comes earlier in descending order).
+    if self.num != other.num:
+      return self.num > other.num
+    # If frequencies are equal, sort by word (par) in ascending lexicographical order.
+    return self.par < other.par
+
+def main():
+  n = yogi.read(int)
+  k = yogi.read(int)
+  while n is not None and k is not None:
+    P = []
+    for i in range(n):
+      P.append(yogi.read(str))
+
+    P.sort() # Sort words alphabetically to group them
+
+    V = []
+    # Handle the case where n might be 0, though problem constraints imply n >= 1
+    if n > 0:
+        i = 0
+        while i < n:
+            j = i + 1
+            while j < n and P[j] == P[i]:
+                j += 1
+            a = Info(P[i], j - i)
+            V.append(a)
+            i = j
+
+    # Sort V using the custom __lt__ defined in the Info class
+    V.sort() # No need for 'key' or 'reverse' when __lt__ defines the total order
+
+    for j in range(k):
+      print(V[j].par)
+
+    print("----------")
+
+    n = yogi.read(int)
+    k = yogi.read(int)
+
+if __name__ == "__main__":
+  main()
+```
+
+**Option 2: Use a `lambda` function with a tuple as the `key` (Concise and Common)**
+
+This approach is very common and concise for multi-criteria sorting. Python sorts tuples lexicographically by default. For descending order, negate the numerical value.
+
+```python
+import yogi
+
+class Info:
+  def __init__(self, par, num):
+    self.par = par
+    self.num = num
+
+def main():
+  n = yogi.read(int)
+  k = yogi.read(int)
+  while n is not None and k is not None:
+    P = []
+    for i in range(n):
+      P.append(yogi.read(str))
+
+    P.sort()
+
+    V = []
+    if n > 0:
+        i = 0
+        while i < n:
+            j = i + 1
+            while j < n and P[j] == P[i]:
+                j += 1
+            a = Info(P[i], j - i)
+            V.append(a)
+            i = j
+
+    # Sort V using a lambda function that returns a tuple as the key
+    # (-info.num) for descending frequency, (info.par) for ascending alphabetical
+    V.sort(key=lambda info: (-info.num, info.par))
+
+    for j in range(k):
+      print(V[j].par)
+
+    print("----------")
+
+    n = yogi.read(int)
+    k = yogi.read(int)
+
+if __name__ == "__main__":
+  main()
+```
+
+By applying one of these suggested changes to the sorting logic, your program should correctly handle the "Wrong Answer" issue and produce the desired output.

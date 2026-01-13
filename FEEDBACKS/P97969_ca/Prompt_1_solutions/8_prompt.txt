@@ -1,0 +1,67 @@
+
+                Write a feedback text for the following program that solves the problem described below.
+                
+               
+                Comptant as (1)
+
+Feu un programa que llegeixi una seqüència de caràcters acabada en punt
+i que escrigui quantes lletres ‘a’ conté.
+
+Entrada
+
+L’entrada consisteix en una seqüència de caràcters acabada en punt.
+
+Sortida
+
+Cal escriure el nombre de vegades que ‘a’ apareix a la seqüència.
+
+Autor
+
+Salvador Roura
+
+© Jutge.org, 2006–2025.
+
+
+                
+
+                This is the program:
+
+                import sys
+
+line = sys.stdin.readlines()[0]
+cnt = 0
+i = 0
+while line[i] != '.':
+    if line[i] == 'a':
+        cnt += 1
+    i += 1
+print(cnt)
+
+
+                The result of the program is: Accepted
+
+                The feedback should include:
+                - A brief summary of the problem and the solution approach.
+                - An analysis of the code's strengths and weaknesses.
+                - Suggestions for improvement, if any.
+
+                You can rely on the following other possible solutions to the same problem for reference:
+                import yogi
+exit = False
+count = 0
+while not exit:
+    s = yogi.read(str)
+    for c in s:
+        if c == 'a':
+            count += 1
+            _hy_anon_var_2 = None
+        else:
+            if c == '.':
+                exit = True
+                _hy_anon_var_1 = None
+            else:
+                _hy_anon_var_1 = None
+            _hy_anon_var_2 = _hy_anon_var_1
+print(count)
+
+                

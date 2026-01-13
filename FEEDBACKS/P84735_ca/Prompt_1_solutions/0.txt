@@ -1,0 +1,68 @@
+Here's a feedback text for your program:
+
+---
+
+**Feedback for "Múltiple més petit" Program**
+
+**1. Problem Summary and Solution Approach:**
+
+The problem "Múltiple més petit" requires finding the smallest natural number `x` for given `a` and `b` such that `x` is greater than or equal to `a` and `x` is a multiple of `b`. The program should process multiple pairs of `a` and `b`, outputting the result for each case with a case number.
+
+Your program employs a well-known mathematical formula to find this value: `x = (a + b - 1) // b * b`. This formula correctly calculates the smallest multiple of `b` that is greater than or equal to `a` for positive integers `a` and `b`, leveraging Python's floor division (`//`).
+
+**2. Code Analysis:**
+
+*   **Strengths:**
+    *   **Core Logic:** The calculation `x = (a + b - 1) // b * b` is mathematically sound and correctly solves the problem for individual `a` and `b` pairs. It is an efficient, one-liner solution.
+    *   **Output Formatting:** The `print("#{} : {}".format(i, x))` statement correctly formats the output according to the problem's specification, including the case number.
+    *   **Conciseness:** The code is very concise and easy to read, focusing directly on the problem's core arithmetic.
+
+*   **Weaknesses:**
+    *   **Input Reading Strategy (Primary Issue):** The most significant weakness, and likely the cause of the "Wrong Answer," is the way the program reads input. The problem statement says: "L’entrada consisteix en una seqüència de parells de naturals a i b," implying that the program should read pairs of `a` and `b` until the end of the input (EOF), without a preceding line indicating the total number of test cases. Your code, however, starts by reading `casos = int(input())`, which expects an initial integer indicating how many pairs will follow. This mismatch means your program will either try to read a non-existent `casos` value, or it will stop processing input prematurely if `casos` is present but doesn't match the actual number of pairs provided by the judge.
+
+**3. Suggestions for Improvement:**
+
+The main improvement needed is to adapt the input reading to a "read until EOF" pattern.
+
+*   **Correct Input Loop:** Replace the `casos = int(input())` and the `while i <= casos:` loop with a mechanism that reads lines until there are no more. In Python, a common and robust way to do this for competitive programming is using `sys.stdin`:
+
+    ```python
+    import sys
+
+    i = 1
+    # Iterate over each line provided in standard input until EOF
+    for line in sys.stdin:
+        # Strip potential newline characters and split the line
+        a, b = map(int, line.strip().split())
+        
+        # The core logic remains correct
+        x = (a + b - 1) // b * b
+        
+        print("#{} : {}".format(i, x))
+        i += 1
+    ```
+
+    Alternatively, you can use a `while True` loop with a `try-except EOFError` block:
+
+    ```python
+    i = 1
+    while True:
+        try:
+            line = input()
+            a, b = map(int, line.split())
+            x = (a + b - 1) // b * b
+            print("#{} : {}".format(i, x))
+            i += 1
+        except EOFError:
+            break # Exit the loop when end of input is reached
+        except ValueError:
+            # Handle cases where input might not be two integers (e.g., empty line)
+            # For competitive programming, usually EOFError is enough if input is guaranteed well-formed.
+            break
+    ```
+
+**Note on Provided Reference Solution:**
+
+The C++ code provided in the problem description appears to be a solution for a *different problem* (time manipulation: adding/subtracting a second from a `Temps` struct). It is not relevant as a reference for the "Múltiple més petit" problem and thus was not used in this analysis.
+
+---

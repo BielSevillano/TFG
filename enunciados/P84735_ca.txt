@@ -1,0 +1,24 @@
+
+                                Múltiple més petit
+
+Feu un programa que llegeixi parells de naturals a i b, i que per a
+cadascun escrigui el natural més petit que és més gran o igual que a i
+alhora múltiple de b.
+
+Entrada
+
+L’entrada consisteix en una seqüència de parells de naturals a i b amb
+b ≥ 1.
+
+Sortida
+
+Per a cada a i b, escriviu en una línia el natural més petit x tal que
+x ≥ a i x = mb per a algun natural m. Precediu-ho pel número de cas
+començant en 1, seguint el format de l’exemple.
+
+Autor
+
+Salvador Roura
+
+© Jutge.org, 2006–2025.
+

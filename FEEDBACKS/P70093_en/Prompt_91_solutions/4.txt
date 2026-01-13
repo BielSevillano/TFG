@@ -1,0 +1,83 @@
+## Feedback for Program P14130 (Array Merge)
+
+### Problem Summary
+
+The problem asks to implement a function `merge` that takes two input lists (`v1` and `v2`) which are guaranteed to be sorted in non-decreasing order. The function should merge these two lists into a single new list, also sorted in non-decreasing order, and include all elements, even if they are repeated.
+
+For example:
+`merge([2, 3, 5], [3, 5, 5, 7])` should return `[2, 3, 3, 5, 5, 5, 7]`.
+
+### Solution Approach
+
+The provided Python code attempts to solve the problem by iterating through both input lists using nested `for` loops. It initializes an empty `resultat` list and tries to append elements based on comparisons between `v1[i]` and `v2[j]`.
+
+### Code Analysis
+
+**Strengths:**
+
+*   **Correct Initialization:** The `resultat` list is correctly initialized as empty, which is necessary to build the merged list.
+*   **Awareness of Duplicates:** The code includes a condition `elif v1[i] == v2[j]: resultat.append(v2[j])`, indicating an understanding that duplicate elements need to be included in the output.
+
+**Weaknesses:**
+
+1.  **Incorrect Merging Algorithm:** The fundamental logic for merging two *sorted* lists is incorrect.
+    *   **Inefficient Nested Loops:** Using nested `for` loops (`for i in range(len(v1)): for j in range(len(v2)):`) is not the standard or efficient way to merge sorted lists. It leads to a time complexity of O(N*M) (where N and M are the lengths of `v1` and `v2`), whereas the problem can be solved in linear time, O(N+M).
+    *   **Flawed Comparison Logic:** The comparisons within the nested loops (`if v1[i] < v2[j]`, `elif v1[i] == v2[j]`, `else`) do not correctly maintain the sorted order of the merged list. It attempts to find a `minim` element, but the `minim` is frequently reassigned and not consistently used to build the result in the correct order.
+2.  **Premature `return` Statement:** The line `return resultat.append(minim)` is located inside the outer `for` loop (and nested within conditions).
+    *   `list.append()` always returns `None`. Therefore, the function will prematurely return `None` after executing this line for the first time, regardless of whether the entire lists have been processed. This is the primary reason for the "Wrong Answer" outcome, as the function does not return the expected list.
+    *   The final `return resultat` statement at the very end of the function body would only be reached if the first input list (`v1`) was empty, which is not a general solution.
+3.  **Redundant Variable `minim`:** The `minim` variable is used to store temporary values but its usage doesn't contribute to the correct construction of the `resultat` list in a systematic, sorted manner. When `v1[i] == v2[j]`, `v2[j]` is appended, but then `minim` is immediately appended too, which is incorrect.
+
+### Suggestions for Improvement
+
+To correctly and efficiently merge two sorted lists, the standard approach uses **two pointers**:
+
+1.  **Initialize Pointers and Result List:**
+    *   Create two index variables, `ptr1 = 0` and `ptr2 = 0`, to keep track of the current position in `v1` and `v2`, respectively.
+    *   Initialize an empty list, `result`, to store the merged elements.
+
+2.  **Iterate and Compare:**
+    *   Use a `while` loop that continues as long as both `ptr1` is within the bounds of `v1` AND `ptr2` is within the bounds of `v2`.
+    *   Inside the loop, compare `v1[ptr1]` and `v2[ptr2]`:
+        *   If `v1[ptr1]` is less than or equal to `v2[ptr2]`, append `v1[ptr1]` to `result` and increment `ptr1`. (Using `<=` ensures stability if elements from `v1` should come before equal elements from `v2`).
+        *   Otherwise (if `v2[ptr2]` is smaller), append `v2[ptr2]` to `result` and increment `ptr2`.
+
+3.  **Append Remaining Elements:**
+    *   After the main `while` loop finishes, one of the lists might still have elements left (because its pointer reached the end first).
+    *   Use two separate `while` loops to append any remaining elements from `v1` (if `ptr1` has not reached the end of `v1`) to `result`.
+    *   Then, append any remaining elements from `v2` (if `ptr2` has not reached the end of `v2`) to `result`.
+
+4.  **Return Result:**
+    *   Finally, return the `result` list.
+
+This approach ensures that elements are added to the `result` list in sorted order with a time complexity of O(N+M), which is optimal for this problem.
+
+```python
+# Example of a correct implementation:
+def merge(v1, v2):
+    ptr1 = 0
+    ptr2 = 0
+    result = []
+    len1 = len(v1)
+    len2 = len(v2)
+
+    while ptr1 < len1 and ptr2 < len2:
+        if v1[ptr1] <= v2[ptr2]:
+            result.append(v1[ptr1])
+            ptr1 += 1
+        else:
+            result.append(v2[ptr2])
+            ptr2 += 1
+
+    # Append any remaining elements from v1
+    while ptr1 < len1:
+        result.append(v1[ptr1])
+        ptr1 += 1
+
+    # Append any remaining elements from v2
+    while ptr2 < len2:
+        result.append(v2[ptr2])
+        ptr2 += 1
+
+    return result
+```

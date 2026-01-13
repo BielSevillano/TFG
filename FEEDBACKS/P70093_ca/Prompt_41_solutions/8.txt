@@ -1,0 +1,52 @@
+Here's a feedback text for your program:
+
+---
+
+**Feedback for `fusio.py`**
+
+**Problem Summary and Solution Approach:**
+The problem "Fusió de taules" requires merging two pre-sorted lists of numbers (`v1` and `v2`) into a single new list that is also sorted, without removing any duplicate elements. For example, merging `[2, 3, 5]` and `[3, 5, 5, 7]` should result in `[2, 3, 3, 5, 5, 5, 7]`.
+
+Your `fusio` function implements a classic and efficient two-pointer (or merge) algorithm. It uses two index pointers (`i1` and `i2`) to traverse `v1` and `v2` respectively. In each step, it compares the elements at the current pointers and appends the smaller element to a `llista_definitiva` (final list), advancing the corresponding pointer. Once one of the lists is fully processed, it efficiently appends any remaining elements from the other list using `extend()`. This approach is optimal for merging sorted lists, with a time complexity of O(N+M), where N and M are the lengths of the input lists.
+
+**Code's Strengths:**
+
+1.  **Correct and Efficient Algorithm:** The `fusio` function accurately and efficiently merges the two sorted lists. Your implementation of the two-pointer merge algorithm is a standard and optimal solution for this problem.
+2.  **Readability:** The code is well-structured and easy to understand. Variable names like `i1`, `i2`, and `llista_definitiva` are clear and descriptive.
+3.  **Pythonic Practices:** Using `llista_definitiva.extend(v1[i1:])` and `llista_definitiva.extend(v2[i2:])` to append remaining elements is a clean and efficient Pythonic way to handle the tail ends of the lists.
+4.  **Type Hints:** The use of type hints (`list[float]`, `-> list[float]`) for the `fusio` function is good practice, improving code clarity and maintainability.
+
+**Code's Weaknesses:**
+
+1.  **Presentation Error (Output Formatting):** The primary reason for the `Presentation Error` lies in the `main` function's output formatting. The problem description for Jutge.org usually expects *only* the requested output in a specific format (e.g., space-separated elements on a single line). Your `main` function prints:
+    *   The sum of the lengths of `v1` and `v2` (`n1+n2`) on a separate line.
+    *   An additional leading space before printing the merged list (`print(" ", end="")`).
+    These extra outputs do not match the expected format for the `fusio` problem, leading to the `Presentation Error`.
+2.  **Minor Type Hint Inconsistency:** In the `llegir_dades` function, the type hint `-> list[int]` is inconsistent with `read(float)`, which reads float values. It should ideally be `-> list[float]`. This is a minor point that doesn't affect the program's functionality but is worth noting for precision.
+3.  **Irrelevant `main` for Function Submission:** The problem explicitly states, "Només cal enviar el procediment demanat; el programa principal serà ignorat." This means only the `fusio` function itself is evaluated. While a full runnable program is often submitted for convenience, the `main` function and `llegir_dades` (along with the `yogi` import) are technically outside the scope of the requested submission and are the source of your `Presentation Error` when the entire file is run by the judge.
+
+**Suggestions for Improvement:**
+
+1.  **Fix Output Formatting in `main`:** To resolve the `Presentation Error`, modify your `main` function to only print the merged list, formatted as space-separated values on a single line. Remove the lines that print `n1+n2` and the leading space.
+    The corrected `main` function should look like this:
+    ```python
+    def main():
+        n1 = read(int)
+        v1 = llegir_dades(n1)
+        n2 = read(int)
+        v2 = llegir_dades(n2)
+        print(*fusio(v1, v2)) # This prints elements space-separated on one line
+    ```
+2.  **Adhere Strictly to Submission Instructions:** For future problems, if the instructions state that "the main program will be ignored," consider submitting *only* the requested function (`fusio` in this case), along with any necessary imports for that function. This ensures that no extraneous output from a `main` function can cause `Presentation Error`s.
+3.  **Correct Type Hint in `llegir_dades`:** Change the type hint in `llegir_dades` for consistency:
+    ```python
+    def llegir_dades(n: int) -> list[float]: # Changed to list[float]
+        """Llegeix tots els nombres i els afegeix a la llista"""
+        L = []
+        for i in range(n):
+            x = read(float)
+            L.append(x)
+        return L
+    ```
+
+Your `fusio` function is excellently implemented. The issue is solely with how the `main` function formats its output, which is a common pitfall in online judging environments. With the suggested changes, your program should pass the tests.

@@ -1,0 +1,62 @@
+
+                Write a feedback text for the following program that solves the problem described below.
+                
+                Taula de multiplicar
+
+Feu un programa que llegeixi un nombre n i que escrigui la “taula de
+multiplicar” de n.
+
+Entrada
+
+L’entrada consisteix en un natural n entre 1 i 9.
+
+Sortida
+
+Cal escriure la “taula de multiplicar” de n.
+
+Autor
+
+Salvador Roura
+
+© Jutge.org, 2006–2025.
+
+
+               
+
+                This is the program:
+
+                from yogi import read
+a=read(int)
+n=1
+x=0
+while n<=10:
+    x= n*a
+    print(str(a)+"*"+str(n)+" = "+str(x))
+    n=n+1
+    
+
+
+                The result of the program is: Accepted
+
+                The feedback should include:
+                - A brief summary of the problem and the solution approach.
+                - An analysis of the code's strengths and weaknesses.
+                - Suggestions for improvement, if any.
+
+                You can rely on the following other possible solutions to the same problem for reference:
+                from easyinput import read
+
+n = read(int)
+
+print(n, "*1 = ", n*1, sep='')
+print(n, "*2 = ", n*2, sep='')
+print(n, "*3 = ", n*3, sep='')
+print(n, "*4 = ", n*4, sep='')
+print(n, "*5 = ", n*5, sep='')
+print(n, "*6 = ", n*6, sep='')
+print(n, "*7 = ", n*7, sep='')
+print(n, "*8 = ", n*8, sep='')
+print(n, "*9 = ", n*9, sep='')
+print(n, "*10 = ", n*10, sep='')
+
+                

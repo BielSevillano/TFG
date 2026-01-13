@@ -1,0 +1,66 @@
+Here's a feedback text for your program:
+
+### Feedback: Múltiple més petit
+
+**1. Summary of the Problem and Solution Approach**
+
+The problem "Múltiple més petit" (Smallest Multiple) asks the program to read pairs of natural numbers `a` and `b` (where `b >= 1`). For each pair, it should calculate and print the smallest natural number `x` that is both greater than or equal to `a` and is a multiple of `b`. The output should be formatted as `"#case_number : x"`, with case numbers starting from 1.
+
+Your program uses a clever and efficient mathematical formula to find `x`. The expression `(a + b - 1) // b * b` correctly calculates the smallest multiple of `b` that is greater than or equal to `a`. This formula essentially computes `ceil(a / b) * b` using integer division.
+
+**2. Analysis of the Code's Strengths and Weaknesses**
+
+*   **Strengths:**
+    *   **Correct Logic:** The core mathematical logic for calculating `x` using `(a + b - 1) // b * b` is perfectly sound and correctly solves the problem for given `a` and `b`.
+    *   **Efficiency:** The calculation for each pair `a, b` is `O(1)`, making the solution very fast.
+    *   **Conciseness:** The code is brief and to the point, clearly implementing the chosen mathematical approach.
+    *   **Output Format:** The `print("#{} : {}".format(i, x))` statement correctly adheres to the specified output format, including the case number.
+
+*   **Weaknesses:**
+    *   **Incorrect Input Handling:** The primary reason for the "Wrong Answer" verdict is almost certainly the way the program reads input. The problem description states: "L’entrada consisteix en una seqüència de parells de naturals a i b..." which means "The input consists of a *sequence* of pairs of natural numbers a and b...". This implies that the program should read `a, b` pairs continuously until the end of the input stream (EOF), without a prior count of cases. Your program, however, starts with `casos = int(input())`, expecting the first line to specify the total number of pairs. This mismatch in input format is a common cause for "Wrong Answer" or "Runtime Error" in competitive programming environments.
+
+**3. Suggestions for Improvement**
+
+The core logic of your solution is excellent. The only necessary change is to adapt how the program reads input:
+
+1.  **Read until EOF:** Modify the input loop to continuously read `a, b` pairs until there are no more lines to read (End-Of-File). In Python, a robust way to do this is using a `try-except EOFError` block or iterating through `sys.stdin`.
+
+    Here's how you can modify your `main` function to handle input until EOF:
+
+    ```python
+    import sys
+
+    i = 1
+    # Loop indefinitely, reading lines until an EOFError occurs
+    try:
+        while True:
+            line = input() # Read a line from standard input
+            if not line: # Handle potential empty lines before EOF
+                continue
+            
+            a, b = map(int, line.split())
+            x = (a + b - 1) // b * b
+            print("#{} : {}".format(i, x))
+            i += 1
+    except EOFError:
+        # This block is executed when the end of the input stream is reached
+        pass
+    ```
+    Alternatively, using `sys.stdin` is also common and often cleaner for this pattern:
+    ```python
+    import sys
+
+    i = 1
+    for line in sys.stdin:
+        # Stripping whitespace and checking if the line is not empty is good practice
+        # though `map(int, line.split())` would error on truly empty lines
+        if not line.strip(): 
+            continue 
+        
+        a, b = map(int, line.split())
+        x = (a + b - 1) // b * b
+        print("#{} : {}".format(i, x))
+        i += 1
+    ```
+
+By making this change to the input reading mechanism, your program should correctly handle the problem as described and achieve an "Accepted" verdict.

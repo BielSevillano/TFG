@@ -1,0 +1,113 @@
+
+                Write a feedback text for the following program that solves the problem described below.
+                
+                                Array merge
+
+Write a function that merges the sorted vectors @v1@ and @v2@ and
+returns the result, repeated elements included. For instance, the result
+of merging a vector with 2, 3 and 5 with a vector with 3, 5, 5 and 7 is
+a vector with 2, 3, 3, 5, 5, 5 and 7.
+
+Interface
+
++-------:+:------------------------------------------------------------------------------+
+| C++    |     vector<double> merge(const vector<double>& v1, const vector<double>& v2); |
++--------+-------------------------------------------------------------------------------+
+| Java   |     public static double[] merge(double[] v1, double[] v2);                   |
++--------+-------------------------------------------------------------------------------+
+| Python |     merge(v1, v2)  # returns list                                             |
++--------+-------------------------------------------------------------------------------+
+| MyPy   |     merge(v1: list[float], v2: list[float]) -> list[float]:                   |
++--------+-------------------------------------------------------------------------------+
+
+Precondition
+
+@v1@ and @v2@ are sorted in nondecreasig order.
+
+Observation
+
+You only need to submit the required procedure; your main program will
+be ignored.
+
+Author
+
+Salvador Roura (en: Carlos Molina)
+
+© Jutge.org, 2006–2025.
+
+
+                
+
+                This is the program:
+
+                def merge(l1, l2):
+    #l1 i l2 estan ordenadas no decrecientemente
+    L=[ ]
+    fl1, fl2 = len(l1), len(l2)
+    i, j = 0, 0
+    while i < fl1 and j < fl2:
+        if l1[i] < l2[j]:
+            L.append(l1[i])
+            i+=1
+        else:
+            L.append(l2[j])
+            j+=1
+    while i<fl1:
+        L.append(l1[i])
+        i+=1
+    while j<fl2:
+        L.append(l2[j])
+        j+=1
+    return L
+
+
+                The result of the program is: Accepted
+
+                The feedback should include:
+                - A brief summary of the problem and the solution approach.
+                - An analysis of the code's strengths and weaknesses.
+                - Suggestions for improvement, if any.
+
+                You can rely on the following other possible solutions to the same problem for reference:
+                #Hem d'anar dividint la llista fins a que quedi dividida en parts d'un sol element i 
+# amb recursivititat anar-los ordenant per fusió.
+
+
+from yogi import tokens
+from typing import Any,TypeVar
+
+T=TypeVar('T')
+
+def mergesort(L:list[T])->None:
+    """Ordena la llista L per fusió."""
+    mergesort_rec(L,0,len(L)-1) #Ordena la llista des de la posició 0 fins al final
+
+def mergesort_rec(L:list[T],esq:int,dre:int)->None:
+    """Ordenar L[esq..dre].""" #L'últim element també està inclòs.
+    if esq<dre:
+        mig=(esq+dre)//2
+        mergesort_rec(L,esq,mig) #Li diem que ens ordeni la llista que queda a la part esquerra.
+        mergesort_rec(L,1+mig,dre) #Li diem que ens ordeni la llista de la dreta.
+        merge(L,esq,mig,dre)
+
+def merge(L:list[T],esq:int,mig:int,dre:int)->None:
+    """Ordena L[esq..dre] sabent que L[esq..mig]està ordenat i sabent que L[mig+1..dre]està ordenat."""
+    R=list[T]=[]
+    i=esq
+    j=mig+1
+    while i<=mig and j<=dre:
+        if L[i]<=L[j]:
+            R.append(L[i])
+            i +=1
+        else:
+            R.appen(L[j])
+            j +=1
+    R.extend(L[i:mig+1]) #així traslladem tots els valors de R
+    R.extend(L[j:dre+1])
+    L[esq:dre+1]=R #Passem tots els elements de R a la llista original L.
+
+
+
+
+
+                

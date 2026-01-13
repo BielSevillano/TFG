@@ -1,0 +1,82 @@
+
+                Write a feedback text for the following program that solves the problem described below.
+                
+                                Múltiple més petit
+
+Feu un programa que llegeixi parells de naturals a i b, i que per a
+cadascun escrigui el natural més petit que és més gran o igual que a i
+alhora múltiple de b.
+
+Entrada
+
+L’entrada consisteix en una seqüència de parells de naturals a i b amb
+b ≥ 1.
+
+Sortida
+
+Per a cada a i b, escriviu en una línia el natural més petit x tal que
+x ≥ a i x = mb per a algun natural m. Precediu-ho pel número de cas
+començant en 1, seguint el format de l’exemple.
+
+Autor
+
+Salvador Roura
+
+© Jutge.org, 2006–2025.
+
+
+
+                This is the program:
+
+                # Programa que calcule potencias 
+# L'entrada consisteix en 2 numeros parells a i b
+# Cada parell a, b , a es elevat al valor de b
+
+def potencia(a, b):
+    if b == 0:
+        return 1
+    elif b == 1:
+        return a
+    else:
+        return a * potencia(a, b - 1)
+
+
+def main():
+    while True:
+        a, b = map(int, input().split())
+        if a == 0 and b == 0:
+            break
+        print(potencia(a, b))
+
+
+
+
+
+
+                The result of the program is: Wrong Answer
+
+                The feedback should include:
+                - A brief summary of the problem and the solution approach.
+                - An analysis of the code's strengths and weaknesses.
+                - Suggestions for improvement, if any.
+
+                You can rely on the following other possible solutions to the same problem for reference:
+                #include <iostream>
+
+using namespace std;
+
+int main(){
+	int a, b;
+
+	while(cin >> a >> b){
+		int i = a;
+
+		while(i % b != 0){
+			i++;
+		}
+
+		cout << i << endl;
+	}
+	return 0;
+}
+                

@@ -1,0 +1,51 @@
+### Feedback for "Nombre de dígits (1)" Program
+
+**1. Summary of the Problem and Solution Approach**
+
+The problem "Nombre de dígits (1)" requires a program to read a natural number `n` and output the total number of digits it contains.
+
+The provided Python program attempts to solve this by:
+*   Reading the input integer `n`.
+*   Storing the original value of `n` in `n2` for later printing.
+*   Handling the special case where `n` is `0` by directly assigning `d = 1` (since `0` has one digit).
+*   For any other positive integer `n`, it initializes a digit counter `d` to `0` and then enters a `while` loop. Inside the loop, it repeatedly performs integer division (`// 10`) on `n` and increments `d` until `n` becomes `0`. This effectively counts how many times `n` can be divided by 10, which corresponds to the number of digits.
+*   Finally, it prints the original number `n2` and its calculated number of digits `d`.
+
+**2. Analysis of the Code's Strengths and Weaknesses**
+
+**Strengths:**
+*   **Correct Handling of Zero:** The code correctly identifies that the number `0` has `1` digit, which is often a tricky edge case in digit-counting algorithms.
+*   **Efficient Digit Counting:** For positive integers, the `while` loop using integer division (`// 10`) is a standard and generally efficient method for counting digits, especially for large numbers where string conversion might incur minor overhead.
+*   **Preservation of Original Input:** Using `n2 = n` ensures that the original input number is available for the final output string, even though the `n` variable is modified within the `while` loop.
+
+**Weaknesses:**
+*   **Redundant Output (Primary Cause of "Wrong Answer"):** The main issue leading to the "Wrong Answer" status is that the program prints the result twice when the input `n` is `0`.
+    *   When `n` is `0`, the `if n == 0:` block executes, printing `'El nombre de digits de 0 es 1'`.
+    *   Immediately after, the unconditional `print('El nombre de digits de', n2, 'es', d)` statement outside the `if/else` block also executes, printing the same line again.
+    *   Competitive programming platforms usually expect a single line of output for the result, making repeated output a "Wrong Answer." For `n > 0`, the program prints the result only once, which is correct.
+
+**Note:** The "other possible solutions" provided in the prompt are for a completely different problem ("Paraules Més Freqüents" - Most Frequent Words) and are not relevant to the "Nombre de dígits" problem.
+
+**3. Suggestions for Improvement**
+
+The core logic for counting digits is sound. The primary improvement needed is to ensure the output is printed exactly once:
+
+*   **Consolidate Print Statements:** The most straightforward fix is to move the `print` statement for the `n=0` case to be the *same* print statement that handles all other cases. This ensures that the result is printed only once, regardless of the input value.
+
+    ```python
+    from yogi import read
+
+    n = read(int)
+    n2 = n # Stores original n for printing
+
+    if n == 0:
+        d = 1
+    else:
+        d = 0
+        while n != 0:
+            n = n // 10
+            d = d + 1
+            
+    # This single print statement handles all cases
+    print('El nombre de digits de', n2, 'es', d)
+    ```

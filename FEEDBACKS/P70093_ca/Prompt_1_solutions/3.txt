@@ -1,0 +1,48 @@
+Here's a feedback text for your Python program:
+
+---
+
+### Feedback on "Fusió de taules" Program
+
+**Problem Summary:**
+The problem asks for a function `fusio` that merges two already sorted lists of numbers (`v1` and `v2`) into a single new sorted list. Crucially, duplicate elements should be preserved. For example, merging `[2, 3, 5]` and `[3, 5, 5, 7]` should result in `[2, 3, 3, 5, 5, 5, 7]`. The input lists are guaranteed to be sorted in ascending order. The task specifically requires submitting *only* the `fusio` procedure.
+
+**Solution Approach:**
+The `fusio` function correctly implements a classic two-pointer (or merge) algorithm. It uses two indices, `i1` and `i2`, to iterate through `v1` and `v2` respectively. In each step, it compares the elements pointed to by `i1` and `i2` and appends the smaller one to `llista_definitiva`, advancing the corresponding pointer. Once one of the lists is exhausted, the remaining elements of the other list are efficiently appended to the result using `extend`.
+
+**Code Strengths:**
+
+1.  **Correct Algorithm:** The `fusio` function's logic is perfectly sound and correctly implements the merge algorithm for sorted lists, preserving duplicates.
+2.  **Efficiency:** The algorithm runs in O(N + M) time complexity, where N and M are the lengths of `v1` and `v2`, respectively. This is optimal as it requires examining each element from both input lists at most once. The space complexity is also O(N + M) for the new merged list.
+3.  **Clear Variable Names:** Variable names like `llista_definitiva`, `i1`, and `i2` are clear and descriptive.
+4.  **Type Hinting:** The use of type hints (`v1: list[float]`, `-> list[float]`) is good practice for code readability and maintainability, though one minor inaccuracy was present in the `llegir_dades` function.
+
+**Weaknesses and Cause of "Presentation Error":**
+
+1.  **Violation of Submission Requirements (Primary Issue):** The problem statement clearly specifies: "Només cal enviar el procediment demanat; el programa principal serà ignorat." (Only the requested procedure needs to be submitted; the main program will be ignored.) Your submission includes a `main()` function, a `llegir_dades()` helper function, and an import `from yogi import read`. The "Presentation Error" indicates that your program produced output or performed I/O (like reading input or printing to console) that was not expected by the judge, or that the structure of the submission was incorrect (i.e., it contained more than just the `fusio` function). The judging system typically calls the required function directly with specific inputs and checks its return value.
+
+2.  **Minor Type Hint Inaccuracy (in `llegir_dades`):** The function `llegir_dades` is declared to return `list[int]` (`->list[int]`), but it reads `float` values using `read(float)`. If this helper function were to be used, its return type hint should be `list[float]`. However, this is irrelevant for the current problem as the `main` function and its helpers should not be submitted.
+
+**Suggestions for Improvement:**
+
+1.  **Remove Extraneous Code:** The most critical step to resolve the "Presentation Error" is to **remove everything except the `fusio` function**. This includes the `main()` function, the `llegir_dades()` function, and the `from yogi import read` import. Submit only the `fusio` function as requested by the problem.
+
+    **Example of what should be submitted:**
+    ```python
+    def fusio(v1: list[float], v2: list[float]) -> list[float]:
+        i1 = 0
+        i2 = 0
+        llista_definitiva = []
+        while i1 < len(v1) and i2 < len(v2):
+            if v1[i1] < v2[i2]:
+                llista_definitiva.append(v1[i1])
+                i1 += 1
+            else:
+                llista_definitiva.append(v2[i2])
+                i2 += 1
+        llista_definitiva.extend(v1[i1:])
+        llista_definitiva.extend(v2[i2:])
+        return llista_definitiva
+    ```
+
+By submitting only the requested function, your efficient and correct implementation of `fusio` should pass the tests.

@@ -1,0 +1,58 @@
+Here's a feedback text for the program:
+
+**Feedback for "Múltiple més petit" Program**
+
+**1. Problem Summary and Solution Approach:**
+
+The problem "Múltiple més petit" (Smallest Multiple) requires finding, for given natural numbers `a` and `b` (with `b >= 1`), the smallest natural number `x` such that `x` is greater than or equal to `a` and `x` is a multiple of `b`.
+
+The provided Python program adopts a direct mathematical approach to solve this. For each pair `(a, b)`, it calculates `x` using the formula `x = (a + b - 1) // b * b`. This formula correctly computes the smallest multiple of `b` that is greater than or equal to `a` using integer division (floor division `//` in Python), which effectively acts as a ceiling division for positive numbers.
+
+**2. Code's Strengths and Weaknesses:**
+
+*   **Strengths:**
+    *   **Correct Core Logic:** The mathematical formula `x = (a + b - 1) // b * b` is an accurate and standard way to find the smallest multiple.
+    *   **Conciseness:** The solution is remarkably compact and to the point.
+    *   **Efficiency:** The calculation for each `(a, b)` pair is a constant-time operation, making the solution very efficient per test case.
+    *   **Clear Output Format:** The `print("#{} : {}".format(i, x))` statement correctly formats the output as required, including the case number.
+
+*   **Weaknesses:**
+    *   **Incorrect Input Reading Strategy:** The most significant weakness, and likely the reason for the "Wrong Answer" verdict, is how the program handles input. It assumes that the first line of input provides the total number of test cases (`casos = int(input())`). However, the problem description "L’entrada consisteix en una seqüència de parells de naturals a i b..." typically implies that input pairs `a` and `b` will be provided continuously, one per line, until the End-Of-File (EOF) is reached. If the input source provides pairs until EOF instead of a prefixed number of cases, the program will misinterpret the input or raise an error.
+
+**3. Suggestions for Improvement:**
+
+The core logic of your program is correct. The primary area for improvement is adapting the input reading mechanism to match the problem's expected input format for multiple test cases.
+
+1.  **Read until EOF:** Modify the `while` loop to read input until the End-Of-File (EOF) is encountered. In Python, this is commonly done using a `try-except EOFError` block or by iterating through `sys.stdin`.
+
+    Here's an example using `sys.stdin`, which is robust for this type of problem:
+
+    ```python
+    import sys
+
+    case_num = 1
+    for line in sys.stdin:
+        # Each 'line' from sys.stdin will be a string, e.g., "10 3\n"
+        # We need to strip whitespace (like the newline character) and split it.
+        a, b = map(int, line.strip().split())
+        x = (a + b - 1) // b * b
+        print("#{} : {}".format(case_num, x))
+        case_num += 1
+    ```
+
+    Alternatively, using `input()` with `try-except`:
+
+    ```python
+    case_num = 1
+    while True:
+        try:
+            line = input() # Reads one line of input
+            a, b = map(int, line.split())
+            x = (a + b - 1) // b * b
+            print("#{} : {}".format(case_num, x))
+            case_num += 1
+        except EOFError:
+            break # Exit the loop when no more input is available
+    ```
+
+By implementing this change, your program should correctly process all input pairs and provide the correct output for the problem "Múltiple més petit."

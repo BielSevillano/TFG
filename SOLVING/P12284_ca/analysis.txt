@@ -1,0 +1,16 @@
+Mean analysis score: 80.67333333333333
+Success rate: 0.2
+Mean analysis score: 75.32
+Success rate: 1.0
+Mean analysis score: 78.09666666666666
+Success rate: 0.05
+Mean analysis score: 73.24333333333333
+Success rate: 0.05
+Mean analysis score: 91.31
+Success rate: 0.05
+Mean analysis score: 90.20333333333333
+Success rate: 0.05
+Mean analysis score: 72.89999999999999
+Success rate: 0.05
+Mean analysis score: 77.77
+Success rate: 0.05

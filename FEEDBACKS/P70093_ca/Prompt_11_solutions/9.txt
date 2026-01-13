@@ -1,0 +1,93 @@
+Here's a feedback text for the provided Python program:
+
+---
+
+### Feedback: Fusió de taules (Merge tables/vectors)
+
+**Problem Summary:**
+The problem asks to implement a function `fusio` that takes two pre-sorted lists of floating-point numbers (`v1` and `v2`) and merges them into a single sorted list, preserving all duplicate elements. For example, merging `[2, 3, 5]` and `[3, 5, 5, 7]` should result in `[2, 3, 3, 5, 5, 5, 7]`. The interface specifies the function signature for Python as `fusio(v1, v2) -> list[float]`. The submission should only contain the requested procedure, with any main program being ignored.
+
+**Solution Approach:**
+The submitted Python code implements the `fusio` function using a standard two-pointer merge algorithm. It initializes two pointers (`i1`, `i2`) for `v1` and `v2` respectively, and an empty list `llista_definitiva`. It then iterates, comparing elements at the current pointers. The smaller element is appended to `llista_definitiva`, and its corresponding pointer is incremented. This continues until one of the lists is exhausted. Finally, any remaining elements from the unexhausted list are appended to `llista_definitiva`.
+
+**Code Analysis:**
+
+*   **Strengths:**
+    *   **Correct Algorithm:** The `fusio` function correctly implements the two-pointer merge algorithm, which is the most efficient way to merge two sorted lists. It correctly handles duplicates by appending elements based on their value comparison, ensuring all elements are included and the final list remains sorted.
+    *   **Efficiency:** The algorithm has a time complexity of O(N + M), where N and M are the lengths of `v1` and `v2` respectively, as each element is processed exactly once. This is optimal.
+    *   **Readability:** Variable names like `llista_definitiva` are descriptive. The logic is clear and easy to follow.
+    *   **Robustness:** The use of `extend(v1[i1:])` and `extend(v2[i2:])` gracefully handles cases where one list is longer than the other or even if one of the input lists is initially empty.
+
+*   **Weaknesses & Cause of "Presentation Error":**
+    *   **Extraneous Code:** The problem statement explicitly says: "Només cal enviar el procediment demanat; el programa principal serà ignorat." This means only the `fusio` function definition should be submitted. The provided code includes a `read` import, `llegir_dades` function, a `main` function, and a direct call to `main()`. This additional code, particularly the `print` statements within `main()`, produces output that is not expected by the online judge.
+        *   `print(n1+n2)`: Prints the sum of the lengths of the input lists, which is not part of the required output.
+        *   `print(" ",end="")`: Prints an extra space, also unexpected.
+        *   `print(*fusio(v1,v2))`: While the merged list is the correct result, the judge typically calls the function directly and expects it to *return* the list, not for the main program to *print* it. Outputting anything when not explicitly requested for the main program will result in a "Presentation Error".
+
+**Suggestions for Improvement:**
+
+1.  **Remove Non-Essential Code for Submission:** For submission to the online judge, keep *only* the `fusio` function definition. Remove the `from yogi import read`, `llegir_dades` function, `main` function, and `main()` call. The judge will call your `fusio` function directly with test inputs.
+
+    ```python
+    # Only this part should be submitted
+    def fusio(v1: list[float], v2: list[float]) -> list[float]:
+        i1 = 0
+        i2 = 0
+        llista_definitiva = []
+        while i1 < len(v1) and i2 < len(v2):
+            if v1[i1] < v2[i2]:
+                llista_definitiva.append(v1[i1])
+                i1 += 1
+            else: # This covers v1[i1] >= v2[i2], correctly handling equal elements
+                llista_definitiva.append(v2[i2])
+                i2 += 1
+        llista_definitiva.extend(v1[i1:])
+        llista_definitiva.extend(v2[i2:])
+        return llista_definitiva
+    ```
+2.  **Local Testing (Optional but Recommended):** If you wish to test your code locally with input reading and printing, wrap that part in an `if __name__ == "__main__":` block. This ensures it doesn't run when the script is imported or tested by an online judge.
+
+    ```python
+    from yogi import read # Keep for local testing if needed
+
+    def fusio(v1: list[float], v2: list[float]) -> list[float]:
+        # ... (your correct fusio implementation here) ...
+        i1 = 0
+        i2 = 0
+        llista_definitiva=[]
+        while i1 < len(v1) and i2 < len(v2):
+            if v1[i1] < v2[i2]:
+                llista_definitiva.append(v1[i1])
+                i1 += 1
+            else:
+                llista_definitiva.append(v2[i2])
+                i2 += 1
+        llista_definitiva.extend(v1[i1:])
+        llista_definitiva.extend(v2[i2:])
+        return llista_definitiva
+
+    def llegir_dades(n:int)->list[float]: # Changed type hint to float
+        L = []
+        for i in range(n):
+            x = read(float)
+            L.append(x)
+        return L
+
+    if __name__ == "__main__": # This block only runs when the script is executed directly
+        n1 = read(int)
+        v1 = llegir_dades(n1)
+        n2 = read(int)
+        v2 = llegir_dades(n2)
+        # For local testing, you might print the result to see it
+        # However, for submission, even this print is removed
+        # print("Merged list:", *fusio(v1,v2)) # Example for local verification
+        # The problem statement's example for printing is:
+        # print(n1+n2) # This is extraneous.
+        # print(" ",end="") # This is extraneous.
+        # print(*fusio(v1,v2)) # This is the result, but printing it is likely the cause of PE.
+        # If the judge expects specific output from main, then you'd follow its format.
+        # But for "Només cal enviar el procediment demanat", no main output is expected.
+        pass # Or remove the entire if __name__ block
+    ```
+
+By making these changes, specifically removing all code outside the `fusio` function for submission, the "Presentation Error" should be resolved as the core `fusio` logic is correct and efficient.

@@ -1,0 +1,109 @@
+Here's a feedback text for the provided Python program:
+
+### Feedback: Paraules més freqüents
+
+**Problem Summary:**
+The problem requires reading a sequence of `n` words and identifying the `k` most frequent ones. In cases where words have the same frequency, they should be ordered alphabetically (lexicographically ascending). The output for each test case should include the `k` words, each on a new line, followed by a separator line of ten hyphens.
+
+**Solution Approach:**
+The program implements a common and effective strategy:
+1.  It reads all `n` words into a list `P`.
+2.  It sorts `P` alphabetically. This groups identical words together, making frequency counting straightforward.
+3.  It then iterates through the sorted list `P`, counting consecutive occurrences of each unique word. These unique words and their counts are stored in a list `V` of `Info` objects (a custom class `Info` holds the word (`par`) and its frequency (`num`)).
+4.  Finally, it attempts to sort `V` based on the specified criteria: descending frequency, then ascending alphabetical order for ties. The first `k` words from this sorted list are then printed.
+
+**Code Analysis:**
+
+**Strengths:**
+
+*   **Clear Structure:** The use of a custom `Info` class to bundle the word and its frequency is a good design choice, enhancing readability and organization.
+*   **Handles Multiple Test Cases:** The `while n is not None and k is not None:` loop correctly processes multiple input cases as required.
+*   **Efficient Frequency Counting:** Sorting the initial list of words (`P.sort()`) allows for a single linear pass to count the frequencies of all unique words (using the `while i < n:` loop with inner `while j < n and P[j] == P[i]:` loop). This approach is efficient, with the overall time complexity dominated by the initial sort, typically O(N log N) where N is the total number of words.
+*   **Correct Output Format:** The program correctly prints each of the `k` words on a new line and adds the "----------" separator at the end of each test case.
+
+**Weaknesses (Cause of "Wrong Answer"):**
+
+*   **Incorrect Comparator for `list.sort()`:** The primary issue leading to the "Wrong Answer" is how the `comp` function is used with `V.sort(key=comp, reverse=True)`.
+    *   In Python's `list.sort()` method, the `key` argument expects a function that takes *one* element from the list and returns a *sortable value* for that element (e.g., a number, a string, or a tuple). It does *not* expect a traditional comparison function that takes two arguments (`a`, `b`) and returns a boolean or an integer (-1, 0, 1).
+    *   Your `comp(a, b)` function is designed like a comparison function, returning `True` or `False`. When `sort(key=comp)` is called, Python will attempt to use `comp` to *extract a key* from each `Info` object. Since `comp` requires two arguments (`a`, `b`) and `key` provides only one, this usage is fundamentally incorrect and will likely lead to unexpected behavior or errors during execution, or more subtly, incorrect sorting if the Python version or environment somehow tries to coerce it. Even if it were to somehow process the boolean return, sorting by `True` or `False` directly would not yield the desired complex ordering.
+
+**Suggestions for Improvement:**
+
+1.  **Correct the Sorting Key (Recommended Fix):**
+    The most Pythonic and correct way to achieve the desired sorting (descending frequency, then ascending alphabetical order for ties) is to provide a `key` function that returns a tuple. Python sorts tuples lexicographically. By making the frequency negative, we achieve descending order for frequency.
+
+    Replace:
+    ```python
+    # define comparator function
+    def comp(a, b):
+      if a.num != b.num:
+        return a.num > b.num
+      return a.par < b.par
+    # ...
+    V.sort(key=comp, reverse=True)
+    ```
+    With:
+    ```python
+    # Use a lambda function or a regular method as a key extractor
+    # The key is a tuple: (-frequency, word).
+    # Negative frequency sorts by frequency in descending order.
+    # Word sorts alphabetically in ascending order (default for strings).
+    V.sort(key=lambda info_obj: (-info_obj.num, info_obj.par))
+    ```
+    With this change, you do not need the `comp` function at all.
+
+2.  **Alternative using `functools.cmp_to_key` (If `comp` structure is desired):**
+    If you prefer to keep the `comp(a, b)` function structure, you can adapt it to return -1, 0, or 1 as expected by traditional comparators, and then use `functools.cmp_to_key` to convert it into a `key` function suitable for `list.sort()`:
+
+    ```python
+    import yogi
+    from functools import cmp_to_key # Add this import
+
+    # define struct Info
+    class Info:
+      def __init__(self, par, num):
+        self.par = par
+        self.num = num
+
+    # define comparison function (returns -1, 0, or 1)
+    def comp_func(a, b):
+      if a.num != b.num:
+        return -1 if a.num > b.num else 1 # a comes before b if a.num is greater
+      if a.par != b.par:
+        return -1 if a.par < b.par else 1 # a comes before b if a.par is smaller
+      return 0 # a and b are considered equal for sorting
+
+    # main function
+    def main():
+      n = yogi.read(int)
+      k = yogi.read(int)
+      while n is not None and k is not None:
+        P = []
+        for i in range(n):
+          P.append(yogi.read(str))
+        P.sort()
+
+        V = []
+        i = 0
+        while i < n:
+          j = i + 1
+          while j < n and P[j] == P[i]:
+            j += 1
+          a = Info(P[i], j - i)
+          V.append(a)
+          i = j
+
+        # Use cmp_to_key to adapt the comparison function
+        V.sort(key=cmp_to_key(comp_func)) # No reverse=True needed, as comp_func handles order
+        
+        for j in range(k):
+          print(V[j].par)
+        print("----------")
+        n = yogi.read(int)
+        k = yogi.read(int)
+
+    if __name__ == "__main__":
+      main()
+    ```
+
+Either of these corrections will resolve the sorting issue and should lead to the correct output.

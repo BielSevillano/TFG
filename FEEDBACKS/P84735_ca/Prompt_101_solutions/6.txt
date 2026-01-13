@@ -1,0 +1,49 @@
+Here's a feedback text for your program:
+
+### Feedback: Múltiple més petit
+
+**1. Problem Summary and Solution Approach:**
+
+The problem asks us to read pairs of natural numbers `a` and `b` (where `b ≥ 1`). For each pair, we need to find and print the smallest natural number `x` that is both greater than or equal to `a` and a multiple of `b`. The output should be formatted as `#case : x`, with case numbers starting from 1.
+
+Your program attempts to solve this by using the mathematical formula `x = (a + b - 1) // b * b`. This formula correctly calculates the smallest multiple of `b` that is greater than or equal to `a` using integer division, which is a common and efficient approach for this type of problem.
+
+**2. Code Analysis:**
+
+*   **Strengths:**
+    *   **Correct Logic for Calculation:** The core calculation `x = (a + b - 1) // b * b` is mathematically sound and correctly determines the desired multiple for any given `a` and `b` (as long as `a, b` are positive integers, which they are in this problem). This is an elegant and efficient way to perform a "ceiling division and multiply" operation.
+    *   **Correct Output Format:** The `print("#{} : {}".format(i, x))` statement correctly adheres to the specified output format, including the case numbering.
+
+*   **Weaknesses:**
+    *   **Incorrect Input Handling:** The primary issue leading to a "Wrong Answer" is likely the way your program reads input. The problem description states: "L’entrada consisteix en una seqüència de parells de naturals a i b..." (The input consists of a sequence of pairs of natural numbers a and b...). This typically implies that pairs `a, b` should be read repeatedly until the end of the input stream (EOF).
+        Your program, however, starts by reading `casos = int(input())`. This `casos` variable is not part of the described input format for this specific problem. If the judge system sends pairs `a, b` directly, your program will interpret the first `a` as the number of cases (`casos`), leading to a complete misinterpretation of all subsequent input data. This mismatch in input format will inevitably result in a "Wrong Answer".
+
+**3. Suggestions for Improvement:**
+
+To fix the "Wrong Answer" and correctly solve the problem, you need to adjust how your program reads the input:
+
+1.  **Remove the initial `casos` input:** Delete the line `casos = int(input())`.
+2.  **Change the loop condition:** Modify the `while` loop to read pairs `a, b` repeatedly until there is no more input (EOF). In Python, a common way to do this is using a `try-except` block for `EOFError` or by checking the return value of `input()` in more complex scenarios (though `map(int, input().split())` will raise `EOFError` when there's no more input).
+
+Here's how you can modify your code:
+
+```python
+i = 1 # Initialize case counter
+
+while True:
+    try:
+        a, b = map(int, input().split())
+        x = (a + b - 1) // b * b
+        print("#{} : {}".format(i, x))
+        i += 1
+    except EOFError:
+        # Break the loop when there's no more input
+        break
+    except ValueError:
+        # Handle cases where input might not be two integers (e.g., empty line, malformed input)
+        # For competitive programming, EOFError is usually sufficient.
+        break
+
+```
+
+This change ensures that your program correctly processes the sequence of `a, b` pairs as specified by the problem, while retaining your efficient and correct calculation logic.

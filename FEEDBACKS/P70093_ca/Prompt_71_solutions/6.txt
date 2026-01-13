@@ -1,0 +1,62 @@
+Here's a feedback text for your program:
+
+---
+
+### Feedback for `Fusió de taules`
+
+**Problem Summary:**
+The problem asks for a function, `fusio`, that takes two already sorted lists of floating-point numbers (`v1` and `v2`) as input. The function should merge these two lists into a single new list, which is also sorted in ascending order and includes all elements from both input lists, preserving duplicates. The problem statement explicitly notes that only the `fusio` function itself should be submitted, and any `main` program or auxiliary code will be ignored.
+
+**Solution Approach:**
+Your `fusio` function correctly implements the classic two-pointer merge algorithm. It initializes two pointers (`i1` and `i2`) to track the current position in `v1` and `v2` respectively, and an empty list `llista_definitiva` for the result. It then iterates while both pointers are within bounds, comparing the elements at the current pointer positions and appending the smaller one to `llista_definitiva`, advancing the corresponding pointer. After this loop, one of the lists might still have remaining elements, which are then efficiently appended to the `llista_definitiva` using `extend`.
+
+**Code Analysis:**
+
+**Strengths:**
+*   **Correct Algorithm:** The `fusio` function accurately implements the merge operation for two sorted lists. It correctly handles duplicate elements and maintains the sorted order of the merged list.
+*   **Efficiency:** The two-pointer approach is efficient, with a time complexity of O(N + M), where N and M are the lengths of `v1` and `v2` respectively, as each element is processed exactly once. The space complexity is also O(N + M) for the resulting list.
+*   **Readability:** The code within the `fusio` function is clear and easy to understand.
+*   **Pythonic `extend`:** Using `extend(v1[i1:])` and `extend(v2[i2:])` is a concise and efficient way to append the remaining elements of the lists.
+
+**Weaknesses and Cause of "Presentation Error":**
+The primary reason for the "Presentation Error" lies in the problem's explicit instruction: "Només cal enviar el procediment demanat; el programa principal serà ignorat." (Only the requested procedure needs to be submitted; the main program will be ignored.)
+
+Your submission includes a `main()` function, a `llegir_dades()` helper function, and direct calls to `yogi.read` and `print` statements outside of `fusio`. This auxiliary code, particularly the `print` statements in `main`, produces output that is not expected by the judge system for this problem. Specifically:
+1.  `print(n1+n2)`: This prints the total number of elements in the combined input lists. The problem's implied output (from the example) only expects the merged list itself.
+2.  `print(" ",end="")`: This adds an unnecessary leading space to the output line.
+3.  The presence of any `main` function or I/O logic when explicitly told to omit it can lead to a "Presentation Error" or even compilation/runtime errors in some judging environments, as the judge typically provides its own `main` function to call your submitted procedure.
+
+A minor point is that the type hint `list[int]` for `llegir_dades` is inconsistent with `read(float)` and the problem's use of `double`/`float`, though this wouldn't cause the `Presentation Error`.
+
+**Suggestions for Improvement:**
+
+1.  **Strictly adhere to submission requirements:** The most important step is to **remove the `main()` function and all related input/output code (`llegir_dades`, `n1 = read(int)`, `print(...)`) from your submission.** Only the `fusio` function should be present in the submitted file.
+2.  **For local testing:** If you wish to keep the `main` function for local testing, ensure its output format precisely matches what the problem expects. For this particular problem, it would likely be just the merged numbers separated by spaces, without the total count or an initial space. For example:
+    ```python
+    # ... fusio function here ...
+
+    # For local testing only, this part should be removed for submission
+    # from yogi import read # Remove this import if yogi is only used by main
+
+    # def llegir_dades(n: int) -> list[float]: # Corrected type hint
+    #     L = []
+    #     for _ in range(n):
+    #         x = read(float)
+    #         L.append(x)
+    #     return L
+
+    # def main():
+    #     n1 = read(int)
+    #     v1 = llegir_dades(n1)
+    #     n2 = read(int)
+    #     v2 = llegir_dades(n2)
+    #     # Expected output for merged lists is usually just the elements
+    #     # separated by spaces, without an initial space or extra lines.
+    #     print(*fusio(v1, v2)) 
+    # main()
+    ```
+3.  **Correct `llegir_dades` type hint:** If `llegir_dades` were part of the submission (which it shouldn't be), its type hint should be `list[float]` to match the actual data type read (`read(float)`).
+
+By following the first suggestion, your `fusio` function, which is correctly implemented, should pass the test cases.
+
+---

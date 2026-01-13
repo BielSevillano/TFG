@@ -1,0 +1,43 @@
+This feedback addresses the provided Python program for the "Fusió de taules" problem.
+
+**Summary of the Problem and Solution Approach:**
+
+The problem "Fusió de taules" asks for a function that merges two already sorted lists (or vectors/arrays) of numbers into a single new sorted list. It's crucial that duplicate elements are retained. For example, merging `[2, 3, 5]` and `[3, 5, 5, 7]` should result in `[2, 3, 3, 5, 5, 5, 7]`.
+
+The student's `fusio` function implements a classic two-pointer merge algorithm. It iterates through both input lists simultaneously using two index pointers (`i1` and `i2`). In each step, it compares the elements at the current pointers and appends the smaller one to a new `llista_definitiva`. The corresponding pointer is then incremented. Once one list is fully processed, any remaining elements from the other list are simply appended to the result.
+
+**Analysis of the Code's Strengths and Weaknesses:**
+
+**Strengths:**
+
+*   **Correct Algorithm for `fusio`:** The core `fusio` function correctly implements the merge algorithm. It flawlessly handles duplicates (e.g., if both `v1[i1]` and `v2[i2]` are 3, one will be appended, then the other in the next step or the same step depending on comparison, ensuring both 3s are present) and ensures all elements from both input lists are included in the final sorted list.
+*   **Optimal Efficiency:** The `fusio` function operates with a time complexity of O(N+M), where N and M are the lengths of the input lists. This is optimal because every element from both lists must be examined at least once to form the new merged list. The space complexity is also O(N+M) for storing the result, which is necessary.
+*   **Readability:** The `fusio` function is clearly structured and easy to understand, utilizing descriptive variable names.
+*   **Type Hinting:** The `fusio` function effectively uses type hints (`list[float]`, `-> list[float]`), which improves code clarity and can aid in static analysis.
+
+**Weaknesses:**
+
+*   **Presentation Error (Main Program Issue):** The primary reason for the "Presentation Error" is the inclusion and execution of the `main` function (and its helpers like `llegir_dades`). The problem statement explicitly states: "Només cal enviar el procediment demanat; el programa principal serà ignorat." This means only the `fusio` function should be submitted. Your `main` function prints additional, unrequested information (the sum of `n1+n2` and a leading space before the merged list elements), which causes the output format to mismatch the expected format of the testing system.
+*   **Incorrect Type Hint in `llegir_dades`:** In the `llegir_dades` helper function, the type hint `list[int]` for the return type is inaccurate. Since `read(float)` is used to read floating-point numbers, the list should be typed as `list[float]`.
+*   **Missing Docstring for `fusio`:** While `llegir_dades` has a docstring, `fusio` lacks one. Including docstrings for all functions is good practice, explaining their purpose, arguments, and return values.
+
+**Suggestions for Improvement:**
+
+1.  **Adhere Strictly to Submission Requirements:** The most critical step is to remove the `main` function, the `llegir_dades` function, the `from yogi import read` line, and the `main()` call. Your submission should consist *only* of the `fusio` function. The testing system will provide the inputs and call your `fusio` function directly.
+2.  **Add a Docstring to `fusio`:** Enhance code documentation by adding a clear docstring to the `fusio` function. This explains its purpose, arguments, and return value, making your code more professional and easier to understand. For example:
+    ```python
+    def fusio(v1: list[float], v2: list[float]) -> list[float]:
+        """
+        Merges two sorted lists of floats into a single sorted list,
+        preserving duplicate elements.
+
+        Args:
+            v1: The first sorted list of floats.
+            v2: The second sorted list of floats.
+
+        Returns:
+            A new list containing all elements from v1 and v2, sorted in ascending order.
+        """
+        # ... function body ...
+    ```
+3.  **Correct Type Hint (if `llegir_dades` were kept for local testing):** If you decide to keep `llegir_dades` for personal local testing, correct its return type hint from `list[int]` to `list[float]`.

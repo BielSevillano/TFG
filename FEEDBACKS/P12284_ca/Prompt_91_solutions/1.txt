@@ -1,0 +1,63 @@
+Here's a feedback text for the provided Python program:
+
+---
+
+**Feedback for "Paraules més freqüents" Program (Python)**
+
+**1. Summary of the Problem and Solution Approach:**
+
+The problem requires reading `n` words and identifying the `k` most frequent ones. In cases where words have the same frequency, they should be ordered alphabetically. The program aims to solve this by first reading all `n` words into a list (`P`). It then sorts this list alphabetically, which groups identical words together. Next, it iterates through the sorted list, counting the occurrences of each unique word and storing this information (word and its frequency) in a list of `Info` objects (`V`). Finally, it sorts this `V` list based on the problem's criteria: descending frequency, and then ascending alphabetical order for words with the same frequency. The top `k` words from this sorted list are then printed.
+
+**2. Analysis of the Code's Strengths and Weaknesses:**
+
+**Strengths:**
+
+*   **Clear Data Structure:** The `Info` class is well-defined and effectively encapsulates a word and its frequency, making the code readable and the data management straightforward.
+*   **Logical Frequency Counting:** Sorting the initial list of words (`P`) and then iterating through it to count consecutive identical elements is an efficient and correct way to determine word frequencies. This step leverages the power of sorting to simplify frequency calculation.
+*   **Intention of Comparison Logic:** The `comp` function correctly outlines the desired sorting criteria: prioritize higher frequency, and then use alphabetical order for ties.
+*   **Handles Multiple Test Cases:** The `while` loop correctly processes multiple input sets as required by the problem description.
+
+**Weaknesses:**
+
+*   **Incorrect Usage of `list.sort()` with `key`:** This is the primary reason for the "Wrong Answer." The `list.sort()` method's `key` argument expects a function that takes *one* argument (an element from the list) and returns a value to be used for comparison. However, the `comp` function is defined to take *two* arguments (`a` and `b`) for direct comparison. In a standard Python 3 environment, `V.sort(key=comp, reverse=True)` would raise a `TypeError` because `sort` tries to call `comp` with only one argument. If the system reports "Wrong Answer" instead, it suggests an unusual execution environment where this `TypeError` might be suppressed or handled in an unexpected way, leading to incorrect sorting results.
+
+**3. Suggestions for Improvement:**
+
+To correct the sorting issue and align with Python's standard `list.sort()` behavior, consider the following changes:
+
+1.  **Use a `lambda` function to create a sort key tuple (Recommended Pythonic approach):**
+    This method is generally preferred in Python for complex sorting criteria. It creates a tuple for each element where `(-x.num, x.par)` ensures that:
+    *   `x.num` (frequency) is negated so that higher frequencies sort as "smaller" values (e.g., -5 comes before -3), achieving descending order.
+    *   `x.par` (word) is kept as is, so alphabetical order is maintained for ties.
+
+    ```python
+    # Remove the existing 'comp' function definition.
+    # Replace the sorting line with:
+    V.sort(key=lambda x: (-x.num, x.par))
+    # No need for 'reverse=True' with this key, as the negative frequency already handles it.
+    ```
+
+2.  **Alternatively, use `functools.cmp_to_key` with a comparison function:**
+    If you prefer to define a traditional comparison function that returns -1, 0, or 1, you can use `functools.cmp_to_key` to adapt it for `list.sort()`.
+
+    ```python
+    import functools
+
+    # Define a comparison function that returns -1, 0, or 1
+    def custom_compare(a, b):
+        if a.num != b.num:
+            return b.num - a.num  # Returns positive if b.num > a.num (descending freq)
+        # If frequencies are equal, compare words alphabetically
+        if a.par < b.par:
+            return -1
+        elif a.par > b.par:
+            return 1
+        return 0 # Words are equal
+
+    # ... in main() function ...
+    # Replace the sorting line with:
+    V.sort(key=functools.cmp_to_key(custom_compare))
+    # 'reverse=True' is not needed here either.
+    ```
+
+By implementing the first suggestion, your program will correctly sort the words according to the problem's specifications and likely resolve the "Wrong Answer" issue.

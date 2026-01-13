@@ -1,0 +1,68 @@
+Here's a feedback text for your `merge` program:
+
+---
+
+### Feedback for Program `merge` (P70093 - Array Merge)
+
+**1. Problem Summary and Solution Approach:**
+
+The problem "Array merge" asks you to combine two given sorted arrays (`v1` and `v2`) into a single new sorted array, including all repeated elements. For instance, merging `[2, 3, 5]` and `[3, 5, 5, 7]` should yield `[2, 3, 3, 5, 5, 5, 7]`. The precondition states that the input arrays `v1` and `v2` are already sorted in non-decreasing order.
+
+Your approach attempts to iterate through both lists using nested loops. Inside these loops, it tries to determine a "minimum" value and append it to a `resultat` list.
+
+**2. Analysis of the Code's Strengths and Weaknesses:**
+
+**Strengths:**
+*   The code correctly initializes an empty `resultat` list, indicating an intention to build a new merged list without modifying the input lists in place, which is generally good practice.
+*   It attempts to compare elements from both input lists.
+
+**Weaknesses (leading to "Wrong Answer"):**
+
+1.  **Incorrect Merging Logic (Nested Loops):** The core issue lies in using nested `for` loops. This approach is inefficient and logically flawed for merging two *already sorted* lists. A proper merge algorithm for sorted lists typically uses a "two-pointer" approach, where you maintain a pointer for each input list and advance the pointer of the list from which you take the next smallest element.
+2.  **Premature Return (`return resultat.append(minim)`):** This is a critical error. The `list.append()` method modifies the list *in place* and always returns `None`. By having `return resultat.append(minim)` inside your outer loop, your function attempts to return `None` immediately after the first element of `v1` has been partially processed. The function will never complete the merge or even iterate through most of the elements.
+3.  **Inefficient Time Complexity:** Even if the logic were corrected to not return prematurely, iterating `v2` fully for every element of `v1` would result in a time complexity of O(len(v1) * len(v2)), which is significantly less efficient than the optimal O(len(v1) + len(v2)) for merging sorted arrays.
+4.  **Misuse of `minim` Variable:** The `minim` variable is updated in each iteration of the inner loop, but its value and how it's appended (only once per outer loop iteration, and then only if `return` is hit) does not correctly contribute to building a sorted merged list. The logic for handling equal elements is also not fully robust in this structure.
+
+**3. Suggestions for Improvement:**
+
+To correctly solve this problem, you should implement the standard **two-pointer approach**:
+
+1.  **Initialize Pointers:** Create two index variables, say `i` for `v1` and `j` for `v2`, both starting at `0`.
+2.  **Initialize Result List:** Create an empty list, `merged_list`.
+3.  **Iterate and Compare:** Use a `while` loop that continues as long as both `i` is less than `len(v1)` AND `j` is less than `len(v2)`:
+    *   Compare `v1[i]` and `v2[j]`.
+    *   If `v1[i] <= v2[j]`, append `v1[i]` to `merged_list` and increment `i`.
+    *   Else (if `v1[i] > v2[j]`), append `v2[j]` to `merged_list` and increment `j`.
+4.  **Append Remaining Elements:** After the loop, one of the input lists might still have elements left. Append all remaining elements from `v1` (from index `i` onwards) to `merged_list`. Then, append all remaining elements from `v2` (from index `j` onwards) to `merged_list`.
+5.  **Return:** Return the `merged_list`.
+
+Here's a conceptual example of how the improved code would look:
+
+```python
+def merge(v1, v2):
+    i, j = 0, 0
+    resultat = []
+
+    # Compare elements from both lists and add the smaller one
+    while i < len(v1) and j < len(v2):
+        if v1[i] <= v2[j]: # Use <= to handle stability and duplicates correctly
+            resultat.append(v1[i])
+            i += 1
+        else:
+            resultat.append(v2[j])
+            j += 1
+
+    # Add any remaining elements from v1
+    while i < len(v1):
+        resultat.append(v1[i])
+        i += 1
+
+    # Add any remaining elements from v2
+    while j < len(v2):
+        resultat.append(v2[j])
+        j += 1
+
+    return resultat
+```
+
+This revised approach directly addresses all the weaknesses identified and is the standard, efficient way to merge two sorted arrays.

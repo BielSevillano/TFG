@@ -1,0 +1,22 @@
+
+                Taula de multiplicar
+
+Feu un programa que llegeixi un nombre n i que escrigui la “taula de
+multiplicar” de n.
+
+Entrada
+
+L’entrada consisteix en un natural n entre 1 i 9.
+
+Sortida
+
+Cal escriure la “taula de multiplicar” de n.
+
+Autor
+
+Salvador Roura
+
+© Jutge.org, 2006–2025.
+
+
+               

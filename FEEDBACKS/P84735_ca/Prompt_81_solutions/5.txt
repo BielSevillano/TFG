@@ -1,0 +1,47 @@
+```markdown
+### Feedback on "Múltiple més petit" Program
+
+**Problem Summary:**
+The problem "Múltiple més petit" (Smallest multiple) requires reading pairs of natural numbers `a` and `b` (with `b >= 1`). For each pair, the program must output the smallest natural number `x` that is greater than or equal to `a` and is also a multiple of `b`. The output should be formatted with a case number, starting from 1.
+
+**Solution Approach:**
+The provided Python program uses a standard mathematical formula to calculate the smallest multiple: `x = (a + b - 1) // b * b`. It then formats and prints this result for a sequence of cases.
+
+**Code Analysis:**
+
+*   **Strengths:**
+    *   **Correct Logic for Calculation:** The core calculation `x = (a + b - 1) // b * b` is a mathematically sound and efficient way to find the smallest multiple of `b` that is greater than or equal to `a`. It correctly handles cases where `a` is already a multiple of `b` (e.g., `a=12, b=3` -> `x=12`) and when it's not (e.g., `a=10, b=3` -> `x=12`). It also works for edge cases like `a=1, b=5` -> `x=5` and `a=0, b=5` -> `x=0` (assuming natural numbers include 0).
+    *   **Output Formatting:** The `print("#{} : {}".format(i, x))` statement correctly adheres to the specified output format, including the case number.
+    *   **Python's Strengths:** The use of Python's arbitrary-precision integers ensures that arithmetic overflows will not occur, even with very large input values for `a` and `b`.
+
+*   **Weaknesses:**
+    *   **Input Handling Mismatch:** The most probable reason for the "Wrong Answer" verdict is a mismatch in how the program reads input compared to the problem's specifications. The problem states, "L’entrada consisteix en una seqüència de parells de naturals a i b," which on platforms like Jutge.org typically implies reading input pairs until the End-of-File (EOF). However, your program starts with `casos = int(input())`, expecting an integer on the first line that specifies the *number* of test cases. If the actual test data does not provide this initial count, the program will fail (e.g., by attempting to convert a `a` value into `casos`, resulting in a `ValueError`).
+
+**Suggestions for Improvement:**
+
+1.  **Adapt Input Reading for EOF:** Modify the program to read `a` and `b` pairs continuously until no more input is available (EOF). This is a common pattern for "sequence of pairs" input types in competitive programming.
+
+    Here's how you could adapt your Python code for EOF-based input:
+
+    ```python
+    import sys
+
+    case_num = 1
+    # Iterate over each line provided via standard input
+    for line in sys.stdin:
+        # Remove any leading/trailing whitespace (like newline characters)
+        # and then split the line into two parts, converting them to integers.
+        a, b = map(int, line.strip().split())
+        
+        # The core calculation remains correct
+        x = (a + b - 1) // b * b
+        
+        # Print the result with the current case number
+        print("#{} : {}".format(case_num, x))
+        
+        # Increment the case number for the next pair
+        case_num += 1
+    ```
+
+By adjusting the input loop to this EOF-driven style, your program should correctly process all test cases as intended by the problem statement. The mathematical logic for finding the smallest multiple is robust and correct for the given constraints.
+```

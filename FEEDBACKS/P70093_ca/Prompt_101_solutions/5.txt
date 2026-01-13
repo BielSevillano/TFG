@@ -1,0 +1,32 @@
+Here's a feedback text for your Python program:
+
+---
+
+### Feedback on "Fusió de taules"
+
+**1. Problem Summary & Solution Approach:**
+
+The problem asks to implement a function `fusio` that merges two already sorted lists (`v1` and `v2`) into a single new sorted list, preserving all duplicate elements. For example, merging `[2, 3, 5]` and `[3, 5, 5, 7]` should result in `[2, 3, 3, 5, 5, 5, 7]`. The input lists are guaranteed to be sorted in ascending order.
+
+Your `fusio` function implements a standard two-pointer merge algorithm. It initializes two pointers (`i1` and `i2`) to the beginning of `v1` and `v2`, respectively, and an empty list `llista_definitiva`. It iteratively compares the elements pointed to by `i1` and `i2`, appending the smaller element to `llista_definitiva` and advancing its corresponding pointer. Once one of the lists is exhausted, it efficiently appends the remaining elements of the other list using `extend`.
+
+**2. Code Analysis:**
+
+*   **Strengths:**
+    *   **Correct Logic for `fusio`:** The core `fusio` function correctly implements the merge logic for two sorted lists, respecting the requirement to keep duplicates. The two-pointer approach is efficient, running in O(N + M) time complexity where N and M are the lengths of `v1` and `v2`.
+    *   **Type Hinting:** You've correctly used type hints for the `fusio` function's parameters and return type, which is good practice for code clarity and maintainability.
+    *   **Readability:** Variable names like `llista_definitiva` are descriptive, making the code easy to understand.
+    *   **Robustness:** The use of `extend(v1[i1:])` and `extend(v2[i2:])` correctly handles cases where one list might be fully processed before the other, or if one or both input lists are empty.
+
+*   **Weaknesses & Reason for "Presentation Error":**
+    *   **Extraneous Code:** The primary reason for the "Presentation Error" is that your submission includes a `main()` function and a `llegir_dades()` function, along with `from yogi import read` and associated input/output operations. The problem statement explicitly says: "Només cal enviar el procediment demanat; el programa principal serà ignorat." (Only the requested procedure needs to be submitted; the main program will be ignored.) This means **only the `fusio` function should be present in the submitted code.**
+    *   **Incorrect Output Format (due to `main`):** The judge system expects *only* the output of the `fusio` function, as formatted by *its* testing harness, not your custom `main` function's output. Your `main` function prints `n1+n2` and then ` " "` before the merged list, which is not part of the expected output format for this problem type. Competitive programming judges are very strict about output format (extra spaces, newlines, etc. can cause "Presentation Error").
+
+**3. Suggestions for Improvement:**
+
+1.  **Remove all I/O and `main` function:** The most crucial improvement is to **delete everything outside of the `fusio` function.** This includes `from yogi import read`, `def llegir_dades(...)`, `def main():`, and all code within `main()`. Your submission should consist *only* of the `fusio` function definition.
+2.  **Adhere strictly to problem interface:** Always carefully read the "Interfície" and "Observació" sections. If only a function is requested, do not include any input reading or output printing code. The judge system will call your function with test data and handle the output itself.
+
+By making these changes, your `fusio` function, which is already correctly implemented, should pass the tests.
+
+---

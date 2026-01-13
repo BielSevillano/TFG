@@ -1,0 +1,413 @@
+
+                Write a feedback text for the following program that solves the problem described below.
+                
+               
+                Number of digits (1)
+
+Write a program that reads a number and prints its number of digits.
+
+Input
+
+Input consists of a natural number n.
+
+Output
+
+Print the number of digits of n.
+
+Author
+
+Salvador Roura (en: Carlos Molina)
+
+© Jutge.org, 2006–2025.
+
+
+                
+
+                This is the program:
+
+                number = input()
+print("The number of digits of " + str(number) + " is " + str(len(number)) + ".")
+
+                The result of the program is: Accepted
+
+                The feedback should include:
+                - A brief summary of the problem and the solution approach.
+                - An analysis of the code's strengths and weaknesses.
+                - Suggestions for improvement, if any.
+
+                You can rely on the following other possible solutions to the same problem for reference:
+                n=int(input())
+
+print("The number of digits of " + str(n) + " is " + str(len(str(n))) + ".")
+
+from easyinput import read
+
+n = read(int)
+m = n
+i = 1
+while (n > 0):
+    n //= 10
+    n -= 1
+    i += 1
+print("The number of digits of "+str(m)+" is "+str(i)+".")
+
+from easyinput import read
+
+n = read(int)
+x = n
+s = 1
+while x > 9:
+    x = x//10
+    s += 1
+
+print("The number of digits of " + str(n) + " is " + str(s) + ".")
+
+a = int(input())
+i = 0
+while(a > 0):
+    a = a//10
+    i += 1
+print(i)
+
+a = int(input())
+aux = a
+i = 0
+while(a > 0):
+    a = a//10
+    i += 1
+print("The number of digits of", aux, "is "+str(i)+".")
+
+from easyinput import read
+
+def main():
+    a = read(int)
+    m = a
+    h = 0
+    if m == 0:
+        h = 1
+    else:
+        while m > 0:
+            m = m // 10
+            h = h + 1
+
+    print("The number of digits of", a, "is", h)
+
+main()
+
+from easyinput import read
+
+def main():
+    a = read(int)
+    m = a
+    h = 0
+    if m == 0:
+        h = 1
+    else:
+        while m > 0:
+            m = m // 10
+            h = h + 1
+
+    print("The number of digits of ", a, " is ", h,".", sep = "")
+
+main()
+
+from easyinput import *
+
+def num_dig(n):
+    """num_dig returns the number of digits of n (int)"""
+    i = 1
+    while n // 10 != 0:
+        i = i + 1
+        n = n // 10
+    return i
+
+def main():
+    n = read(int)
+    print("The number of digits of ",n," is ",num_dig(n),".", sep = "")
+
+main()
+
+from easyinput import read
+
+
+def number_of_digits(n):
+    if (n == 0):
+        return 1
+    else:
+        i = 0
+        while (n > 0):
+            i = i + 1
+            n = int(n / 10)
+        return i
+
+
+n = read(int)
+
+print("The number of digits of "+str(n)+" is "+str(number_of_digits(n))+".")
+
+from easyinput import read
+
+n = read(int)
+i = 0
+
+while n >= 10:
+    n = n//10
+    i = i + 1
+
+i = i + 1
+print(i)
+
+from easyinput import read
+
+x = read(int)
+cnt = 1
+pot = 10
+while(x // pot > 0):
+    cnt += 1
+    pot *= 10
+
+print(cnt)
+
+from easyinput import read
+
+def main():
+
+    n = read(int)
+
+    print("The number of digits of", n, end="")
+
+    if n < 10:
+        print(" is 1.")
+
+    else:
+        contador = 0
+        while n > 0:
+            contador = contador + 1
+            n = n // 10
+
+        print(" is ", contador, ".", sep="")
+
+main()
+
+from easyinput import read
+import math
+
+n = read(int)
+b = n
+xifres = 1
+while n > 9:
+    n = n//10
+    xifres = xifres + 1
+print('The number of digits of', b, 'is %d.' % xifres)
+
+from jutge import read
+
+n= read(int)
+x = n
+m=0
+if n == 0:
+    print("The number of digits of 0 is 1.")
+else:
+    while n != 0:
+        n = n // 10
+        m=m+1
+    print("The number of digits of", x, end="")
+    print(" is", m, end="")
+    print(".")
+
+import easyinput
+
+
+def num_digits(n):
+    compt = 1
+    while n > 10:
+        compt = compt+1
+        n = n//10
+    return compt
+
+
+n = easyinput.read(int)
+print(num_digits(n))
+
+from easyinput import read
+
+
+def main():
+    n = read()
+    m = n
+    i = 0
+    for c in n:
+        i += 1
+
+    print("The number of digits of " + str(m) + " is " + str(i) + '.')
+
+
+main()
+
+from easyinput import *
+
+def nombre_digits(n):
+    if n < 10:
+        return 1;
+    else:
+        return 1 + nombre_digits(n / 10)
+
+def main():
+    n = read(int)
+    print (nombre_digits(n))
+main()
+
+s = input()
+
+print(len(s))
+var1 = input()
+
+print( 'The number of digits of',var1 , 'is', str(len(var1)) + '.')
+s= input()
+n=0
+
+while n > len(s):
+    print(s[n])
+    s+=1
+
+import sys
+
+def numdigits(n):
+    digits = 0
+    for i in n:
+        digits = len(n)
+    return digits
+
+n = sys.stdin.readline().strip()
+x = numdigits(n)
+print("The number of digits of " + str(n) + " is " + str(x) + ".")
+
+def comptar_re(digit,n):
+    absn = abs(n)
+    if absn == 0:
+        return 0
+    else:
+        return (1 if absn % 10 == digit else 0) + comptar_re(digit, absn // 10)
+
+from easyinput import read
+
+n = read(int)
+if n < 10:
+    print(1)
+else:
+    counter = 0
+    while n > 0:
+        counter = counter + 1
+        n = n // 10
+    print(counter)
+
+from easyinput import read
+
+def main():
+
+
+    n= read (int)
+    m=n
+    i=0
+
+    if n==0:
+        i=1
+
+    else:
+        while n!=0:
+            n//=10
+            i+=1
+
+    print ("The number of digits of ", m, " is ", i,".",sep="")
+
+main()
+
+from easyinput import read
+import math
+
+def es_capicua(n):
+    if n<100:
+        if n<10:
+            return True
+
+        elif n%10 == n//10:
+            return True
+
+        else:
+            return False
+
+    else:
+        a=n
+        c=0
+        while a>9:
+            a=a//10
+            c=c+1
+
+
+        if a==n%10:
+
+            return es_capicua((n-a*(10**c))//10)
+
+        else: return False
+
+
+while True:
+    a=read(int)
+    if (a==''):
+        break
+    else:
+        print (es_capicua (a))
+
+n=int(input())
+d=0
+if n==0:
+    d=1
+while n>0:
+    n=n//10
+    d+=1
+print(d)
+    
+
+from easyinput import read
+
+n = read(str)
+x = len(n)
+print(f"The number of digits of {n} is {x}.")
+
+
+number = input()
+print("The number of digits of " + str(number) + " is " + str(len(number)) + ".")
+n = int(input())
+numDig = 1
+while n >= 10:
+    n/=10
+    numDig+=1
+print(numDig)
+
+copy = n = int(input())
+numDig = 1
+while copy >= 10:
+    copy/=10
+    numDig+=1
+print('The number of digits of ' + str(n) + ' is ' + str(numDig)+'.')
+
+"""
+ P55622 
+Write a program that reads a number and prints its number of digits.
+
+Input
+
+Input consists of a natural number n.
+
+Output
+
+Print the number of digits of n.
+"""
+
+from easyinput import read
+
+
+entrada = read(int)
+cadena = str(entrada)
+print("The number of digits of",cadena, "is",len(cadena),".")    
+                

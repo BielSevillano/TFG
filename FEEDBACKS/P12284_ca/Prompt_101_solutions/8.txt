@@ -1,0 +1,50 @@
+This feedback addresses the Python program designed to solve the "Paraules més freqüents" problem, which resulted in a "Wrong Answer".
+
+---
+
+**Problem Summary:**
+The problem requires reading a sequence of `n` words and identifying the `k` most frequent ones. The output should list these `k` words in order of decreasing frequency. In the event of a tie in frequency, words should be ordered alphabetically (lexicographically ascending). Each test case's output must conclude with a line of ten hyphens.
+
+**Solution Approach:**
+The provided Python program employs a standard and generally efficient approach to tackle this problem:
+1.  It reads all `n` input words into a list `P`.
+2.  It sorts this list `P` alphabetically. This step is crucial as it groups identical words together, making frequency counting much simpler.
+3.  It then iterates through the sorted list `P` to count the occurrences of each unique word. These unique words, along with their respective counts, are stored as `Info` objects (containing `par` for the word and `num` for its frequency) in a new list `V`.
+4.  Finally, it attempts to sort the list `V` based on the specified criteria (frequency descending, then word ascending) and prints the first `k` elements.
+
+**Code Strengths:**
+*   **Clear Problem Understanding:** The code correctly grasps the two-level sorting requirement (frequency then alphabetical order), as evidenced by the `comp` function's logic.
+*   **Efficient Frequency Counting:** By first sorting the entire list of words (`P.sort()`), the program can count word frequencies in a single linear pass (`while i < n`) using two pointers (`i` and `j`). This is efficient for large inputs.
+*   **Data Structure Usage:** The `Info` class is a good choice for encapsulating a word and its frequency, enhancing code readability and organization.
+*   **Multiple Test Cases:** The `while n is not None and k is not None:` loop correctly handles multiple input cases as specified by the problem.
+
+**Code Weaknesses and Reason for "Wrong Answer":**
+The primary reason for the "Wrong Answer" is a misunderstanding of how Python's `list.sort()` (or `sorted()`) functions work, specifically with the `key` argument.
+
+1.  **Incorrect `key` Argument Usage:** In Python 3, the `key` argument for `list.sort()` expects a callable (e.g., a function or a `lambda`) that takes *one* argument (an item from the list being sorted) and returns a value to be used for comparison. Your `comp` function, however, is defined to take *two* arguments (`a`, `b`) as if it were a traditional comparison function (like those used with `functools.cmp_to_key` or C++ `std::sort` comparators).
+2.  **`TypeError` vs. "Wrong Answer":** Typically, passing a two-argument function to `key` would raise a `TypeError` because Python tries to call `comp(an_Info_object)` which is missing an argument. The fact that it resulted in "Wrong Answer" suggests that the `yogi` environment might handle this situation in a non-standard way, perhaps by ignoring the `key` or making an incorrect attempt at sorting, leading to an improperly ordered list `V`. If `V` is not sorted according to the problem's rules, printing the first `k` elements will yield incorrect results.
+
+**Suggestions for Improvement:**
+
+The most direct and Pythonic way to fix the sorting issue is to redefine how `V` is sorted, using a `lambda` function as the `key` that returns a tuple for comparison. Python sorts tuples lexicographically, which perfectly matches your requirements:
+
+1.  **Modify the `V.sort()` Call:**
+    Replace the line:
+    ```python
+    V.sort(key=comp, reverse=True)
+    ```
+    With:
+    ```python
+    V.sort(key=lambda x: (-x.num, x.par))
+    ```
+    *   **Explanation:**
+        *   `lambda x: ...` creates an anonymous function that takes one argument `x` (an `Info` object).
+        *   `(-x.num, x.par)` returns a tuple.
+        *   By negating `x.num`, Python will sort words with higher frequencies first (e.g., -5 comes before -2).
+        *   For words with the same negated frequency (meaning the same actual frequency), Python will then compare the second elements of the tuples (`x.par`). This will sort them alphabetically (`'apple'` before `'banana'`).
+        *   With this tuple-based key, `reverse=True` is no longer needed and should be removed.
+
+2.  **Remove the `comp` Function (Optional but Recommended):**
+    Once you've changed the `V.sort()` call, the separate `comp` function is no longer used, so you can remove its definition for cleaner code.
+
+By implementing this change, your program will correctly sort the `Info` objects according to the problem specifications, resolving the "Wrong Answer".

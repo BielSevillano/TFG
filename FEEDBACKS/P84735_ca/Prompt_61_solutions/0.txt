@@ -1,0 +1,71 @@
+Here's a feedback text for your program:
+
+---
+
+### Feedback: Múltiple més petit
+
+**1. Summary of the Problem and Solution Approach:**
+
+The problem "Múltiple més petit" requires you to read pairs of natural numbers `a` and `b` (with `b >= 1`). For each pair, you need to find and print the smallest natural number `x` such that `x` is greater than or equal to `a` and `x` is a multiple of `b`. The output for each pair should be prefixed with a case number, starting from 1.
+
+Your program approaches the core calculation using the formula `x = (a + b - 1) // b * b`. This is a standard and efficient mathematical trick to find the smallest multiple of `b` that is greater than or equal to `a`. It effectively calculates the ceiling of `a/b` and then multiplies it by `b`. For instance, if `a=10, b=3`, `(10 + 3 - 1) // 3 * 3` evaluates to `12 // 3 * 3 = 4 * 3 = 12`, which is correct.
+
+**2. Analysis of the Code's Strengths and Weaknesses:**
+
+*   **Strengths:**
+    *   **Concise and Correct Core Logic:** The formula `x = (a + b - 1) // b * b` is a very elegant and efficient way to solve the mathematical part of the problem. It correctly computes the desired value for all valid inputs (`a` and `b` natural numbers, `b >= 1`).
+    *   **Readability:** The code is straightforward and easy to understand.
+    *   **Output Formatting:** The output format `"#{} : {}".format(i, x)` correctly matches the specified format including the case number.
+
+*   **Weaknesses:**
+    *   **Incorrect Input Reading Strategy:** This is the most critical weakness and the likely reason for the "Wrong Answer" verdict. The problem description states "L’entrada consisteix en una seqüència de parells de naturals a i b" (The input consists of a sequence of pairs of natural numbers a and b), which typically implies that input should be read until the End-Of-File (EOF) is reached, or until no more input lines are available. Your current program starts by reading `casos = int(input())`, assuming the first line will always specify the number of test cases. This is a common competitive programming format, but it seems to be inconsistent with how this particular problem expects input, as indicated by the problem description and typical `while (cin >> a >> b)` patterns in C++ solutions. If the judge system provides input without an initial count of cases, your program will misinterpret the first pair `a, b` as the number of cases, leading to incorrect processing.
+
+**3. Suggestions for Improvement:**
+
+The primary improvement needed is to adapt the input reading to handle an unknown number of test cases until EOF.
+
+1.  **Modify Input Loop to Read Until EOF:**
+    Replace the initial `casos = int(input())` and the `while i <= casos:` loop with a `while True:` loop that attempts to read input, breaking on `EOFError`.
+
+    Here's how you can modify your `main` function to address this:
+
+    ```python
+    import sys
+
+    case_num = 1
+    # Read lines from standard input until EOF
+    for line in sys.stdin:
+        # Split the line and convert parts to integers
+        a, b = map(int, line.split())
+        
+        # Apply the formula to find the smallest multiple
+        x = (a + b - 1) // b * b
+        
+        # Print the result in the specified format
+        print("#{} : {}".format(case_num, x))
+        
+        # Increment case number for the next iteration
+        case_num += 1
+
+    ```
+    Alternatively, using a `try-except` block for `input()`:
+    ```python
+    case_num = 1
+    while True:
+        try:
+            line = input() # Reads one line from stdin
+            # If line is empty or just whitespace and not EOF, you might want to break or continue
+            # For this problem, usually each line will have a, b until EOF.
+            if not line.strip(): # Optional: handle truly empty lines if they might occur before EOF
+                continue
+                
+            a, b = map(int, line.split())
+            x = (a + b - 1) // b * b
+            print("#{} : {}".format(case_num, x))
+            case_num += 1
+        except EOFError:
+            # Break the loop when no more input is available
+            break
+    ```
+
+By making this change, your program should correctly process all input pairs as specified by the problem, leading to a correct solution. The mathematical logic for `x` is sound and does not require further changes.

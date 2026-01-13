@@ -1,0 +1,57 @@
+### Feedback for "Múltiple més petit" Program
+
+**Problem Summary:**
+The problem asks to find the smallest natural number `x` for given pairs of `a` and `b` such that `x` is greater than or equal to `a` and `x` is a multiple of `b`. The input consists of a sequence of `a` and `b` pairs, with `b` always being `1` or greater. The output for each pair should be formatted as `#case_number : x`, where the case number starts from 1.
+
+**Solution Approach:**
+The provided Python program attempts to solve this problem by directly applying the mathematical formula `x = (a + b - 1) // b * b`. This formula correctly calculates the smallest multiple of `b` that is greater than or equal to `a` for positive integers `a` and `b`. The program then prints the result in the specified format, incrementing a case counter for each pair.
+
+**Code Analysis:**
+
+*   **Strengths:**
+    *   **Correct Mathematical Logic:** The core of the solution, the formula `x = (a + b - 1) // b * b`, is mathematically sound and efficiently calculates the desired smallest multiple. Python's `//` operator performs floor division, which is crucial for this formula to work correctly with positive integers.
+    *   **Clear Output Formatting:** The `print("#{} : {}".format(i, x))` statement accurately matches the required output format.
+    *   **Readability:** The code is straightforward and easy to understand.
+
+*   **Weaknesses:**
+    *   **Incorrect Input Handling:** The most probable reason for the "Wrong Answer" verdict is how the program handles input. The problem description states: "L’entrada consisteix en una seqüència de parells de naturals a i b". This phrasing typically implies that input pairs `a, b` should be read continuously until the End-Of-File (EOF) is reached. However, the current code starts with `casos = int(input())`, which assumes that the very first line of input is an integer indicating the total number of test cases. If the actual input format does not provide this initial count, the program will misinterpret the input, leading to incorrect results or runtime errors.
+
+**Suggestions for Improvement:**
+
+1.  **Adjust Input Reading for EOF:** Modify the input loop to read `a` and `b` pairs until the end of the input stream. This is a standard practice in competitive programming for problems specifying "a sequence of inputs" without an explicit count.
+
+    Here are two common ways to implement this in Python:
+
+    *   **Using `sys.stdin`:**
+
+        ```python
+        import sys
+
+        i = 1
+        for line in sys.stdin:
+            # Skip empty lines if they might occur
+            if not line.strip():
+                continue
+            a, b = map(int, line.split())
+            x = (a + b - 1) // b * b
+            print("#{} : {}".format(i, x))
+            i += 1
+        ```
+
+    *   **Using `try-except EOFError` with `input()`:**
+
+        ```python
+        i = 1
+        try:
+            while True:
+                a, b = map(int, input().split())
+                x = (a + b - 1) // b * b
+                print("#{} : {}".format(i, x))
+                i += 1
+        except EOFError:
+            pass
+        ```
+
+    By making this change, the program will correctly process all input pairs as intended by the problem statement, which is very likely the cause of the "Wrong Answer".
+
+*(Note: The "other possible solutions" provided in C++ appear to be for a completely different problem ("Most Frequent Words") and are not relevant to the "Múltiple més petit" problem described.)*

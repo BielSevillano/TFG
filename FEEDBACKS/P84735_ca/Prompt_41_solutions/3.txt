@@ -1,0 +1,56 @@
+Here's a feedback text for the provided Python program:
+
+---
+
+### Feedback: Múltiple més petit
+
+**1. Summary of the Problem and Solution Approach:**
+
+The problem "Múltiple més petit" requires finding the smallest natural number `x` for given pairs of natural numbers `a` and `b` (where `b >= 1`) such that `x` is greater than or equal to `a` and `x` is a multiple of `b`. The output should be formatted with a case number.
+
+The provided Python program attempts to solve this problem by:
+*   Reading an initial integer, presumably the number of test cases.
+*   Looping `casos` times.
+*   In each iteration, it reads two integers `a` and `b`.
+*   It then calculates `x` using the formula `x = (a + b - 1) // b * b`.
+*   Finally, it prints the case number and the calculated `x` in the specified format.
+
+**2. Analysis of the Code's Strengths and Weaknesses:**
+
+**Strengths:**
+
+*   **Correct Core Logic:** The formula `(a + b - 1) // b * b` is an elegant and efficient way to calculate the smallest multiple of `b` that is greater than or equal to `a`. It effectively implements ceiling division `ceil(a/b) * b`, which is correct for `a >= 0` and `b >= 1`.
+    *   For example:
+        *   If `a=10, b=3`, `(10 + 3 - 1) // 3 * 3 = 12 // 3 * 3 = 4 * 3 = 12`. (Correct, 12 is the smallest multiple of 3 >= 10).
+        *   If `a=12, b=3`, `(12 + 3 - 1) // 3 * 3 = 14 // 3 * 3 = 4 * 3 = 12`. (Correct, 12 is already a multiple of 3).
+        *   If `a=0, b=5`, `(0 + 5 - 1) // 5 * 5 = 4 // 5 * 5 = 0 * 5 = 0`. (Correct, 0 is a multiple of 5 and >= 0).
+*   **Efficiency:** The calculation `(a + b - 1) // b * b` is a constant-time operation (O(1)) for each pair, making the solution very fast.
+*   **Clear Output Format:** The `print("#{} : {}".format(i, x))` statement correctly implements the desired output format, including the case number.
+*   **Readability:** The code is concise and easy to understand.
+
+**Weaknesses:**
+
+*   **Incorrect Input Handling (Primary Issue):** The most significant weakness, and likely the reason for the "Wrong Answer" verdict, is the assumption that the first line of input provides the total number of test cases (`casos = int(input())`). The problem description states: "L’entrada consisteix en una seqüència de parells de naturals a i b...", which typically implies that input pairs `a` and `b` will be provided until the End Of File (EOF) is reached, without an explicit count beforehand. This misinterpretation of the input format would cause the program to fail on test systems.
+
+**3. Suggestions for Improvement:**
+
+1.  **Modify Input Loop for EOF Handling:** The program should be adjusted to read input pairs continuously until there is no more data to read. In Python, this is commonly handled using a `try-except EOFError` block:
+
+    ```python
+    import sys
+
+    i = 1
+    while True:
+        try:
+            a, b = map(int, input().split())
+            x = (a + b - 1) // b * b
+            print("#{} : {}".format(i, x))
+            i += 1
+        except EOFError:
+            break
+    ```
+    This change will ensure the program correctly processes all input pairs as specified by the problem.
+
+With this modification to the input loop, the program should correctly solve the "Múltiple més petit" problem.
+
+---

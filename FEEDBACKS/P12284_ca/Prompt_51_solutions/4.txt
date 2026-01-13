@@ -1,0 +1,116 @@
+Here's a feedback text for the provided Python program:
+
+---
+
+### Feedback: Paraules més freqüents (Most Frequent Words)
+
+**Summary of Problem and Solution Approach:**
+
+The problem asks to read `n` words and output the `k` most frequent ones. In case of a tie in frequency, words should be sorted alphabetically in ascending order. The program correctly identifies this problem and adopts a common and efficient approach:
+
+1.  **Read all words** into a list (`P`).
+2.  **Sort the words lexicographically** (`P.sort()`). This groups identical words together, making frequency counting straightforward.
+3.  **Iterate through the sorted list** to count the occurrences of each unique word. These counts and words are stored in custom `Info` objects (`par` for word, `num` for frequency) within a new list (`V`).
+4.  **Sort this list of `Info` objects** based on the specified criteria: frequency (descending) then word (ascending).
+5.  **Print the `k` top words**.
+6.  **Handle multiple test cases** with a `while` loop.
+
+**Analysis of Code's Strengths and Weaknesses:**
+
+**Strengths:**
+
+*   **Clear Data Structure:** The `Info` class (struct in other languages) is well-defined to bundle the word (`par`) and its frequency (`num`), making the data management logical.
+*   **Efficient Frequency Counting:** Sorting the initial list of words (`P`) and then iterating to count consecutive identical words (`while j < n and P[j] == P[i]`) is an efficient and standard approach for this type of problem. It avoids redundant searches for word occurrences.
+*   **Correct Input/Output Loop:** The `while n is not None and k is not None:` loop correctly handles multiple test cases as specified by the problem.
+*   **Adherence to Output Format:** The program correctly prints the "----------" separator after each test case.
+
+**Weaknesses and Reason for "Wrong Answer":**
+
+The primary reason for the "Wrong Answer" verdict lies in the custom comparison logic and its incorrect application to Python's `list.sort()` method.
+
+*   **Incorrect `sort` Key Usage:**
+    *   Python's `list.sort()` method, when used with the `key` parameter, expects a function that takes *one* argument (an element from the list) and returns a value (or a tuple of values) to be used for comparison.
+    *   Your `comp(a, b)` function, however, takes *two* arguments and returns a boolean (`True` if `a` should come before `b`, `False` otherwise). This is the style of a traditional comparison function (`cmp`) found in languages like C++ (`std::sort` with a custom predicate) or older Python versions.
+    *   When `V.sort(key=comp, reverse=True)` is called, Python attempts to call `comp` with a single `Info` object (e.g., `comp(V[0])`), which will raise a `TypeError` because `comp` expects two arguments. This runtime error is likely what caused the "Wrong Answer" verdict.
+
+**Suggestions for Improvement:**
+
+1.  **Correct Sorting with `key` (Recommended Fix):**
+    Modify the sorting line to use a `lambda` function that extracts a tuple for comparison. The tuple `(-item.num, item.par)` ensures that:
+    *   `item.num` is sorted in descending order (due to the negative sign, a higher positive number becomes a smaller negative number, thus sorted earlier by default ascending sort).
+    *   `item.par` is sorted in ascending alphabetical order (default string comparison) as a secondary tie-breaker.
+
+    ```python
+    # V.sort(key=comp, reverse=True)  # <-- This line is incorrect
+
+    # Corrected line:
+    V.sort(key=lambda item: (-item.num, item.par))
+    ```
+    With this change, your `comp` function becomes unnecessary and can be removed.
+
+2.  **Alternative: Implement `__lt__` in `Info` Class:**
+    For more complex custom object sorting, you can define the `__lt__` (less than) method directly within your `Info` class. This allows `list.sort()` (without a `key` or `reverse` argument) to sort `Info` objects naturally.
+
+    ```python
+    class Info:
+      def __init__(self, par, num):
+        self.par = par
+        self.num = num
+
+      def __lt__(self, other):
+        # Sort by num (descending), so if self.num is greater, it comes first (not less than)
+        if self.num != other.num:
+          return self.num > other.num # True if self is "less" (i.e., comes before) other
+                                      # when self.num is GREATER.
+                                      # This defines the "less than" for descending num.
+        # If frequencies are equal, sort by par (ascending)
+        return self.par < other.par
+
+    # Then, in main:
+    # V.sort(key=comp, reverse=True) # Remove this
+    V.sort() # This will use the __lt__ method defined in Info
+    ```
+
+3.  **Pythonic Frequency Counting with `collections.Counter`:**
+    For future Python programs, the `collections.Counter` class is ideal for counting frequencies of hashable objects. While your current approach is valid, `Counter` can simplify the code for step 3 significantly.
+
+    ```python
+    from collections import Counter
+    import yogi
+
+    # (Info class and comp function would not be needed for this approach)
+
+    def main():
+      n = yogi.read(int)
+      k = yogi.read(int)
+      while n is not None and k is not None:
+        words_list = []
+        for _ in range(n):
+          words_list.append(yogi.read(str))
+
+        # Use Counter to get frequencies
+        word_counts = Counter(words_list)
+
+        # Convert to a list of (word, count) tuples for sorting
+        # Or you can define Info objects, but for simple sorting, tuples are fine
+        items_to_sort = []
+        for word, count in word_counts.items():
+            items_to_sort.append((word, count))
+
+        # Sort based on frequency (descending) and word (ascending)
+        # Using lambda as discussed in point 1
+        items_to_sort.sort(key=lambda item: (-item[1], item[0]))
+
+        # Print the first k elements
+        for j in range(k):
+          print(items_to_sort[j][0]) # Print the word (first element of tuple)
+
+        print("----------")
+        n = yogi.read(int)
+        k = yogi.read(int)
+
+    if __name__ == "__main__":
+      main()
+    ```
+
+By implementing one of the suggested fixes for the sorting logic (preferably fix 1 or 2 as they integrate directly with your current structure), your program should pass the tests.

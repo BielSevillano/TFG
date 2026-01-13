@@ -1,0 +1,111 @@
+### Feedback: Paraules més freqüents (Python with yogi)
+
+#### 1. Brief Summary of the Problem and Solution Approach
+
+The problem asks to read `n` words for multiple test cases, count their frequencies, and then print the `k` most frequent words. In case of a tie in frequency, words should be sorted alphabetically in ascending order. Each test case output should be followed by a line of `----------`.
+
+The provided Python program attempts to solve this by:
+1.  Reading `n` and `k` for a test case.
+2.  Using a dictionary (`dic`) to store the frequency of each word.
+3.  After reading all `n` words, it sorts the dictionary items (word-frequency pairs) twice:
+    *   First, by word alphabetically (ascending).
+    *   Second, by frequency in descending order, which implicitly uses the alphabetical order as a tie-breaker due to the stable sort.
+4.  Finally, it iterates through the sorted dictionary and prints the first `k` words.
+
+#### 2. Analysis of the Code's Strengths and Weaknesses
+
+**Strengths:**
+
+*   **Correct Logic for Frequency Counting:** The use of a dictionary (`dic`) to store word frequencies is an efficient and Pythonic way to count occurrences.
+*   **Clever Two-Level Sorting:** The approach of sorting the dictionary items first by word (alphabetical) and then by frequency (descending) correctly implements the problem's sorting criteria (frequency primary, alphabetical secondary). Python's `sort` is stable, so the alphabetical order is preserved for items with the same frequency.
+*   **Clarity:** The code is relatively easy to understand in its intent for counting and sorting.
+
+**Weaknesses (Leading to Execution Error):**
+
+*   **Incorrect Input Reading for Multiple Test Cases (`tokens(int)`):** The `for n in tokens(int):` loop is a critical flaw. `tokens(int)` reads *all* integers from the input stream at once. In a typical `Jutge.org` problem with multiple test cases, `n` and `k` are provided for *each* case, and `read(int)` should be used inside a `while` loop to process them one by one. This causes the program to misinterpret `n` and `k` values, leading to out-of-sync reads and ultimately an `Execution Error` (e.g., `StopIteration` if `read(str)` is called when no words are left, or incorrect `n` causing `range(n)` to fail).
+*   **Dictionary Not Reset Between Test Cases:** The `dic` dictionary is initialized only once at the beginning of `main()`. This means that word frequencies accumulate across all test cases. For subsequent test cases, the frequencies will be incorrect, potentially leading to incorrect output or unexpected behavior (e.g., trying to print words from previous cases if `k` is large).
+*   **Efficiency of Double Sorting (Minor):** While correct, sorting the entire list of dictionary items twice (and converting to `dict` in between) can be less efficient than a single sort with a more complex key function or using `heapq` if `k` is very small compared to the total number of unique words.
+
+#### 3. Suggestions for Improvement
+
+To fix the `Execution Error` and ensure correct functionality for multiple test cases, the following changes are crucial:
+
+1.  **Correct Input Loop and Dictionary Reset:**
+    Refactor the main loop to correctly handle multiple test cases and reset the dictionary for each case.
+
+    ```python
+    from yogi import *
+    from collections import Counter # Recommended for frequency counting
+
+    def main():
+        while True:
+            try:
+                n = read(int)
+                k = read(int)
+            except EOFError: # Handles the end of input for multiple test cases
+                break
+            
+            # Reset dictionary for each test case
+            dic = {} # Or better: words_list = []
+            
+            # Read words and count frequencies
+            for i in range(n):
+                word = read(str)
+                dic[word] = dic.get(word, 0) + 1 # More concise way to count
+            
+            # --- OR using collections.Counter (even more concise) ---
+            # words_list = []
+            # for i in range(n):
+            #     words_list.append(read(str))
+            # dic = Counter(words_list)
+            # --------------------------------------------------------
+
+            # Combine sorting criteria into a single sort key:
+            # -x[1] for descending frequency, x[0] for ascending alphabetical
+            sorted_items = sorted(dic.items(), key=lambda x: (-x[1], x[0]))
+            
+            compt = 0
+            for word, freq in sorted_items: # Iterate through (word, freq) tuples
+                if compt < k:
+                    print(word) # Print only the word
+                    compt += 1
+                else: # Stop once k words are printed
+                    break
+            print("----------")
+
+    if __name__ == "__main__":
+        main()
+    ```
+
+2.  **Consolidate Sorting:** Instead of two `sorted()` calls, a single call with a composite key function `lambda x: (-x[1], x[0])` will sort by frequency (descending, using negative frequency) and then by word (ascending) for ties. This is more efficient and clearer.
+
+3.  **Use `collections.Counter` (Optional but Recommended):** For frequency counting, Python's `collections.Counter` is specifically designed for this task and is very efficient and readable.
+
+    ```python
+    from yogi import *
+    from collections import Counter
+
+    def main():
+        while True:
+            try:
+                n = read(int)
+                k = read(int)
+            except EOFError:
+                break
+            
+            words = [read(str) for _ in range(n)] # Read all n words into a list
+            
+            word_counts = Counter(words) # Count frequencies
+            
+            # Sort items: first by frequency (desc), then by word (asc)
+            sorted_words = sorted(word_counts.items(), key=lambda item: (-item[1], item[0]))
+            
+            # Print the top k words
+            for i in range(min(k, len(sorted_words))): # Ensure we don't try to print more than available unique words
+                print(sorted_words[i][0])
+            
+            print("----------")
+
+    if __name__ == "__main__":
+        main()
+    ```

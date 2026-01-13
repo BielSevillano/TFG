@@ -1,0 +1,71 @@
+Here's a feedback text for the provided Python program:
+
+---
+
+### Feedback: Nombre de dígits (1)
+
+**1. Summary of the Problem and Solution Approach:**
+
+The problem "Nombre de dígits (1)" requires writing a program that reads a natural number `n` and outputs the count of its digits.
+
+The provided Python program attempts to solve this problem by:
+*   Reading the input integer `n`.
+*   Handling the special case where `n` is `0` by directly assigning `1` digit.
+*   For positive `n`, it uses a `while` loop that repeatedly performs integer division by `10` (`n = n // 10`) and increments a counter (`d`) until `n` becomes `0`. Each division effectively "removes" one digit, and the counter keeps track of how many digits were removed.
+*   It uses a separate variable `n2` to store the original value of `n` for the final print statement.
+
+**2. Analysis of the Code's Strengths and Weaknesses:**
+
+**Strengths:**
+*   **Correct Logic for `n > 0`:** The `while` loop `n = n // 10` and `d = d + 1` is a correct and common algorithm for counting digits in positive integers using arithmetic operations.
+*   **Correct Handling of `n = 0`:** The `if n == 0:` block correctly identifies that `0` has `1` digit.
+*   **Preservation of Original Number:** The use of `n2 = n` is good practice, ensuring the original input value is available for printing even after `n` is modified within the loop.
+
+**Weaknesses (Reason for "Wrong Answer"):**
+*   **Duplicate Output for `n = 0`:** The primary issue leading to a "Wrong Answer" is that the program produces two lines of output when the input `n` is `0`.
+    *   When `n = 0`, the `if n == 0:` block executes, and its `print` statement generates the output "El nombre de digits de 0 es 1".
+    *   After the `if-else` block, there's another `print` statement: `print('El nombre de digits de', n2, 'es', d)`. This statement executes regardless of whether the `if` or `else` branch was taken. For `n = 0`, `n2` is `0` and `d` is `1` (from the `if` block), so it prints "El nombre de digits de 0 es 1" *again*.
+    *   Online judges typically expect an exact output format, and duplicate lines (or any deviation from the expected format) result in a "Wrong Answer".
+*   **Redundant `print` statement:** The `print` statement within the `if` block makes the final `print` statement outside the `if-else` block problematic for the `n=0` case. For `n > 0`, only the final `print` statement executes, which is correct.
+
+**3. Suggestions for Improvement:**
+
+The core logic is sound, but the output structure needs adjustment to ensure only one line is printed.
+
+1.  **Consolidate the `print` statement:** The most straightforward fix is to calculate `d` (the number of digits) and then have a single `print` statement at the very end.
+
+    ```python
+    from yogi import read
+
+    n = read(int)
+    n_original = n # Using a clearer variable name
+
+    if n == 0:
+        d = 1
+    else:
+        d = 0
+        # The loop must handle negative numbers if they were allowed,
+        # but the problem states 'natural n', so n >= 0.
+        # For a general integer, one might use abs(n) here.
+        while n != 0:
+            n = n // 10
+            d = d + 1
+    
+    # Print the result only once after 'd' has been determined
+    print('El nombre de digits de', n_original, 'es', d)
+    ```
+
+2.  **More Pythonic (using string conversion - if allowed):** While the problem implies an arithmetic solution, the most Pythonic way to count digits is often by converting the number to a string and getting its length. This is usually more concise and less prone to off-by-one errors or special case handling for `0`.
+
+    ```python
+    from yogi import read
+
+    n = read(int)
+    d = len(str(n))
+    print('El nombre de digits de', n, 'es', d)
+    ```
+    This version correctly handles `n=0` (length of "0" is 1) and positive integers without any special `if-else` logic for `0`. However, always consider if the problem intends for an arithmetic solution or if string conversion is acceptable. Given the context of introductory programming problems, an arithmetic approach is often expected first.
+
+By implementing the first suggestion, the program will produce the correct single line of output for all valid inputs and should pass.
+
+---

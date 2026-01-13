@@ -1,0 +1,54 @@
+Here's a feedback text for your program:
+
+### Feedback: Múltiple més petit
+
+**1. Summary of the Problem and Solution Approach**
+
+The problem "Múltiple més petit" (Smallest Multiple) requires you to read pairs of natural numbers `a` and `b` (where `b >= 1`). For each pair, the goal is to find and print the smallest natural number `x` such that `x` is greater than or equal to `a`, and `x` is also a multiple of `b`. The output should be formatted with a case number.
+
+Your program's approach to calculating `x` is based on the formula `x = (a + b - 1) // b * b`. This is a standard and mathematically correct method to achieve the desired result. It effectively computes `ceil(a / b) * b` using integer division, finding the next multiple of `b` that is at least `a`.
+
+**2. Analysis of the Code's Strengths and Weaknesses**
+
+**Strengths:**
+
+*   **Correct Mathematical Logic:** The core calculation `x = (a + b - 1) // b * b` is perfectly correct and efficient for finding the smallest multiple of `b` that is greater than or equal to `a`. This demonstrates a solid understanding of the problem's mathematical requirement.
+*   **Efficiency:** The solution performs constant-time arithmetic operations per test case, making it very efficient.
+*   **Clarity:** The code is concise and easy to understand, clearly showing the calculation and output formatting.
+
+**Weaknesses:**
+
+*   **Incorrect Input Handling (Primary Issue):** The most significant weakness, and almost certainly the cause of the "Wrong Answer" verdict, is the way input is handled. The problem description states: "L’entrada consisteix en una seqüència de parells de naturals a i b..." (The input consists of a sequence of pairs of natural numbers a and b...). This typically implies that input should be read repeatedly until the End-Of-File (EOF) is reached, rather than reading a specific number of `casos` upfront. Your program starts by reading `casos = int(input())` and then loops `casos` times. If the input format doesn't provide an initial count of cases, this will lead to misreading the input (e.g., treating the first `a` value as `casos`) or an error.
+
+**3. Suggestions for Improvement**
+
+The core logic for `x` is correct, so the main improvement needed is to adjust the input reading mechanism to match the problem's typical "sequence until EOF" format.
+
+**Revised Input Loop:**
+
+```python
+case_num = 1 # Initialize case number
+while True:
+    try:
+        # Attempt to read a line, split it, and convert to integers
+        a, b = map(int, input().split())
+        
+        # Calculate x using your correct logic
+        x = (a + b - 1) // b * b
+        
+        # Print the result in the specified format
+        print("#{} : {}".format(case_num, x))
+        
+        # Increment case number for the next iteration
+        case_num += 1
+    except EOFError:
+        # Break the loop if End-Of-File is reached (no more input)
+        break
+    except ValueError:
+        # Optionally handle cases where input might not be perfectly formatted before EOF
+        # For competitive programming, input is usually guaranteed to be well-formed,
+        # so EOFError is the primary concern.
+        break
+
+```
+By making this change, your program should correctly process all input pairs provided until the end of the input stream, aligning with the problem's expected input format.

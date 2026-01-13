@@ -1,0 +1,48 @@
+This feedback addresses the provided Python program for the "Múltiple més petit" problem.
+
+---
+
+### Feedback for "Múltiple més petit" Program
+
+**1. Problem Summary and Solution Approach:**
+
+The problem "Múltiple més petit" requires the program to read pairs of natural numbers `a` and `b` (where `b ≥ 1`). For each pair, it must calculate and output the smallest natural number `x` such that `x` is greater than or equal to `a` and `x` is a multiple of `b`. The output should be formatted as `"#case_number : result"`.
+
+The provided Python program approaches the core mathematical problem by using the formula `x = (a + b - 1) // b * b`. This formula effectively calculates `ceil(a/b) * b`, which is a standard and correct way to find the smallest multiple of `b` that is greater than or equal to `a` using integer arithmetic.
+
+**2. Analysis of the Code's Strengths and Weaknesses:**
+
+*   **Strengths:**
+    *   **Correct Logic:** The mathematical formula `(a + b - 1) // b * b` is accurate and efficiently solves the problem of finding the smallest multiple of `b` that is `≥ a`. This is the strongest aspect of the code.
+    *   **Output Format:** The program correctly formats the output as `"#case_number : result"`, adhering to the problem's specification.
+
+*   **Weaknesses:**
+    *   **Input Handling Mismatch:** The primary reason for the "Wrong Answer" is highly likely the way the program handles input. The problem description states: "L’entrada consisteix en una seqüència de parells de naturals a i b", which typically implies reading pairs until the End-Of-File (EOF). However, your program starts by reading an integer `casos` to determine the number of test cases (`casos = int(input())`) and then loops `casos` times. If the judging system provides input as a continuous stream of `a, b` pairs without an initial count, your program will misinterpret or fail to read the input correctly. This mismatch in expected input format versus actual input format will inevitably lead to a "Wrong Answer" or a runtime error.
+
+**3. Suggestions for Improvement:**
+
+To resolve the "Wrong Answer" and make the program robust for "read until EOF" input, modify the input loop as follows:
+
+1.  **Remove the initial `casos = int(input())` line.** The problem does not specify a fixed number of test cases.
+2.  **Change the `while` loop to handle input until End-Of-File (EOF).** In Python, this is commonly done with a `try-except` block around the input operations.
+
+Here's the corrected version of your program:
+
+```python
+i = 1 # Initialize case counter
+
+# Loop indefinitely, trying to read input.
+# An EOFError will occur when there's no more input.
+while True:
+    try:
+        a, b = map(int, input().split()) # Read a pair of integers
+        x = (a + b - 1) // b * b        # Calculate the smallest multiple
+        print("#{} : {}".format(i, x))  # Print the result
+        i += 1                          # Increment case counter
+    except EOFError:
+        break                           # Exit loop when EOF is reached
+    except ValueError:
+        # This might catch cases where input() returns an empty string
+        # or non-integer input, though problem statement implies valid natural numbers.
+        break
+```

@@ -1,0 +1,36 @@
+Here's a feedback text for the provided program:
+
+---
+
+### Feedback on "Fusió de taules" Program
+
+**1. Summary of the Problem and Solution Approach**
+
+The problem requires implementing a function `fusio` that merges two pre-sorted lists (`v1` and `v2`) of numbers into a single sorted list, ensuring that all duplicate elements from both input lists are preserved in the final merged list. For example, merging `[2, 3, 5]` and `[3, 5, 5, 7]` should result in `[2, 3, 3, 5, 5, 5, 7]`.
+
+The submitted Python program correctly identifies and implements the standard "two-pointer" approach for merging sorted lists. It iterates through both lists simultaneously, comparing elements and appending the smaller one to a new result list until one of the input lists is exhausted. Finally, it appends any remaining elements from the non-exhausted list.
+
+**2. Analysis of the Code's Strengths and Weaknesses**
+
+**Strengths:**
+
+*   **Correct Logic:** The `fusio` function accurately implements the merge algorithm. It correctly handles comparisons, appends elements in sorted order, and preserves all duplicates as specified.
+*   **Efficiency:** The algorithm is efficient, performing a single pass over both input lists. Its time complexity is O(N + M), where N and M are the lengths of `v1` and `v2` respectively, which is optimal for this problem.
+*   **Handling Remaining Elements:** The use of `extend(v1[i1:])` and `extend(v2[i2:])` is an elegant and correct way to append any remaining elements after the main `while` loop terminates.
+*   **Readability:** Variable names like `i1`, `i2`, and `llista_definitiva` are clear and contribute to the function's readability. The use of type hints is also a good practice.
+
+**Weaknesses:**
+
+*   **Violation of Submission Requirements:** The primary weakness, and the likely cause of the "Presentation Error," is the inclusion of the `main` function and its associated input/output logic (`from yogi import read`, `llegir_dades`, `print` statements). The problem statement explicitly notes: *"Només cal enviar el procediment demanat; el programa principal serà ignorat."* (Only the requested procedure needs to be submitted; the main program will be ignored.) This means the judging system expects only the `fusio` function definition and nothing else. Any input reading or output printing in the submitted code will interfere with the automated judging process, typically leading to a Presentation Error (due to unexpected output) or even a Compilation/Runtime Error if the judging environment isn't set up for extra I/O.
+*   **Output Format Mismatch (within `main`):** Even if a `main` function were expected, the specific output `print(n1+n2)` (printing the total count) and `print(" ",end="")` (printing an extra leading space) would likely cause a Presentation Error, as problem platforms usually require very precise output formats.
+
+**3. Suggestions for Improvement**
+
+*   **Crucial:** **Remove all code outside the `fusio` function definition.** This includes:
+    *   `from yogi import read`
+    *   `def llegir_dades(n:int)->list[int]: ...`
+    *   `def main(): ...`
+    *   `main()`
+    The submission should consist *only* of the `def fusio(v1: list[float], v2: list[float]) -> list[float]:` function.
+
+By making this single, crucial change, your solution should pass the tests, as the `fusio` function itself is well-implemented and correct according to the problem description.

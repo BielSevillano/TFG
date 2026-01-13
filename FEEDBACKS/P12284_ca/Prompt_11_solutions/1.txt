@@ -1,0 +1,65 @@
+This feedback analyzes the provided Python program for the "Paraules més freqüents" problem, highlighting its approach, strengths, weaknesses, and potential improvements, referencing other possible solutions where relevant.
+
+---
+
+### Feedback for "Paraules més freqüents" Program
+
+**Problem Summary:**
+The problem requires reading a sequence of `n` words and then outputting the `k` most frequent words. The sorting criteria are: primarily by frequency in descending order, and secondarily (in case of ties) by alphabetical order in ascending order. Each test case concludes with a line of ten hyphens.
+
+**Solution Approach:**
+The submitted program employs a straightforward and highly effective approach:
+1.  **Frequency Counting:** It iterates through all `n` input words for each test case, building a dictionary (`freq`) where keys are the unique words and values are their corresponding frequencies.
+2.  **Efficient Sorting:** After counting frequencies, it extracts the unique words (dictionary keys) and sorts them using Python's `sorted()` function with a custom `lambda` key. This `lambda` key `(-freq[x], x)` elegantly implements the required compound sorting:
+    *   `-freq[x]` ensures that words with higher frequencies come first (descending order).
+    *   `x` (the word itself) acts as the tie-breaker, sorting words alphabetically in ascending order when frequencies are equal.
+3.  **Top K Selection:** It then iterates through this sorted list of unique words and prints the first `k` words, as requested.
+4.  **Case Handling:** The `main` function correctly handles multiple test cases using `yogi.tokens(int)`.
+
+**Code Strengths:**
+
+1.  **Correctness:** The program correctly implements all aspects of the problem, including the precise sorting criteria (frequency descending, then alphabetical ascending for ties).
+2.  **Efficiency:**
+    *   **Frequency Counting:** Using a dictionary provides average O(1) time complexity for word insertion and frequency updates. Building the frequency map for `N` words takes O(N) time in total.
+    *   **Sorting:** Python's `sorted()` function uses Timsort, which is highly optimized. Sorting `M` unique words takes O(M log M) time.
+    *   Overall, the time complexity is dominated by `O(N + M log M)`, which is very efficient for this problem.
+3.  **Pythonic and Concise:** The use of `dict` for frequency counting and a `lambda` function within `sorted()` for custom compound sorting is a very idiomatic and concise way to solve this problem in Python.
+4.  **Readability:** Despite its conciseness, the logic is clear. The `lambda` key perfectly expresses the desired sorting order.
+5.  **Modularity:** The code is well-structured into distinct functions (`avalua` for processing a case, `printea` for printing the sorted output), improving organization and maintainability.
+
+**Code Weaknesses:**
+
+1.  **Variable/Function Naming (Minor):**
+    *   `avalua` (Catalan for "evaluate") could be more universally descriptive in English, such as `process_case` or `solve_case`.
+    *   `printea` is also a Catalan word. `print_top_k_words` or similar would be clearer for a wider audience.
+    *   The `aux` variable in `avalua` is unnecessary; `freq[a] = freq[a] + 1` or `freq[a] += 1` is more direct.
+2.  **`yogi` dependency:** While expected for `Jutge.org`, the direct reliance on `yogi.tokens` and `yogi.read` makes the code less portable outside this specific environment without modifications.
+
+**Suggestions for Improvement:**
+
+1.  **Enhance Naming:** Consider renaming `avalua` to `process_test_case` and `printea` to `print_most_frequent_words` for improved clarity and broader understanding.
+2.  **Simplify Frequency Update:** In `avalua`, replace the `if/else` block for frequency counting with `freq[a] = freq.get(a, 0) + 1`. This is a common and slightly more concise pattern for incrementing dictionary values.
+    *   Alternatively, for purely counting, `collections.Counter` could be used, which offers a dedicated and efficient way to count hashable objects. However, the current dictionary approach is perfectly fine and often preferred for explicit control.
+
+**Comparison with Other Solutions (Reference):**
+
+The submitted solution is highly efficient and Pythonic, standing out among several reference solutions:
+
+*   **Less Efficient Approaches:**
+    *   Solutions that repeatedly find the maximum frequency word, print it, and then "remove" or "mark" it (like Solution 1, Solution 5, and Solution 7) suffer from higher time complexity, often O(k \* N \* M) or O(k \* N) due to repeated linear scans and list modifications.
+    *   Solution 3, which attempts to keep a sorted list incrementally, also tends to be inefficient (O(N\*M)) for building the frequency data structure.
+    *   Solutions 10 and 11 incorrectly apply the sorting criteria, failing the problem requirements.
+
+*   **Comparable Efficient Approaches:**
+    *   Solutions 4, 6, 8 (C++), and 9 also represent very efficient and correct approaches. They typically involve:
+        1.  Reading all words into a list (`L`).
+        2.  Sorting this list `L` (O(N log N)).
+        3.  Iterating the sorted list to build a list of (word, frequency) objects/tuples (O(N)).
+        4.  Sorting this list of (word, frequency) objects using a custom comparator (O(M log M)).
+    *   The submitted solution avoids the explicit pre-sort of all `N` words by directly building a frequency dictionary, then sorting the `M` unique words based on their frequencies. Both strategies lead to similar optimal complexities (O(N + M log M) or O(N log N) if N dominates M), effectively solving the problem. The submitted solution's conciseness with the `lambda` key is particularly elegant.
+
+---
+
+**Conclusion:**
+
+The submitted program is an excellent and efficient solution to the "Paraules més freqüents" problem. It leverages Python's powerful data structures and sorting capabilities to deliver a correct, concise, and highly performant implementation. The "Accepted" status is well-deserved. The suggested improvements are minor stylistic changes rather than critical flaws.

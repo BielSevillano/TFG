@@ -1,0 +1,81 @@
+The feedback below concerns the `merge` function provided in your Python code for the "Array merge" problem. The other functions (e.g., `iguals_ultim`, `reverse_sequence`, `position_maximum`, `cerca`, `cerca_eficient`) are designed for different problems and will not be considered in this feedback, as per the problem statement "You only need to submit the required procedure; your main program will be ignored."
+
+---
+
+### Feedback for `merge` function
+
+**Problem Summary:**
+The goal is to merge two input lists, `v1` and `v2`, both of which are already sorted in non-decreasing order. The output should be a single sorted list containing all elements from both input lists, including duplicates. For instance, merging `[2, 3, 5]` and `[3, 5, 5, 7]` should yield `[2, 3, 3, 5, 5, 5, 7]`.
+
+**Solution Approach in Code:**
+Your `merge` function attempts to iterate through elements of `v1` and `v2` using nested loops to compare and identify a "minimum" value. It aims to build a `resultat` list.
+
+**Code Analysis:**
+
+**Strengths:**
+*   The function correctly initializes an empty list `resultat` to store the merged elements.
+*   It attempts to compare elements from both input lists (`v1[i]` and `v2[j]`).
+
+**Weaknesses (Reasons for "Wrong Answer"):**
+1.  **Incorrect Algorithm for Merging Sorted Arrays:**
+    *   **Nested Loops:** The use of nested `for` loops (`for i in range(len(v1)): for j in range(len(v2)):`) is highly inefficient and fundamentally incorrect for merging two *already sorted* arrays. This approach leads to an O(N*M) time complexity, where N and M are the lengths of `v1` and `v2` respectively. The standard and much more efficient approach for merging sorted arrays is a "two-pointer" method, which achieves O(N+M) time complexity.
+    *   **Logic within loops:** The logic inside the loops does not correctly build the merged list.
+        *   `minim` is assigned but not always appended to `resultat` immediately or correctly.
+        *   When `v1[i] == v2[j]`, only `v2[j]` is appended, and `v1[i]` is effectively ignored for that specific match, even though both should be included in the result.
+2.  **Premature `return` Statement:**
+    *   The most critical flaw is `return resultat.append(minim)` located within the first `for` loop (specifically, after the inner `for` loop completes its *first* iteration for `i=0`).
+    *   `list.append()` in Python returns `None`. Therefore, your function will return `None` after processing only the very first element of `v1` against all elements of `v2`, and it will not return the correctly merged list. The `resultat` list will not be fully populated before the function exits.
+3.  **Incomplete Merging:**
+    *   The current logic doesn't correctly handle elements remaining in either `v1` or `v2` after one of the loops finishes. In a correct merging algorithm, if one list is exhausted, all remaining elements from the other list must be appended to the result.
+
+**Suggestions for Improvement:**
+
+To correct your `merge` function and make it efficient and correct, you should implement the **two-pointer approach**:
+
+1.  **Initialize Pointers:** Create two pointers, `p1` and `p2`, initialized to 0, to keep track of the current index in `v1` and `v2` respectively.
+2.  **Initialize Result List:** Keep `resultat = []`.
+3.  **Iterate and Compare:** Use a `while` loop that continues as long as both `p1` is within `v1`'s bounds and `p2` is within `v2`'s bounds.
+    *   Inside the loop, compare `v1[p1]` and `v2[p2]`.
+    *   If `v1[p1]` is less than or equal to `v2[p2]`, append `v1[p1]` to `resultat` and increment `p1`. (This handles duplicates correctly by prioritizing one list, then the other in subsequent comparisons.)
+    *   Else (if `v2[p2]` is smaller), append `v2[p2]` to `resultat` and increment `p2`.
+4.  **Append Remaining Elements:** After the `while` loop finishes, one of the lists might still have elements left (because its pointer reached its end). Append all remaining elements from `v1` (from `p1` onwards) and `v2` (from `p2` onwards) to `resultat`. Python's slicing and `extend` method can be very useful here (`resultat.extend(v1[p1:])`, `resultat.extend(v2[p2:])`).
+5.  **Return Result:** Finally, return the `resultat` list.
+
+**Example of Corrected Code (Python):**
+
+```python
+def merge(v1, v2):
+    p1 = 0 # Pointer for v1
+    p2 = 0 # Pointer for v2
+    resultat = []
+
+    # Iterate while both pointers are within their respective list bounds
+    while p1 < len(v1) and p2 < len(v2):
+        if v1[p1] <= v2[p2]: # Use <= to handle duplicates and maintain order
+            resultat.append(v1[p1])
+            p1 += 1
+        else: # v2[p2] is smaller
+            resultat.append(v2[p2])
+            p2 += 1
+
+    # Append any remaining elements from v1
+    while p1 < len(v1):
+        resultat.append(v1[p1])
+        p1 += 1
+
+    # Append any remaining elements from v2
+    while p2 < len(v2):
+        resultat.append(v2[p2])
+        p2 += 1
+        
+    # A more concise way for the remaining elements:
+    # resultat.extend(v1[p1:])
+    # resultat.extend(v2[p2:])
+
+    return resultat
+
+# Example test based on problem description:
+# print(merge([2,3,5], [3,5,5,7])) # Expected: [2, 3, 3, 5, 5, 5, 7]
+```
+
+By applying these improvements, your `merge` function will correctly and efficiently solve the "Array merge" problem.

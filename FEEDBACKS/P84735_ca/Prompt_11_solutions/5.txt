@@ -1,0 +1,53 @@
+Here's a feedback text for your program:
+
+### Feedback: Múltiple més petit
+
+**1. Problem Summary and Solution Approach:**
+
+The problem "Múltiple més petit" asks you to read pairs of natural numbers `a` and `b` (with `b >= 1`) and for each pair, output the smallest natural number `x` such that `x` is greater than or equal to `a` and `x` is a multiple of `b`.
+
+Your program implements a common and correct mathematical formula to find this `x`: `x = (a + b - 1) // b * b`. This formula effectively calculates `ceil(a/b) * b`, which gives the smallest multiple of `b` that is not less than `a`.
+
+**2. Code's Strengths and Weaknesses:**
+
+*   **Strengths:**
+    *   **Correct Logic for Calculation:** The core logic `x = (a + b - 1) // b * b` is mathematically sound and correctly solves the specific calculation part of the problem.
+    *   **Clear Output Format:** The `print("#{} : {}".format(i, x))` statement correctly formats the output as specified in the problem description (preceding with the case number).
+    *   **Readability:** The code is concise and easy to understand.
+
+*   **Weaknesses:**
+    *   **Incorrect Input Handling:** This is the primary reason for the "Wrong Answer". The problem statement ("L’entrada consisteix en una seqüència de parells de naturals a i b...") indicates that the input will be a *sequence* of `a, b` pairs, *not* preceded by an integer indicating the number of test cases. Your current code `casos = int(input())` assumes the first line is the number of cases, which is not how the input is described. This will lead to misreading the input or an error if the first line is not an integer representing a case count.
+
+**3. Suggestions for Improvement:**
+
+The main improvement needed is to correct the input reading mechanism to match the problem description.
+
+*   **Adapt to Sequence Input (EOF Handling):** Instead of reading a fixed number of `casos`, you should read pairs `a, b` until there is no more input (End Of File - EOF).
+
+    Here's how you could modify your Python code to handle input until EOF:
+
+    ```python
+    i = 1 # Initialize case counter
+
+    while True:
+        try:
+            line = input()
+            a, b = map(int, line.split())
+            
+            x = (a + b - 1) // b * b
+            print("#{} : {}".format(i, x))
+            i += 1
+        except EOFError:
+            # No more input, break the loop
+            break
+        except ValueError:
+            # Handle empty lines or malformed input if necessary
+            # For competitive programming, usually EOFError is sufficient
+            break
+    ```
+
+    By making this change, your program should correctly process all input pairs as specified and achieve the "Accepted" verdict, as your calculation logic is already correct.
+
+---
+
+*(Note: The "other possible solutions" provided in the prompt are for a completely different problem, likely "Most Frequent Words," and are not relevant to "Múltiple més petit." They have been ignored in this feedback.)*

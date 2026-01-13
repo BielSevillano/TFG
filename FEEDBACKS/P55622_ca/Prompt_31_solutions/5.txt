@@ -1,0 +1,52 @@
+### Feedback for "Nombre de dígits (1)" Program
+
+**1. Summary of the Problem and Solution Approach:**
+
+The problem "Nombre de dígits (1)" requires writing a program that reads a natural number `n` and outputs the total number of digits it contains.
+The provided program addresses this by:
+*   Reading the input integer `n`.
+*   Handling the special case where `n` is `0`, correctly identifying it as having `1` digit.
+*   For any positive integer `n`, it repeatedly performs integer division by 10 (`n //= 10`) until `n` becomes `0`, incrementing a counter (`d`) with each division. This counter effectively tallies the number of digits.
+*   The original value of `n` is stored in `n2` to be used in the final output message.
+
+**2. Analysis of the Code's Strengths and Weaknesses:**
+
+**Strengths:**
+*   **Correct Logic for Digit Counting:** The core algorithm of using repeated integer division by 10 is a standard and correct way to count digits in a positive integer.
+*   **Correct Handling of Zero:** The program explicitly checks for `n == 0` and correctly assigns `1` digit, which is important as the division-based approach would yield `0` digits for `0` if not handled separately.
+*   **Readability:** The code is straightforward, easy to understand, and uses clear variable names (`n`, `d`, `n2`).
+
+**Weaknesses:**
+*   **Redundant Output Statement for `n=0`:** The main reason for the "Wrong Answer" verdict is likely a formatting issue due to redundant output. When the input `n` is `0`, the program executes the `print` statement inside the `if n == 0:` block. Immediately after, it also executes the `print` statement at the very end of the script (which is outside the `if/else` block). This results in the same output message being printed twice for `n=0`, which typically leads to a "Wrong Answer" or "Presentation Error" on automated judging systems that expect a very specific output format (usually a single line). For example, if `n=0`, the output would be:
+    ```
+    El nombre de digits de 0 es 1
+    El nombre de digits de 0 es 1
+    ```
+    instead of the expected single line.
+
+**3. Suggestions for Improvement:**
+
+The program's logic is sound, but the output mechanism needs a minor adjustment to ensure only one result is printed.
+
+*   **Consolidate Print Statements:** The most effective improvement is to calculate the number of digits (`d`) within the `if/else` structure and then have a *single* `print` statement outside that structure to display the final result.
+
+**Corrected Code Example:**
+
+```python
+from yogi import read
+
+n = read(int)
+n_original = n # Store the original value of n for printing
+
+if n == 0:
+    num_digits = 1
+else:
+    num_digits = 0
+    temp_n = n # Use a temporary variable for the loop to preserve n_original
+    while temp_n != 0:
+        temp_n = temp_n // 10
+        num_digits = num_digits + 1
+
+# Only one print statement at the end
+print('El nombre de digits de', n_original, 'es', num_digits)
+```

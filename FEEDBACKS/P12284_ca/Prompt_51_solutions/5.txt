@@ -1,0 +1,118 @@
+Here's a feedback text for your program:
+
+### Feedback: Paraules més freqüents (Most Frequent Words)
+
+**Problem Summary:**
+The problem asks for a program that reads a sequence of `n` words and an integer `k`, then outputs the `k` most frequent words. The sorting criteria are: first by frequency in descending order, and in case of a tie, by alphabetical order in ascending order. The output for each test case should be the `k` words, each on a new line, followed by a separator line of `----------`.
+
+**Solution Approach:**
+Your program implements a common and generally efficient approach:
+1.  **Read input:** Reads `n` and `k`, then all `n` words.
+2.  **Sort all words:** Stores all words in a list `P` and sorts `P` alphabetically. This groups identical words together.
+3.  **Count frequencies:** Iterates through the sorted `P` using two pointers (`i` and `j`) to count consecutive occurrences of each unique word. It then stores each unique word along with its count in `Info` objects (`par` for word, `num` for count) and appends them to a list `V`.
+4.  **Sort `Info` objects:** Sorts the list `V` based on the specified criteria (frequency descending, then word ascending) using a custom comparison function `comp`.
+5.  **Print results:** Prints the `par` attribute of the first `k` `Info` objects from the sorted `V`, followed by the separator.
+6.  **Multiple test cases:** The `while` loop correctly handles multiple sets of `n` and `k` inputs.
+
+**Strengths of the Code:**
+
+*   **Clear Data Structure:** The `Info` class is well-defined and clearly represents a word and its frequency, making the code readable.
+*   **Efficient Frequency Counting:** Sorting the initial list of words (`P.sort()`) and then using a two-pointer approach to count frequencies is an efficient way to get unique words and their counts, avoiding repeated linear scans.
+*   **Modularity:** Separating the comparison logic into a `comp` function (though it has an issue, see weaknesses) improves readability.
+*   **Correct Input/Output Structure:** The handling of multiple test cases and the output format (words per line, separator) matches the problem statement.
+
+**Weaknesses and Reason for "Wrong Answer":**
+
+The primary reason for the "Wrong Answer" verdict lies in the usage and implementation of the `comp` function for sorting.
+
+1.  **Incorrect `comp` function signature for `list.sort(key=...)`:** In standard Python 3, the `key` argument to `list.sort()` (or `sorted()`) expects a function that takes *one* argument (an element from the list) and returns a value (or a tuple of values) to be used for sorting. Your `comp` function `def comp(a, b):` takes *two* arguments. If used directly as `key=comp`, Python would raise a `TypeError` because it tries to call `comp(element)` with only one argument.
+
+    Since you received "Wrong Answer" and not a `TypeError`, it implies that the execution environment (`yogi`) might be using an older Python version (like Python 2, where `list.sort(cmp=comp)` was common) or a custom `sort` implementation that interprets a two-argument function passed to `key` in a non-standard way.
+
+2.  **Incorrect return values if `comp` is used as a `cmp`-style function:** Even if the environment implicitly tries to use `comp` as a Python 2-style comparison function (which should return -1, 0, or 1), your `comp` function returns `True` or `False`.
+    *   Python treats `True` as `1` and `False` as `0` in numerical contexts.
+    *   A `cmp` function that returns `1` means the first argument is "greater" than the second, and `0` means they are equal.
+    *   Let's analyze your `comp`:
+        *   `if a.num != b.num: return a.num > b.num`
+            *   If `a.num` is *greater* than `b.num` (e.g., 3 vs 2), it returns `True` (`1`). This would imply `a` comes *after* `b` in an ascending sort. **This is the opposite of the requirement (higher frequency first).**
+        *   `return a.par < b.par` (for when frequencies are equal)
+            *   If `a.par` is *smaller* than `b.par` (e.g., "a" vs "b"), it returns `True` (`1`). This would imply `a` comes *after* `b` in an ascending sort. **This is the opposite of the requirement (smaller alphabetical order first).**
+
+    Therefore, if `comp` was interpreted as a `cmp`-style function (where `1` means "greater"), the sort order produced would be:
+    *   Frequency: **Ascending** (least frequent first)
+    *   Tie-breaking: Word **Descending** (Z to A)
+    This directly contradicts the problem requirements, leading to a "Wrong Answer".
+
+**Suggestions for Improvement:**
+
+The most robust and Pythonic way to implement the custom sorting logic in Python 3 is to use a `key` function that returns a tuple of comparison values. This leverages Python's default tuple comparison, which compares elements from left to right.
+
+1.  **Correct Sorting using a `lambda` with a tuple `key`:**
+    Modify the sorting line from `V.sort(key=comp, reverse=True)` to:
+    ```python
+    V.sort(key=lambda x: (-x.num, x.par))
+    ```
+    And remove the `comp` function entirely.
+    *   `x.num` is negated (`-x.num`) to achieve *descending* order for frequency (e.g., -3 comes before -2).
+    *   `x.par` is used directly for *ascending* alphabetical order (e.g., "a" comes before "b").
+    Python's tuple comparison handles the tie-breaking naturally: it sorts by the first element, and if they are equal, it sorts by the second element, and so on.
+
+**Revised Code Snippet (incorporating the suggestion):**
+
+```python
+import yogi
+
+# define struct Info
+class Info:
+  def __init__(self, par, num):
+    self.par = par
+    self.num = num
+
+# main function
+def main():
+  # initialize variables
+  n = yogi.read(int)
+  k = yogi.read(int)
+  while n is not None and k is not None:
+    P = []
+
+    # read input and append to P
+    for i in range(n):
+      P.append(yogi.read(str))
+
+    # sort P in ascending order
+    P.sort()
+
+    # create list V
+    V = []
+
+    # loop through P and append Info objects to V
+    i = 0
+    while i < n:
+      j = i + 1
+      while j < n and P[j] == P[i]:
+        j += 1
+      a = Info(P[i], j - i)
+      V.append(a)
+      i = j
+
+    # Sort V using a lambda key:
+    # 1. Sort by num in descending order (-x.num)
+    # 2. Then by par in ascending order (x.par)
+    V.sort(key=lambda x: (-x.num, x.par))
+
+    # print the first k elements of V
+    for j in range(k):
+      print(V[j].par)
+
+    # print separator
+    print("----------")
+
+    # update n and k
+    n = yogi.read(int)
+    k = yogi.read(int)
+
+# call main function
+if __name__ == "__main__":
+  main()
+```

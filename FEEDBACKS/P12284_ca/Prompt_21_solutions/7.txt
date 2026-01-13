@@ -1,0 +1,62 @@
+Here's a feedback text for the provided program:
+
+---
+
+### Feedback: Most Frequent Words Program
+
+**1. Problem Summary and Solution Approach**
+
+The problem requires reading a sequence of `n` words and identifying the `k` most frequent ones. In case of a tie in frequency, words should be ordered alphabetically. The output for each test case must be the `k` selected words, followed by a separator line of ten hyphens.
+
+The program effectively solves this problem by:
+1.  **Frequency Counting:** It initializes an empty dictionary (`freq`) for each test case. As it reads each of the `n` input words, it increments their count in this dictionary.
+2.  **Sorting and Selection:** Once all words are read and their frequencies are stored, it sorts the unique words (dictionary keys). The sorting criteria prioritize higher frequency (descending order) first, and then uses alphabetical order (ascending) as a tie-breaker.
+3.  **Output:** Finally, it iterates through the top `k` words from the sorted list and prints them, followed by the `----------` separator.
+4.  **Multiple Test Cases:** The `main` function uses `tokens(int)` to correctly handle multiple test cases as described in the problem statement.
+
+**2. Analysis of the Code's Strengths and Weaknesses**
+
+**Strengths:**
+
+*   **Clarity and Readability:** The code is well-structured with descriptive function names (`printea`, `avalua`, `main`), making it easy to understand its logic.
+*   **Pythonic Dictionary Usage:** Leveraging a dictionary (`dict[str, int]`) for frequency counting is idiomatic Python and highly efficient for this task due to its average O(1) lookup and insertion times.
+*   **Elegant Sorting:** The use of `sorted(freq.keys(), key=lambda x: (-freq[x], x))` is a very concise and powerful Pythonic way to handle the specified complex sorting criteria (frequency descending, then alphabetical ascending) in a single pass. This is a significant advantage over manual sorting implementations often seen in other solutions.
+*   **Correct Logic:** The solution correctly implements both frequency-based sorting and the alphabetical tie-breaking rule, ensuring the output matches the problem's requirements.
+*   **Modularity:** The problem is broken down into logical functions, improving maintainability and reusability.
+
+**Weaknesses:**
+
+*   **Potential Performance for Very Large Inputs (Minor):** While the current approach is generally efficient, sorting *all* unique words (`M`) takes O(M log M) time. If `n` is extremely large and `k` is very small, and `M` is also large (i.e., many unique words), it might be slightly more efficient to use a min-heap of size `k` to track the top `k` elements in O(N log k) time. However, for typical competitive programming constraints, the `O(M log M)` approach (which is often `O(n log n)` in the worst case where most words are unique) is usually perfectly acceptable and sufficient, as confirmed by the 'Accepted' status.
+
+**3. Suggestions for Improvement**
+
+1.  **Conciseness in Frequency Counting (Minor):** The frequency counting logic in `avalua` can be made slightly more concise:
+    ```python
+    # Current:
+    # if a not in freq:
+    #     freq[a] = 1
+    # else:
+    #     aux = freq[a]
+    #     freq[a] = aux + 1
+
+    # Suggestion:
+    freq[a] = freq.get(a, 0) + 1
+    # Or, using collections.Counter (requires import):
+    # from collections import Counter
+    # ...
+    # freq = Counter()
+    # freq[a] += 1
+    ```
+    This doesn't change the performance but improves code brevity.
+
+2.  **Explicit `break` Condition (Minor):** In `printea`, the `k > 0` condition is checked twice in the `if/else` block and then again in the loop implicitly. While clear, a more direct loop termination could be:
+    ```python
+    for paraula in sorted(freq.keys(), key=lambda x: (-freq[x], x)):
+        if k <= 0: # Check before printing
+            break
+        print(paraula)
+        k -= 1
+    ```
+    This is a stylistic choice and the current implementation is perfectly correct.
+
+Overall, the program is a well-engineered and efficient solution that demonstrates a good understanding of Python's capabilities for data manipulation and sorting. The strengths far outweigh any minor potential weaknesses.

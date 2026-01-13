@@ -1,0 +1,36 @@
+Here's a feedback text for the provided Python program:
+
+---
+
+### Feedback: Fusió de taules
+
+**Problem Summary:**
+The problem "Fusió de taules" (Table Merging) asks for a function that merges two given *already sorted* lists (vectors) of numbers (`v1` and `v2`) into a single new sorted list. The merged list must retain all elements from both input lists, including duplicates, and maintain the ascending sorted order. For example, merging `[2, 3, 5]` and `[3, 5, 5, 7]` should result in `[2, 3, 3, 5, 5, 5, 7]`. The problem statement emphasizes that only the requested function should be submitted, and the main program will be ignored.
+
+**Solution Approach:**
+The provided Python code implements a classic two-pointer merge algorithm. It initializes two pointers (`i1` and `i2`), one for each input list, and an empty list (`llista_definitiva`) to store the merged result. It iteratively compares the elements pointed to by `i1` and `i2`, appending the smaller element to `llista_definitiva` and advancing its corresponding pointer. This continues until one of the lists is exhausted. Finally, it appends any remaining elements from the non-exhausted list to `llista_definitiva`.
+
+**Code Analysis:**
+
+**Strengths:**
+1.  **Correctness of `fusio` function:** The `fusio` function is a textbook implementation of the merge algorithm for two sorted lists. It correctly handles element comparison, appending, pointer advancement, and the appending of remaining elements, ensuring the final list is sorted and contains all duplicates.
+2.  **Efficiency:** The `fusio` function has a time complexity of O(N + M), where N and M are the lengths of `v1` and `v2` respectively. This is optimal for merging two already sorted lists, as it only requires a single pass through both lists.
+3.  **Readability:** The code is clear and easy to understand, with descriptive variable names like `llista_definitiva`.
+
+**Weaknesses:**
+1.  **Presentation Error in `main` function:** The "Presentation Error" observed is almost certainly due to the `main` function's output format, not the `fusio` function itself.
+    *   The line `print(n1+n2)` prints the total number of elements, which is not required by the problem and introduces an extra line of output.
+    *   The line `print(" ",end="")` prints an unnecessary leading space before the merged list.
+    *   The problem explicitly states: "Només cal enviar el procediment demanat; el programa principal serà ignorat." (Only the requested procedure needs to be submitted; the main program will be ignored.) This means the testing system expects *only* the `fusio` function (and potentially imports) to be submitted, and it will call `fusio` itself and handle its output according to a strict format. When a `main` function is included and produces output that doesn't match the expected format (e.g., extra lines, extra spaces, or different content), it results in a "Presentation Error."
+
+    *(Note: The "other possible solutions" provided in the prompt are for a different problem, "Paraules més freqüents" (Most Frequent Words), and are not relevant to evaluating this "Fusió de taules" solution.)*
+
+**Suggestions for Improvement:**
+
+1.  **Remove `main` function (Crucial):** For platforms like Jutge.org, when a problem asks for "only the procedure/function," you should typically submit *only* the function definition (`def fusio(...)`) and any necessary imports (`from yogi import read`). The `main` function and any code outside the function definition should be removed from your submission. This is the most important change to resolve the "Presentation Error."
+2.  **Adhere to output format (If `main` were required):** If a `main` function *were* explicitly required to produce output, you would need to ensure its output *exactly* matches the expected format, including the absence of extra lines or spaces. For instance, if the only expected output is the merged list elements separated by spaces, `print(*fusio(v1, v2))` (without the leading `print(" ", end="")`) would be correct.
+3.  **Consider Pythonic alternatives (Minor):** While your implementation is excellent, for completeness in a learning context, one might also consider:
+    *   Using Python's built-in `heapq.merge` for a very concise and efficient merge of sorted iterables, though implementing it manually is a good exercise.
+    *   A less efficient but sometimes quicker-to-write approach for non-performance-critical scenarios would be `sorted(v1 + v2)`, which concatenates and then sorts, but its complexity would be O((N+M)log(N+M)) instead of O(N+M). Your current manual merge is superior for pre-sorted inputs.
+
+---

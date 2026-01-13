@@ -1,0 +1,88 @@
+This program effectively solves the "Paraules més freqüents" problem, demonstrating a clear and efficient approach to finding and sorting the most frequent words.
+
+---
+
+### Feedback for the program:
+
+#### 1. Problem Summary and Solution Approach
+
+The problem asks to read a sequence of `n` words and then output the `k` most frequent ones. In case of a tie in frequency, words should be ordered lexicographically (alphabetically) in ascending order. The program needs to handle multiple test cases.
+
+The provided solution employs a straightforward and highly Pythonic approach:
+1.  **Frequency Counting:** It uses a Python dictionary (`freq: dict[str, int]`) to store each unique word and its corresponding count. As words are read, their frequencies are updated.
+2.  **Sorting:** After all `n` words for a given test case have been processed, the program retrieves the keys (words) from the frequency dictionary. These words are then sorted using Python's `sorted()` function with a custom `lambda` key. This key is crucial for implementing the problem's specific sorting criteria:
+    *   `-freq[x]`: Sorts by frequency in *descending* order (negating the frequency makes higher frequencies appear "smaller" for a default ascending sort).
+    *   `x`: In case of a tie in frequency (i.e., `-freq[x]` values are equal), it then sorts by the word itself lexicographically in *ascending* order.
+3.  **Output:** It iterates through the sorted list of words and prints the first `k` words, followed by the "----------" separator for each test case.
+4.  **Multiple Cases:** The `main` function utilizes `yogi.tokens(int)` to seamlessly handle multiple test cases, reading `n` and `k` for each case.
+
+#### 2. Analysis of the Code's Strengths and Weaknesses
+
+**Strengths:**
+
+*   **Correctness:** The code correctly implements all sorting requirements, as indicated by its "Accepted" status. The `lambda x: (-freq[x], x)` key is an elegant and precise way to handle both primary (frequency descending) and secondary (lexicographical ascending) sorting criteria.
+*   **Efficiency:**
+    *   **Frequency Counting:** Using a dictionary provides average O(1) time complexity for insertions and lookups, making the initial word counting phase efficient (O(N) for N words).
+    *   **Sorting:** Sorting the distinct words (let `D` be the number of distinct words, `D <= N`) takes O(D log D) time. Since `D` can be up to `N`, the worst-case sorting complexity is O(N log N). This is generally optimal for this type of problem.
+    *   **Overall:** The dominant operation is sorting, making the overall complexity efficient.
+*   **Readability and Pythonic Style:** The code is well-structured into logical functions (`avalua`, `printea`, `main`). The use of `dict` for frequency counting and `sorted()` with a `lambda` key is idiomatic Python. The use of `yogi` functions for input management is standard for this environment.
+*   **Conciseness:** The solution is quite compact without sacrificing clarity. Compared to some other solutions that might involve manual loops for finding max frequency repeatedly or multiple sorting passes, this single `sorted()` call with a custom key is very efficient and clean.
+
+**Weaknesses:**
+
+*   **Minor Redundancy in Frequency Update:** The lines `aux = freq[a]; freq[a] = aux + 1` could be simplified to `freq[a] += 1`. Even more concisely, using `freq[a] = freq.get(a, 0) + 1` would eliminate the `if-else` block for updating frequencies.
+*   **Function Naming:** While functional, `avalua` (evaluate) is a bit generic for a function that specifically reads words, updates frequencies, and then calls `printea`. A name like `process_input_and_sort` or `handle_case` might be more descriptive. `printea` could be `print_top_k_words`.
+*   **Lack of Docstrings:** While the code is relatively simple, adding docstrings to explain what each function does, its parameters, and what it returns would further improve maintainability and understanding, especially for the `printea` function's custom sorting logic.
+
+#### 3. Suggestions for Improvement
+
+1.  **Simplify Frequency Counting:**
+    Replace:
+    ```python
+    if a not in freq:
+        freq[a] = 1
+    else:
+        aux = freq[a]
+        freq[a] = aux + 1
+    ```
+    with the more concise:
+    ```python
+    freq[a] = freq.get(a, 0) + 1
+    ```
+    Alternatively, for Python 3.7+ (and often for competitive programming, available versions):
+    ```python
+    # After 'from collections import Counter'
+    # In avalua, you would pass a Counter object or convert the dict to Counter
+    # Example:
+    # from collections import Counter
+    # ...
+    # def avalua(n: int, k: int, freq_counter: Counter[str, int]):
+    #     for _ in range(n):
+    #         freq_counter[read(str)] += 1
+    #     printea(freq_counter, k) # printea would then accept Counter
+    ```
+    Using `collections.Counter` would make the frequency counting even more idiomatic and potentially slightly faster for very large inputs, but the current dictionary approach with `get()` is perfectly acceptable.
+
+2.  **Improve Function Naming:**
+    Consider renaming `avalua` to something more descriptive like `process_case` or `count_words_and_output_top_k`. Rename `printea` to `print_top_k_words`.
+
+3.  **Add Docstrings:**
+    Include brief docstrings for each function to explain its purpose, parameters, and any specific logic (e.g., explaining the `lambda` key in `printea`).
+
+    Example for `printea`:
+    ```python
+    def printea(freq: dict[str, int], k: int):
+        """
+        Sorts words by frequency (descending) then lexicographically (ascending)
+        and prints the top k words.
+
+        Args:
+            freq: A dictionary where keys are words and values are their frequencies.
+            k: The number of most frequent words to print.
+        """
+        # ... rest of the function
+    ```
+
+---
+
+In conclusion, the program is a well-crafted and efficient solution that correctly addresses all aspects of the problem. The suggested improvements are minor stylistic and readability enhancements rather than critical fixes, further solidifying an already strong piece of code.

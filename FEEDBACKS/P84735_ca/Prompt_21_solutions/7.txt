@@ -1,0 +1,63 @@
+Here's a feedback text for your Python program, analyzing its approach to the "Múltiple més petit" problem:
+
+---
+
+### Feedback: Múltiple més petit
+
+**1. Summary of the Problem and Solution Approach**
+
+The problem "Múltiple més petit" asks you to read pairs of natural numbers `a` and `b` (where `b` is always at least 1). For each pair, you need to find and print the smallest natural number `x` such that `x` is greater than or equal to `a`, and `x` is a multiple of `b`. The output should be formatted as `"#case_number : x"`, with `case_number` starting from 1.
+
+Your program uses an efficient mathematical formula `x = (a + b - 1) // b * b` to calculate the desired multiple. This formula correctly computes the smallest multiple of `b` that is greater than or equal to `a`. It then prints the result in the specified format, incrementing a case counter for each pair.
+
+**2. Analysis of the Code's Strengths and Weaknesses**
+
+**Strengths:**
+
+*   **Correct Core Logic:** The formula `x = (a + b - 1) // b * b` is a well-known and correct method for finding the smallest multiple of `b` that is greater than or equal to `a`. This part of your solution is mathematically sound and efficient.
+*   **Clear Output Formatting:** The use of `print("#{} : {}".format(i, x))` correctly formats the output as required, including the case number.
+
+**Weaknesses:**
+
+*   **Incorrect Input Handling (Primary Issue):** The most significant weakness, and almost certainly the cause of the "Wrong Answer" verdict, is how the program handles input.
+    *   The problem statement "L’entrada consisteix en una seqüència de parells de naturals a i b..." typically implies that the program should read pairs of `a` and `b` until the end of the input (EOF - End Of File).
+    *   Your code, however, starts by `casos = int(input())`, assuming the very first line of input will be a single integer specifying the total number of test cases. This is a common pattern in some competitive programming problems, but it conflicts with the wording of this specific problem, which doesn't mention an explicit count.
+    *   If the input format on the judging system doesn't provide an initial `casos` number, this line will either:
+        *   Cause a `ValueError` (if the first line contains `a` and `b` like `10 3`, `int("10 3")` fails).
+        *   Misinterpret the first `a` value as the number of cases (if `a` is on a line by itself, which is not stated).
+        *   Lead to an incorrect number of iterations, reading too few or too many input pairs, resulting in a "Wrong Answer".
+
+**3. Suggestions for Improvement**
+
+To fix the "Wrong Answer" and align with the typical interpretation of the problem's input format, you should modify how your program reads input:
+
+1.  **Read until End Of File (EOF):** Instead of reading a fixed number of `casos`, use a loop that attempts to read input in each iteration and breaks when there's no more input.
+
+Here's how you can implement this change:
+
+```python
+i = 1
+while True:
+    try:
+        # Attempt to read a line with 'a' and 'b'
+        line = input()
+        a, b = map(int, line.split())
+        
+        # Core logic (already correct)
+        x = (a + b - 1) // b * b
+        print("#{} : {}".format(i, x))
+        
+        i += 1
+    except EOFError:
+        # Break the loop when there's no more input
+        break
+    except ValueError:
+        # This can catch cases where input() returns an empty string, or non-integer values
+        # For competitive programming, usually input is guaranteed to be valid until EOF.
+        # But it's good practice for robustness. If this problem ensures valid input format,
+        # you might only need the EOFError handler.
+        break
+
+```
+
+By making this change, your program will correctly process all pairs of `a` and `b` provided in the input, resolving the likely cause of the "Wrong Answer" verdict.

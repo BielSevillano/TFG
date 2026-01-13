@@ -1,0 +1,29 @@
+Here's a feedback text for the provided program:
+
+---
+
+### Feedback: Paraules més freqüents
+
+**Problem Summary:**
+The task is to read a sequence of `n` words and output the `k` most frequent ones. If multiple words have the same frequency, they should be sorted alphabetically in ascending order. The input consists of multiple test cases, each defined by `n` and `k`, followed by `n` lowercase words. Each test case's output should be separated by a line of ten hyphens.
+
+**Solution Approach:**
+The program implements a straightforward and efficient solution. It processes each test case by first reading `n` and `k`. It then populates a dictionary (`freq`) where keys are words and values are their respective frequencies. After counting all word frequencies, it sorts the unique words (dictionary keys) using a custom sorting key. This key prioritizes words with higher frequencies (descending order) and, for words with equal frequencies, sorts them alphabetically (ascending order). Finally, it iterates through the sorted words and prints the first `k` words, followed by the "----------" separator.
+
+**Code Analysis:**
+
+*   **Strengths:**
+    *   **Correctness:** The program was "Accepted," indicating that it correctly solves the problem for all provided test cases, accurately handling both frequency and alphabetical tie-breaking rules. The `lambda x: (-freq[x], x)` sorting key is a concise and precise way to achieve the required order.
+    *   **Clarity and Readability:** The code is well-structured into `main`, `avalua` (evaluate/process), and `printea` (print) functions. The use of Python's built-in dictionary for frequency counting and the `sorted()` function with a custom key makes the logic very clear and easy to follow.
+    *   **Efficiency:** The chosen approach is efficient. Counting word frequencies using a dictionary takes approximately `O(N)` time (where `N` is the total number of words). Sorting the `M` unique words (where `M <= N`) takes `O(M log M)` time. Printing the top `k` words is `O(k)`. Overall, this results in a time complexity of `O(N + M log M)`, which is optimal for this problem given typical constraints.
+    *   **Idiomatic Python:** The solution effectively leverages Python's powerful data structures and functional programming features (like `lambda` expressions for sorting keys).
+
+*   **Weaknesses:**
+    *   **Naming Convention (Minor):** The function names `avalua` and `printea` are in Catalan/Spanish. While perfectly understandable in the context of Jutge.org, using more universally understood English names like `process_case` and `print_top_k` could slightly improve international readability. This is a very minor point and does not affect functionality.
+
+**Suggestions for Improvement:**
+
+*   **Consistent Naming:** As mentioned above, consider renaming `avalua` to `process_case` (or `handle_case`) and `printea` to `print_most_frequent` (or `print_top_k`) for broader accessibility.
+*   **Early Exit in `printea`:** The `if k > 0: ... else: break` structure is correct. For extremely large sets of unique words (`M`) and very small `k`, using `itertools.islice` on the sorted iterator could be an alternative, but the current `for` loop with a counter is equally effective and clear. No significant functional improvement is needed here.
+
+Overall, the provided solution is robust, efficient, and well-written, demonstrating a strong understanding of both the problem and effective Python programming techniques.

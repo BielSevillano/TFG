@@ -1,0 +1,73 @@
+### Feedback for the "Array merge" program
+
+**Problem Summary:**
+The problem "Array merge" asks for a function that takes two already sorted lists (or vectors) of numbers, `v1` and `v2`, and merges them into a single sorted list containing all elements from both input lists, including duplicates. For example, merging `[2, 3, 5]` and `[3, 5, 5, 7]` should result in `[2, 3, 3, 5, 5, 5, 7]`.
+
+**Solution Approach in the Submitted Program:**
+The provided Python program includes a function named `merge` that attempts to solve this problem. It initializes an empty list `resultat` and uses a nested loop structure, iterating through `v1` with an outer loop and `v2` with an inner loop, attempting to compare elements and determine a "minimum" to append.
+
+**Analysis of Code's Strengths and Weaknesses:**
+
+*   **Strengths:**
+    *   The intention to create a new list (`resultat`) to store the merged elements is correct.
+
+*   **Weaknesses:**
+    *   **Incorrect Algorithm for Merging Sorted Lists:** The primary flaw is the use of nested loops (`for i in range(len(v1)): for j in range(len(v2)):`). This approach is highly inefficient (O(len(v1) \* len(v2))) and fundamentally incorrect for merging two *already sorted* lists. The standard and much more efficient algorithm involves a single pass using two pointers (O(len(v1) + len(v2))).
+    *   **Premature Return and `None` Value:** The statement `return resultat.append(minim)` is placed inside the outer loop. This causes the function to terminate immediately after processing only the first element of `v1` (i.e., `v1[0]` is compared against all elements of `v2`). Additionally, the `list.append()` method modifies the list in place but returns `None`. Consequently, the function will always return `None` after its very first iteration.
+    *   **Flawed Merging Logic:** The conditional statements (`if`, `elif`, `else`) within the inner loop do not correctly build the merged list.
+        *   The `minim` variable is assigned, but its value is not consistently appended to `resultat`.
+        *   When `v1[i] == v2[j]`, only `v2[j]` is appended, while `v1[i]` (which is equal) is not explicitly added. Both should be included.
+        *   The code does not handle the scenario where one input list is completely processed before the other, failing to append any remaining elements from the longer list.
+
+**Suggestions for Improvement:**
+
+To correctly and efficiently merge two sorted lists, implement the standard two-pointer algorithm:
+
+1.  **Initialize Pointers and Result List:**
+    *   Create an empty list `resultat` to store the merged elements.
+    *   Initialize two pointers (indices), `ptr1 = 0` for `v1` and `ptr2 = 0` for `v2`.
+
+2.  **Main Merging Loop:**
+    *   Use a `while` loop that continues as long as `ptr1` is within the bounds of `v1` and `ptr2` is within the bounds of `v2`.
+    *   Inside the loop:
+        *   Compare `v1[ptr1]` and `v2[ptr2]`.
+        *   If `v1[ptr1] <= v2[ptr2]`, append `v1[ptr1]` to `resultat` and increment `ptr1`.
+        *   Else (if `v2[ptr2]` is smaller), append `v2[ptr2]` to `resultat` and increment `ptr2`.
+
+3.  **Append Remaining Elements:**
+    *   After the main loop finishes, one of the lists might still have elements that haven't been added to `resultat`.
+    *   Append all remaining elements from `v1` (from `ptr1` onwards) to `resultat`.
+    *   Append all remaining elements from `v2` (from `ptr2` onwards) to `resultat`.
+
+4.  **Return Result:**
+    *   Finally, `return resultat` outside of all loops.
+
+Here's an example of how the improved `merge` function could look in Python:
+
+```python
+def merge(v1: list[float], v2: list[float]) -> list[float]:
+    resultat = []
+    ptr1 = 0
+    ptr2 = 0
+    
+    # Merge elements while both pointers are within their respective list bounds
+    while ptr1 < len(v1) and ptr2 < len(v2):
+        if v1[ptr1] <= v2[ptr2]:
+            resultat.append(v1[ptr1])
+            ptr1 += 1
+        else:
+            resultat.append(v2[ptr2])
+            ptr2 += 1
+            
+    # Append any remaining elements from v1
+    while ptr1 < len(v1):
+        resultat.append(v1[ptr1])
+        ptr1 += 1
+        
+    # Append any remaining elements from v2
+    while ptr2 < len(v2):
+        resultat.append(v2[ptr2])
+        ptr2 += 1
+        
+    return resultat
+```

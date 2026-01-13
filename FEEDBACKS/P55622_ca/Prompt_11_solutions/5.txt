@@ -1,0 +1,49 @@
+Here's a feedback text for the provided Python program:
+
+---
+
+### Feedback for "Nombre de dígits (1)" Program
+
+**1. Summary of the Problem and Solution Approach:**
+
+The problem "Nombre de dígits (1)" asks the user to write a program that reads a natural number (`n`) and outputs the count of its digits. The provided Python program attempts to solve this by:
+*   Handling the special case where `n` is `0`, assigning `1` digit.
+*   For positive integers, it uses a `while` loop to repeatedly perform integer division by `10` (`n //= 10`) and increments a counter (`d`) in each iteration. This effectively counts how many times a digit is "removed" until the number becomes `0`, thus yielding the total number of digits.
+*   It stores the original input `n` in `n2` to be used in the output string.
+
+**2. Analysis of the Code's Strengths and Weaknesses:**
+
+**Strengths:**
+*   **Correct Logic for Digit Counting:** The core logic of using integer division (`n //= 10`) to count digits for positive integers is correct and a standard approach.
+*   **Handles `n = 0` Correctly:** The program correctly identifies that the number `0` has one digit, which is an important edge case.
+*   **Variable `n2`:** The use of `n2` to preserve the original input value `n` is a good practice if the original number needs to be displayed in the output alongside the result (though in this case, the specific output format is the issue).
+
+**Weaknesses:**
+*   **Major Flaw: Double Output for `n = 0`:** When the input `n` is `0`, the program prints the result statement twice. This is because there's a `print` statement inside the `if n == 0:` block, and another `print` statement at the end of the script that is always executed. This causes a "Wrong Answer" verdict.
+*   **Output Format Mismatch:** The problem statement "Cal escriure el nombre de dígits de n" typically implies that only the numerical digit count should be printed (e.g., `3` for input `123`). The current program prints a descriptive sentence ("El nombre de digits de X es Y"), which is generally not the expected format in competitive programming unless explicitly specified.
+
+**3. Suggestions for Improvement:**
+
+1.  **Consolidate Print Statements:** Structure the code so that the final result (`d`) is printed only once, after it has been correctly determined for all cases (including `n=0` and `n > 0`). Remove the `print` statement from within the `if n == 0:` block.
+2.  **Adhere to Output Format:** Modify the `print` statement to output *only* the integer value of `d` (the digit count), without any additional text.
+
+**Revised Code Example (Demonstrating Improvements):**
+
+```python
+from yogi import read
+
+n = read(int)
+
+d = 0 # Initialize d
+
+if n == 0:
+    d = 1
+else:
+    # We can modify 'n' directly here, as its original value
+    # is no longer needed after the initial check for 0.
+    while n != 0:
+        n = n // 10
+        d = d + 1
+
+print(d) # Print only the digit count, once.
+```

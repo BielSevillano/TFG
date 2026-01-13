@@ -1,0 +1,36 @@
+Here's a feedback text for the provided Python program:
+
+---
+
+### Feedback: Fusió de taules
+
+**1. Problem Summary and Solution Approach**
+
+The problem "Fusió de taules" requires implementing a function that merges two pre-sorted lists (or vectors) of floating-point numbers, `v1` and `v2`, into a single, new sorted list. An important condition is that duplicate elements must be preserved. For example, merging `[2, 3, 5]` and `[3, 5, 5, 7]` should result in `[2, 3, 3, 5, 5, 5, 7]`.
+
+The provided Python code's `fusio` function employs a classic two-pointer (or merge) algorithm, which is highly suitable for this task given the sorted input. It initializes two pointers, one for each input list, and a new empty list to store the result. In a loop, it compares the elements pointed to by the two pointers, appending the smaller one to the result list and advancing the corresponding pointer. Once one of the input lists is exhausted, any remaining elements from the other list are simply appended to the result.
+
+**2. Code Strengths and Weaknesses**
+
+**Strengths:**
+
+*   **Correct Algorithm:** The `fusio` function correctly implements the merge algorithm. It accurately combines the two sorted lists while preserving duplicates, adhering perfectly to the problem's requirements.
+*   **Optimal Time Complexity:** The merge algorithm runs in O(N + M) time, where N and M are the lengths of the input lists. This is an optimal solution as every element from both lists must be visited at least once.
+*   **Readability:** The code is well-structured and uses clear, descriptive variable names (even if in Catalan, which is appropriate for the context). The logic is straightforward and easy to follow.
+*   **Type Hinting:** The `fusio` function includes type hints, which improves code clarity and maintainability.
+
+**Weaknesses / Areas for Improvement:**
+
+*   **External Code and Presentation Error:** The most significant issue, indicated by the "Presentation Error," stems from the `main` function. The problem statement explicitly states: "Només cal enviar el procediment demanat; el programa principal serà ignorat." This means only the `fusio` function should be submitted. The `main` function, with its `print(n1+n2)` and `print(" ",end="")` statements, produces output that does not conform to the typical expectations of an online judge for this type of problem (usually just the merged list elements, separated by spaces). Removing the `main` function and all associated input/output logic (`yogi` import, `llegir_dades`, `read` calls, and `print` statements) would resolve the "Presentation Error."
+*   **Inaccurate Type Hinting:** In the `llegir_dades` function, the type hint `->list[int]` is incorrect as the function reads and appends `float` values (`x = read(float)`). This should be corrected to `->list[float]`.
+*   **Redundant Input/Output Logic:** While functional for local testing, the `from yogi import read` import and the `llegir_dades` and `main` functions are extraneous to the core problem requirement (the `fusio` function itself). In a submission where only the function is expected, this entire section should be omitted.
+
+**3. Suggestions for Improvement:**
+
+1.  **Strictly Follow Submission Guidelines:** The primary recommendation is to always submit *only* the requested function (`fusio` in this case), without any additional input reading, output printing, or helper functions/imports that are not part of the required procedure. This would have prevented the "Presentation Error."
+2.  **Correct Type Hints:** Ensure all type hints are accurate. Change `llegir_dades(n:int)->list[int]` to `llegir_dades(n:int)->list[float]`.
+3.  **Refactor for Modularity (if retaining main for local testing):** If the `main` function and helpers are kept for local testing, consider isolating the I/O logic more clearly from the core algorithm. However, for submission, this is irrelevant.
+
+The `fusio` function itself is an excellent and correct implementation of the merge logic. The "Presentation Error" is purely an artifact of the surrounding `main` program's output format, which should not have been submitted.
+
+---

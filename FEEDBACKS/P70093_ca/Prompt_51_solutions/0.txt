@@ -1,0 +1,56 @@
+Here's a feedback text for the provided Python program:
+
+---
+
+### Feedback: Fusió de taules
+
+**1. Problem Summary and Solution Approach**
+
+The problem "Fusió de taules" requires implementing a function that merges two input lists (`v1` and `v2`). Both input lists are guaranteed to be sorted in ascending order. The resulting list must also be sorted in ascending order and include all elements from both input lists, preserving duplicates. For example, merging `[2, 3, 5]` and `[3, 5, 5, 7]` should produce `[2, 3, 3, 5, 5, 5, 7]`.
+
+The submitted program uses a classic two-pointer (or merge) algorithm within its `fusio` function. It initializes pointers for both input lists and iteratively compares elements, appending the smaller one to a new result list. This process continues until one list is exhausted, after which any remaining elements from the other list are appended.
+
+**2. Analysis of the Code's Strengths and Weaknesses**
+
+**Strengths:**
+
+*   **Correct and Efficient Algorithm:** The `fusio` function correctly implements the merge algorithm for sorted lists. This approach is highly efficient, with a time complexity of O(N + M) (where N and M are the lengths of the input lists), which is optimal for this problem. It correctly handles duplicates and maintains the sorted order.
+*   **Readability:** The `fusio` function's logic is clear and easy to follow. Variable names are descriptive within the context.
+*   **Modularity:** The core merging logic is encapsulated in the `fusio` function, separating it cleanly from input/output operations.
+*   **Type Hinting:** The use of type hints (`v1: list[float]`, `v2: list[float] -> list[float]`) is a good practice for code clarity and maintainability.
+
+**Weaknesses:**
+
+*   **"Presentation Error" (Output Format):** The primary reason for the "Presentation Error" is in the `main` function's output.
+    *   `print(n1+n2)`: The problem description does not ask for the total number of elements to be printed. This line produces extraneous output.
+    *   `print(" ",end="")`: This line prints a leading space before the merged list. Standard problem output usually expects just the data, without such leading characters unless explicitly specified.
+*   **Minor Type Mismatch in `llegir_dades`:** The type hint for `llegir_dades` is `-> list[int]` while it reads `read(float)`. This should consistently be `list[float]`.
+*   **Slightly Redundant Helper Function (`llegir_dades`):** While not a significant flaw, the `llegir_dades` function could be made more concise using a list comprehension in Python, e.g., `[read(float) for _ in range(n)]`. This is a matter of style rather than correctness or performance.
+*   **Dependency on `yogi` library:** The use of `from yogi import read` indicates reliance on a specific online judge system's I/O library, which is fine for the context but makes the code less portable to a general Python environment.
+
+**3. Suggestions for Improvement**
+
+*   **Correct the Output Format in `main`:** This is the most critical fix to resolve the "Presentation Error."
+    *   Remove the line `print(n1+n2)`.
+    *   Remove the line `print(" ",end="")`. The `print(*fusio(v1,v2))` statement already handles printing the list elements separated by spaces, which is the typical expected format for such problems.
+
+    Revised `main` function:
+    ```python
+    def main():
+        n1 = read(int)
+        v1 = llegir_dades(n1)
+        n2 = read(int)
+        v2 = llegir_dades(n2)
+        # print(n1+n2) # REMOVE THIS LINE
+        # print(" ",end="") # REMOVE OR MODIFY THIS LINE
+        print(*fusio(v1,v2)) # This should produce the correct space-separated output
+    ```
+*   **Adjust Type Hint in `llegir_dades`:**
+    Change `def llegir_dades(n:int)->list[int]:` to `def llegir_dades(n:int)->list[float]:` to correctly reflect that it reads float values.
+*   **Consider a more concise `llegir_dades` (Optional):**
+    ```python
+    def llegir_dades(n: int) -> list[float]:
+        return [read(float) for _ in range(n)]
+    ```
+
+By addressing the output formatting in `main` and the minor type hint inconsistency, the program should pass the "Presentation Error" and correctly solve the problem. The core `fusio` algorithm is well-implemented and efficient.

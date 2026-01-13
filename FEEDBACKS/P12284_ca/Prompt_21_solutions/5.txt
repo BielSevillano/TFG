@@ -1,0 +1,74 @@
+This program efficiently solves the problem of finding the `k` most frequent words from a sequence. It demonstrates a clear understanding of Python's data structures and sorting capabilities.
+
+---
+
+### **Feedback: Most Frequent Words Program**
+
+**1. Problem Summary and Solution Approach**
+
+The problem requires reading a sequence of `n` words and identifying the `k` most frequent ones. The output must be sorted first by frequency in descending order, and then alphabetically in ascending order for words with the same frequency. Each test case output is separated by a line of ten hyphens.
+
+The program approaches this problem by:
+1.  **Frequency Counting:** It reads all `n` words for a given test case and stores their frequencies in a dictionary (`freq`), where keys are words and values are their counts.
+2.  **Sorting:** After counting all frequencies, it sorts the unique words (keys of the dictionary) based on the specified criteria:
+    *   Primary sort key: frequency in *descending* order.
+    *   Secondary sort key (for ties in frequency): word itself in *ascending* alphabetical order.
+3.  **Output:** It then iterates through the sorted list and prints the first `k` words, followed by the "----------" separator.
+
+**2. Analysis of the Code's Strengths and Weaknesses**
+
+**Strengths:**
+
+*   **Correctness:** The core logic, especially the sorting key `lambda x: (-freq[x], x)`, perfectly implements the required sorting order (descending frequency, then ascending alphabetical order for ties). This is a common and highly effective Python idiom for multi-criteria sorting.
+*   **Clarity and Structure:** The code is well-organized into logical functions (`main`, `avalua`, `printea`), making it easy to understand each step of the process. Variable names like `freq` and `paraula` are descriptive.
+*   **Efficiency:**
+    *   Using a dictionary for frequency counting provides average `O(1)` time complexity for insertions and lookups, leading to `O(N)` overall for reading `N` words.
+    *   Sorting `M` unique words takes `O(M log M)` time, where `M` is the number of unique words (`M <= N`).
+    *   Printing `k` words is `O(k)`.
+    *   The overall time complexity, `O(N + M log M)`, is efficient and scales well for typical input sizes. This approach is generally more efficient than iterative selection methods often seen in other solutions.
+*   **Pythonic:** The use of `dict` for frequency counting and `lambda` for custom sorting leverages Python's powerful features effectively.
+*   **`yogi` integration:** Seamlessly uses `yogi` input functions as expected in the problem environment.
+
+**Weaknesses:**
+
+*   **No `collections.Counter`:** While the current frequency counting using a dictionary is correct and efficient, Python's `collections.Counter` can achieve the same result with more conciseness and slightly better readability for this specific task.
+*   **Memory Usage (Theoretical):** For extremely large `n` where most words are unique, storing all `n` words and their counts in the `freq` dictionary could consume significant memory. However, given typical competitive programming constraints, this is usually not an issue and is inherent to the problem's requirements.
+
+**3. Suggestions for Improvement**
+
+*   **Utilize `collections.Counter` for Frequency Counting:** This module is specifically designed for frequency analysis and can simplify the `avalua` function's word counting loop.
+
+    ```python
+    from yogi import *
+    from collections import Counter # Import Counter
+
+    def printea(freq: dict[str, int], k: int):
+        for paraula in sorted(freq.keys(), key=lambda x: (-freq[x], x)):
+            if k > 0:
+                print(paraula)
+                k -= 1
+            else:
+                break
+
+    def avalua(n: int, k: int): # freq parameter removed
+        # Replace manual counting with Counter
+        words = [read(str) for _ in range(n)]
+        freq = Counter(words)
+        
+        printea(freq, k)
+        print("-" * 10)
+
+    def main() -> None:
+        for n in tokens(int):
+            k = read(int)
+            avalua(n, k) # freq dictionary created inside avalua
+
+    main()
+    ```
+    This change makes the `avalua` function more concise and declarative.
+
+*   **Add Docstrings:** For better code documentation and maintainability, adding comprehensive docstrings (explaining what each function does, its parameters, and what it returns) would be beneficial, although often skipped in competitive programming.
+
+---
+
+Overall, this is an **Accepted** and well-implemented solution. It correctly and efficiently solves the problem by leveraging appropriate data structures and Python's built-in sorting mechanisms. The minor suggestions are primarily for conciseness and adherence to best practices, rather than addressing any fundamental flaws in correctness or performance for the given problem context.

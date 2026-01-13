@@ -1,0 +1,65 @@
+Here's a feedback text for the provided Python program:
+
+---
+
+### Feedback on "Múltiple més petit" Program
+
+**Problem Summary:**
+The problem "Múltiple més petit" (Smallest Multiple) requires writing a program that, for each given pair of natural numbers `a` and `b` (where `b ≥ 1`), calculates and prints the smallest natural number `x` such that `x` is greater than or equal to `a`, and `x` is also a multiple of `b`. The output for each pair should be formatted with a case number, starting from 1.
+
+**Solution Approach:**
+The provided Python program attempts to solve this problem by:
+1.  Reading an initial integer, presumably the number of test cases.
+2.  Iterating through each case.
+3.  For each case, reading two integers `a` and `b`.
+4.  Calculating `x` using the formula `x = (a + b - 1) // b * b`.
+5.  Printing the result `x` along with the case number.
+
+**Analysis of the Code's Strengths and Weaknesses:**
+
+**Strengths:**
+*   **Correct Core Logic:** The mathematical formula `x = (a + b - 1) // b * b` is a highly efficient and accurate way to find the smallest multiple of `b` that is greater than or equal to `a`. This formula correctly handles all valid inputs where `a` is a multiple of `b` and when it is not.
+*   **Efficiency:** The calculation for each test case is `O(1)`, involving only basic arithmetic operations.
+*   **Readability:** The code is concise and straightforward, making it easy to understand the intended logic.
+*   **Pythonic Input/Output:** Using `map(int, input().split())` for reading integers and `print("#{} : {}".format(i, x))` for formatted output are good Python practices.
+
+**Weaknesses:**
+*   **Incorrect Input Handling (Likely Cause of "Wrong Answer"):** The most significant weakness, and almost certainly the reason for the "Wrong Answer" verdict, lies in the program's input reading strategy. The problem statement "L’entrada consisteix en una seqüència de parells de naturals a i b" typically implies that input should be read pair by pair until the End-Of-File (EOF) is reached, without an explicit initial count of test cases. Your program, however, starts by reading `casos = int(input())`, assuming the first line provides this count. If the input format follows the "sequence until EOF" pattern, reading `casos` will consume the first `a` value, leading to misaligned input and incorrect results for all subsequent lines.
+
+*(Note: The "other possible solutions" provided are for a completely different problem (word frequency counting) and are therefore not relevant for analyzing this specific program or problem.)*
+
+**Suggestions for Improvement:**
+
+1.  **Adapt Input Loop for EOF:** To correctly handle the input as a sequence of pairs until EOF, modify the input loop. Instead of `while i <= casos:`, use a loop that attempts to read input continuously and breaks on `EOFError`.
+
+    ```python
+    import sys
+
+    case_num = 1
+    for line in sys.stdin:
+        # Skip empty lines, if any (e.g., final newline)
+        if not line.strip():
+            continue 
+        
+        a, b = map(int, line.split())
+        x = (a + b - 1) // b * b
+        print("#{} : {}".format(case_num, x))
+        case_num += 1
+    ```
+    This `sys.stdin` approach is generally more robust for competitive programming environments. Alternatively, for interactive execution or simpler environments:
+    ```python
+    case_num = 1
+    while True:
+        try:
+            a, b = map(int, input().split())
+            x = (a + b - 1) // b * b
+            print("#{} : {}".format(case_num, x))
+            case_num += 1
+        except EOFError:
+            break # Exit loop when no more input
+        except ValueError: 
+            # Catch cases where input line might be empty or malformed unexpectedly
+            break 
+    ```
+
+By addressing the input handling, the program's correct core logic for calculating the smallest multiple should then yield the expected "Accepted" verdict.

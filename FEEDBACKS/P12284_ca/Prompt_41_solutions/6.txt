@@ -1,0 +1,67 @@
+Here's a feedback text for the provided Python program:
+
+---
+
+### Feedback for "Paraules més freqüents" Program
+
+**Problem Summary:**
+The problem requires reading a sequence of `n` words and then printing the `k` most frequent words. If there's a tie in frequency, words that are lexicographically smaller should be prioritized. This process needs to be repeated for multiple test cases.
+
+**Solution Approach:**
+The program attempts to solve this by:
+1.  Using a dictionary (`dic`) to store each unique word and its corresponding frequency count.
+2.  After reading all `n` words for a given test case, it sorts the dictionary items (word-frequency pairs) in two steps: first by word alphabetically, and then by frequency in descending order. Python's stable sort ensures that the alphabetical order is preserved for words with the same frequency.
+3.  Finally, it iterates through the top `k` elements of the sorted result and prints them, followed by a separator line.
+
+**Code Analysis:**
+
+**Strengths:**
+*   **Efficient Counting:** Using a dictionary (`dic`) for counting word frequencies is an efficient approach, offering average O(1) time complexity for insertions and updates.
+*   **Concise Sorting:** The use of Python's `sorted()` function with `lambda` expressions is a powerful and concise way to specify custom sorting criteria. The two-step sort correctly leverages the stability of Python's `sorted()` to implement the tie-breaking rule (higher frequency first, then lexicographically smaller word).
+
+**Weaknesses and Cause of Execution Error:**
+*   **Critical Bug: Dictionary Not Reset (Main Cause of Execution Error)**: The most significant flaw in the code, and likely the cause of the "Execution Error," is that the `dic` (the dictionary storing word counts) is initialized only once at the beginning of the `main` function. This means that for subsequent test cases in the input, `dic` is *not* cleared. Words and their counts from previous test cases accumulate, leading to incorrect results for all but the first test case. This accumulation can also cause the dictionary to grow excessively large, potentially exceeding memory limits or time limits for large inputs, which manifest as an "Execution Error" on online judges.
+*   **Inefficient Intermediate Steps in Sorting:** While functionally correct due to Python's stable sort, converting the `sorted` list back into a `dict()` twice (`quasi_sorted_dict = dict(...)`, `sorted_dict = dict(...)`) is an unnecessary overhead. `dict()` preserves insertion order in Python 3.7+, but a list of tuples is perfectly sufficient for iteration and further sorting.
+*   **Incorrect Type Hinting:** The type hint `dic: Dict() = {}` is syntactically incorrect for Python. It should be `dic: dict[str, int] = {}` (Python 3.9+) or `from typing import Dict; dic: Dict[str, int] = {}` (for older Python versions). This is a minor stylistic issue and does not cause runtime errors.
+
+**Suggestions for Improvement:**
+
+1.  **Reset Dictionary per Test Case (Critical Fix):**
+    Move the dictionary initialization `dic: dict[str, int] = {}` inside the `for n in tokens(int):` loop. This ensures that `dic` is fresh for each new test case.
+
+    ```python
+    def main():
+        for n in tokens(int):
+            dic: dict[str, int] = {} # Initialize for each test case
+            k = read(int)
+            # ... rest of the code for word counting ...
+    ```
+
+2.  **Simplify and Optimize Sorting:**
+    Combine the two sorting steps into a single, more efficient sort using a custom key that directly reflects the problem's criteria.
+
+    ```python
+    def main():
+        for n in tokens(int):
+            dic: dict[str, int] = {}
+            k = read(int)
+            for i in range(n):
+                word = read(str)
+                dic[word] = dic.get(word, 0) + 1 # More concise way to count
+            
+            # Sort directly: by frequency (descending), then by word (ascending)
+            # Using -x[1] for descending frequency and x[0] for ascending word.
+            sorted_items = sorted(dic.items(), key=lambda x: (-x[1], x[0]))
+            
+            compt = 0
+            for word, _ in sorted_items: # Iterate over the sorted (word, freq) tuples
+                if compt < k:
+                    print(word)
+                    compt += 1
+            print("----------")
+    ```
+
+3.  **Correct Type Hinting (Optional but Recommended):**
+    Use `dict[str, int]` for Python 3.9+ or import `Dict` from `typing` for older versions.
+
+By implementing these suggestions, especially resetting the dictionary, the program should produce correct results and run efficiently within typical competitive programming constraints.

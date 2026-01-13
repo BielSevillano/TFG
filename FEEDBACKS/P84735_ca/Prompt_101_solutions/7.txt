@@ -1,0 +1,52 @@
+Here's a feedback text for your program:
+
+---
+
+**Feedback for "Múltiple més petit" Program**
+
+**1. Summary of the Problem and Solution Approach:**
+
+The problem asks us to find the smallest natural number `x` for given inputs `a` and `b`, such that `x` is greater than or equal to `a` and `x` is a multiple of `b`. For instance, if `a=10` and `b=3`, the answer is `12`. If `a=9` and `b=3`, the answer is `9`.
+
+Your program implements a mathematically sound approach to solve this. It uses the formula `x = (a + b - 1) // b * b`. This formula effectively computes `ceil(a / b) * b`, which gives the smallest multiple of `b` that is greater than or equal to `a`.
+
+**2. Analysis of the Code's Strengths and Weaknesses:**
+
+*   **Strengths:**
+    *   **Correct Logic:** The core calculation `x = (a + b - 1) // b * b` is an efficient and correct way to find the smallest multiple `x` of `b` such that `x >= a`. This is the most crucial part of solving the problem.
+    *   **Clarity:** The code is straightforward and easy to understand.
+    *   **Output Formatting:** The `print("#{} : {}".format(i, x))` statement correctly matches the specified output format, including the case number.
+
+*   **Weaknesses:**
+    *   **Incorrect Input Handling (Primary Issue):** The main reason for the "Wrong Answer" verdict is likely how the program reads input. The problem statement says, "L’entrada consisteix en una seqüència de parells de naturals a i b..." (The input consists of a sequence of pairs of natural numbers a and b...). This implies that your program should read pairs of `a` and `b` repeatedly until there is no more input (End Of File - EOF).
+        Your current code `casos = int(input())` assumes that the very first line of input will specify the *number* of test cases. If the input format does not provide this initial count (which the problem statement suggests), then this line will either cause an error (if the first `a` is not a single integer) or consume the first `a` value, leading to all subsequent calculations being off-by-one or incorrect. This is a common pitfall in competitive programming.
+
+**3. Suggestions for Improvement:**
+
+The primary improvement needed is to adjust the input reading mechanism to match the problem's specification of a "sequence of pairs" until EOF.
+
+Here's how you can modify the input loop in Python:
+
+```python
+case_num = 1 # Initialize case number
+while True:
+    try:
+        line = input() # Read a line of input
+        if not line: # Check for empty line before EOF in some environments
+            break
+        a, b = map(int, line.split()) # Parse a and b from the line
+
+        # Your correct calculation logic
+        x = (a + b - 1) // b * b
+
+        print("#{} : {}".format(case_num, x))
+        case_num += 1
+    except EOFError:
+        # Break the loop when End Of File is reached
+        break
+    except ValueError:
+        # Handle cases where line cannot be split into two integers (e.g., malformed input or just EOF)
+        break
+```
+
+By making this change, your program will correctly process all pairs of `a` and `b` as provided in the input sequence, addressing the most probable cause of the "Wrong Answer". The mathematical logic for finding the smallest multiple is already correct, so with the proper input handling, your solution should pass.

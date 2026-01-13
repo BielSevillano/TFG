@@ -1,0 +1,77 @@
+Here's a feedback text for the provided Python program:
+
+---
+
+### Feedback: Paraules més freqüents (Most Frequent Words)
+
+**1. Problem Summary and Solution Approach**
+
+The problem requires reading a sequence of `n` words and identifying the `k` most frequent ones. In cases where words have the same frequency, they should be ordered lexicographically (alphabetically, smallest first). The output should list these `k` words, followed by a separator line.
+
+The program implements a common and generally efficient approach:
+1.  **Read all words:** All `n` input words are read into a list `P`.
+2.  **Sort words alphabetically:** The list `P` is sorted (`P.sort()`). This crucial step groups identical words together, making frequency counting straightforward.
+3.  **Count frequencies of unique words:** The program iterates through the sorted list `P`, identifying unique words and counting their consecutive occurrences. These unique words and their counts are stored in a list `V` of `Info` objects (each `Info` object stores a `par` (word) and its `num` (frequency)).
+4.  **Sort unique words by frequency and alphabetical order:** The list `V` (containing unique words and their frequencies) is then sorted according to the problem's criteria: highest frequency first, and for ties, smallest word alphabetically first.
+5.  **Print top k words:** Finally, the program prints the `par` attribute (the word) of the first `k` `Info` objects from the sorted list `V`.
+
+**2. Code Analysis: Strengths and Weaknesses**
+
+**Strengths:**
+
+*   **Clear Problem Understanding:** The code correctly interprets the problem's requirements for identifying the `k` most frequent words and the tie-breaking rule (alphabetical order).
+*   **Effective Data Structure:** The `Info` class elegantly pairs each word with its frequency, making it easy to handle both pieces of information together.
+*   **Efficient Frequency Counting:** By first sorting the entire list of input words (`P.sort()`), the program can count frequencies in a single pass (`while i < n` loop) with optimal efficiency for this step. This is a standard and good practice.
+*   **Modular Comparator Logic:** The `comp` function clearly defines the desired sorting logic based on frequency and then alphabetical order, making the intent readable.
+*   **Handles Multiple Test Cases:** The `while n is not None and k is not None` loop correctly handles multiple input cases as specified.
+
+**Weaknesses:**
+
+*   **Incorrect Usage of `list.sort()` with `key`:** This is the primary reason for the "Wrong Answer." In Python, the `key` argument for `list.sort()` (or the `sorted()` built-in) expects a function that takes *one* argument (an element from the list) and returns a *comparison key* for that element. The `comp` function you've defined, however, is a *comparison function* that takes *two* arguments and returns `True` or `False` to indicate relative order.
+    *   When `V.sort(key=comp, reverse=True)` is executed, Python tries to call `comp(an_Info_object)` for each `Info` object in `V`. Since `comp` is designed to take two arguments, this call is incorrect and won't produce the desired comparison keys. It likely results in `TypeError` or unexpected behavior depending on how Python attempts to interpret `comp` as a single-argument function, leading to incorrect sorting.
+    *   The `reverse=True` argument is also redundant and potentially confusing if the `key` were to be structured correctly to produce descending order (by using negative numbers or appropriate tuple ordering).
+
+**3. Suggestions for Improvement**
+
+The core algorithm is solid; the main fix involves correctly applying the sorting logic in Python.
+
+1.  **Most Pythonic Fix: Use a Tuple as a Sort Key:**
+    The most idiomatic and clear way to handle multi-criteria sorting in Python is to return a tuple from the `key` function. Python compares tuples element by element. To achieve descending order for frequency, you can multiply the frequency by -1.
+
+    Modify the sorting line as follows:
+
+    ```python
+    # V.sort(key=comp, reverse=True)  <-- THIS IS THE PROBLEM LINE
+    
+    # Corrected line:
+    V.sort(key=lambda x: (-x.num, x.par))
+    ```
+    *   `lambda x: (-x.num, x.par)`: For each `Info` object `x`, this creates a tuple `(-frequency, word)`.
+    *   When sorting, Python first compares the first elements of the tuples (`-x.num`). A higher `x.num` results in a smaller `-x.num`, effectively sorting by frequency in *descending* order.
+    *   If `-x.num` values are equal (meaning frequencies are the same), Python then compares the second elements of the tuples (`x.par`). This sorts words alphabetically in *ascending* order (smaller word first), which matches the tie-breaking rule.
+
+2.  **Alternative Fix: Adapt `comp` for `functools.cmp_to_key` (Less Pythonic for new code):**
+    If you specifically want to use a comparison function that takes two arguments (like your `comp`), you need to use `functools.cmp_to_key`. This function wraps an old-style `cmp` function (which returns -1, 0, or 1) so it can be used with `key`.
+
+    First, modify your `comp` function to return -1, 0, or 1:
+    ```python
+    import functools # Add this import at the top
+
+    # ... (Info class) ...
+
+    # Define the comparison function to return -1, 0, or 1
+    def comp_for_key(a, b):
+      if a.num != b.num:
+        # If frequencies are different, higher frequency comes first (a before b)
+        return -1 if a.num > b.num else 1
+      # If frequencies are equal, smaller word alphabetically comes first (a before b)
+      return -1 if a.par < b.par else (1 if a.par > b.par else 0)
+
+    # ... (main function) ...
+
+    # Then, use it with functools.cmp_to_key
+    V.sort(key=functools.cmp_to_key(comp_for_key)) # No reverse=True needed
+    ```
+    This approach works but is generally considered less idiomatic Python than the tuple-based key, which is simpler and often more performant.
+
+By implementing the first suggestion (`V.sort(key=lambda x: (-x.num, x.par))`), your program should correctly sort the words according to the problem statement and produce the expected output.

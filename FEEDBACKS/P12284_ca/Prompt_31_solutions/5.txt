@@ -1,0 +1,45 @@
+Here's a feedback text for the program:
+
+---
+
+### Feedback: Paraules més freqüents
+
+This program addresses the classic problem of finding the `k` most frequent words from a given sequence of `n` words. The key challenge is to handle ties in frequency by prioritizing words that appear earlier in alphabetical (lexicographical) order.
+
+**Solution Approach Summary:**
+The program efficiently tackles this problem using a dictionary to store word frequencies. For each input case, it reads `n` words, incrementing their counts in a `freq` dictionary. After processing all words, it sorts the dictionary's keys (words) based on two criteria: primary sorting by frequency in descending order, and secondary sorting by the word itself in ascending alphabetical order. Finally, it iterates through this sorted list and prints the first `k` words.
+
+**Code Analysis:**
+
+**Strengths:**
+*   **Pythonic and Concise:** The solution leverages Python's powerful built-in data structures and functions effectively. The use of a `dict` for frequency counting is ideal for its average O(1) lookup and update times.
+*   **Elegant Sorting:** The custom sorting logic, `key=lambda x: (-freq[x], x)`, is particularly elegant and Pythonic. It correctly implements the required dual-criteria sort: frequencies in descending order (using negation `-freq[x]`) and then words alphabetically in ascending order.
+*   **Readability and Modularity:** The code is well-structured with clear function divisions (`avalua` for processing input and counting, `printea` for printing, and `main` for overall control). Variable names are descriptive, contributing to good readability.
+*   **Efficiency:** The overall time complexity is efficient. Counting frequencies takes O(N) time (where N is the total number of words). Sorting the unique words takes O(M log M) time (where M is the number of unique words, and M <= N). Printing the top `k` words takes O(K) time. This approach is generally optimal for the given constraints.
+*   **Correctness for Multiple Test Cases:** The `main` function correctly uses `yogi.tokens(int)` to iterate through multiple test cases, which is standard practice for Jutge.org problems.
+
+**Weaknesses:**
+*   **Minor Redundancy in `printea`:** The `printea` function currently iterates through *all* unique words and then uses an `if k > 0: ... else: break` structure. While correct, it can be slightly more direct by slicing the sorted list to only include the first `k` elements, as shown in the suggestions.
+*   **Slightly Less Pythonic Counting:** The `avalua` function explicitly checks `if a not in freq:` before incrementing. While correct, `freq[a] = freq.get(a, 0) + 1` or `freq[a] += 1` (if `a` is guaranteed to exist or initialized) are more concise ways to handle word counting in Python dictionaries. The `aux` variable is also unnecessary.
+
+**Suggestions for Improvement:**
+1.  **Simplify `printea` loop:** Modify the `printea` function to directly print the top `k` elements from the sorted list. This makes the intention clearer and removes redundant `k` checks:
+    ```python
+    def printea(freq: dict[str, int], k: int):
+        # Sort the words once and take the first k
+        sorted_words = sorted(freq.keys(), key=lambda x: (-freq[x], x))
+        for paraula in sorted_words[:k]: # Directly slice to get the first k elements
+            print(paraula)
+    ```
+2.  **Refine word counting in `avalua`:** Use the `dict.get()` method for a more concise way to count word frequencies:
+    ```python
+    def avalua(n: int, k: int, freq: dict[str, int]):
+        for _ in range(n):
+            a = read(str)
+            freq[a] = freq.get(a, 0) + 1 # Initializes to 0 if 'a' not present, then adds 1
+        printea(freq, k)
+        print("-" * 10)
+    ```
+    This removes the `if/else` block and the `aux` variable.
+
+Overall, this is an excellent and efficient solution that effectively utilizes Python's strengths to solve the problem with high clarity. The suggested improvements are minor stylistic refinements that would make the code even more concise.

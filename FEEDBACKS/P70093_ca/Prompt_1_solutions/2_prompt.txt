@@ -1,0 +1,99 @@
+
+                Write a feedback text for the following program that solves the problem described below.
+                
+                                Fusió de taules
+
+Feu una funció que fusioni els vectors ordenats @v1@ i @v2@ i en retorni
+el resultat, sense eliminar els elements repetits. Per exemple, el
+resultat de fusionar una taula amb 2, 3 i 5 amb una taula amb 3, 5, 5 i
+7 és una taula amb 2, 3, 3, 5, 5, 5 i 7.
+
+Interfície
+
++-------:+:------------------------------------------------------------------------------+
+| C++    |     vector<double> fusio(const vector<double>& v1, const vector<double>& v2); |
++--------+-------------------------------------------------------------------------------+
+| Java   |     public static double[] fusio(double[] v1, double[] v2);                   |
++--------+-------------------------------------------------------------------------------+
+| Python |     fusio(v1, v2)  # returns list                                             |
++--------+-------------------------------------------------------------------------------+
+| MyPy   |     fusio(v1: list[float], v2: list[float]) -> list[float]                    |
++--------+-------------------------------------------------------------------------------+
+
+Precondició
+
+@v1@ i @v2@ estan ordenats de petit a gran.
+
+Observació
+
+Només cal enviar el procediment demanat; el programa principal serà
+ignorat.
+
+Autor
+
+Salvador Roura
+
+© Jutge.org, 2006–2025.
+
+
+                
+
+                This is the program:
+
+                #X90391
+def missing(lst):
+    if len(lst)==0:
+        return 0
+    for i in range(len(lst)+1):
+        if i not in lst:
+            return i
+
+#P70093
+def fusio(v1, v2):
+    lst=[]
+    while (len(v1) and len(v2))!=0:
+        x=v1[0]
+        y=v2[0]
+        if x>y:
+            lst.append(y)
+            v2.pop(0)
+        elif y>x:
+            lst.append(x)
+            v1.pop(0)
+        else:
+            lst.append(x*2)
+            v1.pop(0)
+            v2.pop(0)  
+    if len(v1)==0:
+        lst+=v2
+    elif len(v2)==0:
+        lst+=v1
+
+    return lst
+
+        
+
+
+                The result of the program is: Wrong Answer
+
+                The feedback should include:
+                - A brief summary of the problem and the solution approach.
+                - An analysis of the code's strengths and weaknesses.
+                - Suggestions for improvement, if any.
+
+                You can rely on the following other possible solutions to the same problem for reference:
+                def fusio(v1, v2):
+	fusionada = []
+	for i in range(max(len(v1),len(v2))):
+		try:
+			fusionada.append(v1[i])
+		except:
+			pass
+		try:
+			fusionada.append(v2[i])
+		except:
+			pass
+	return fusionada
+			
+
+                

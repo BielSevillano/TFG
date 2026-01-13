@@ -1,0 +1,59 @@
+### Feedback for the program "Fusió de taules"
+
+**Problem Summary:**
+The problem "Fusió de taules" (Table Merge) requires implementing a function `fusio` that takes two pre-sorted lists (or vectors) of numbers, `v1` and `v2`, and merges them into a single, new sorted list. The merged list must retain all elements, including duplicates, in their sorted order. For example, merging `[2, 3, 5]` and `[3, 5, 5, 7]` should yield `[2, 3, 3, 5, 5, 5, 7]`. The crucial instruction is that *only* the requested function should be submitted; any main program code will be ignored.
+
+**Solution Approach:**
+The provided Python program correctly implements the `fusio` function using a standard two-pointer (or merge) algorithm. It initializes two index pointers, `i1` and `i2`, for `v1` and `v2` respectively, and an empty list `llista_definitiva` to store the result. It iteratively compares the elements pointed to by `i1` and `i2`, appending the smaller element to `llista_definitiva` and advancing its corresponding pointer. Once one list is fully processed, the remaining elements of the other list are efficiently appended to the `llista_definitiva`.
+
+**Code Analysis:**
+
+**Strengths:**
+*   **Correct Merge Logic:** The `fusio` function accurately implements the merge algorithm for two sorted lists. It correctly handles the comparison of elements, maintains the sorted order, and preserves all duplicate values as required.
+*   **Efficiency:** The chosen two-pointer approach is highly efficient, with a time complexity of O(n + m), where n and m are the lengths of the input lists. This is optimal for merging sorted lists.
+*   **Robustness for Remaining Elements:** The use of `llista_definitiva.extend(v1[i1:])` and `llista_definitiva.extend(v2[i2:])` is an elegant and correct way to append any remaining elements from either list after one of them has been fully traversed.
+*   **Readability:** The variable names (`i1`, `i2`, `llista_definitiva`) are descriptive, making the logic within the `fusio` function easy to understand.
+
+**Weaknesses and Cause of "Presentation Error":**
+*   **Submission Guidelines Violation (Primary Cause of Error):** The most significant issue, and the direct cause of the "Presentation Error", is the inclusion of code outside the `fusio` function. The problem statement clearly specifies: "Només cal enviar el procediment demanat; el programa principal serà ignorat." (Only the requested procedure needs to be submitted; the main program will be ignored.) Your submission includes `from yogi import read`, `llegir_dades` function, `main()` function, and the call to `main()`. These are considered part of the main program, and their presence causes the "Presentation Error" as the judging system expects only the function definition.
+*   **Unnecessary Input/Output:** The `main` function performs input reading and output printing. The problem only asks for a function that *returns* a list, not for a program that reads input and prints results. The specific output format used (`print(n1+n2)`, `print(" ",end="")`, `print(*fusio(v1,v2))`) is also not part of the problem requirements.
+*   **Minor Type Hint Inconsistency:** In the `llegir_dades` function, the type hint `->list[int]` suggests it returns a list of integers, but the code `x = read(float)` indicates it reads and appends floating-point numbers. While the `fusio` function correctly handles `list[float]`, this is a slight inconsistency in the auxiliary function.
+
+**Suggestions for Improvement:**
+1.  **Crucial: Remove All External Code for Submission:** To resolve the "Presentation Error," your submission should *only* contain the `fusio` function definition. Delete everything else, including `from yogi import read`, `llegir_dades`, `main` function, and the `main()` call.
+    ```python
+    # This is what should be submitted:
+    def fusio(v1: list[float], v2: list[float]) -> list[float]:
+        i1 = 0
+        i2 = 0
+        llista_definitiva = []
+        while i1 < len(v1) and i2 < len(v2):
+            if v1[i1] < v2[i2]:
+                llista_definitiva.append(v1[i1])
+                i1 += 1
+            else:
+                llista_definitiva.append(v2[i2])
+                i2 += 1
+        llista_definitiva.extend(v1[i1:])
+        llista_definitiva.extend(v2[i2:])
+        return llista_definitiva
+    ```
+2.  **For Local Testing (Optional):** If you wish to test your function locally before submission, you can set up a simple main block using standard Python input/output or hardcoded lists, but this block must **not** be included in the final submission. For example:
+    ```python
+    # For local testing only (DO NOT SUBMIT THIS PART)
+    # def fusio(v1: list[float], v2: list[float]) -> list[float]:
+    #     # ... your fusio function code ...
+    #
+    # if __name__ == "__main__":
+    #     # Example using standard input
+    #     n1 = int(input())
+    #     v1 = list(map(float, input().split()))
+    #     n2 = int(input())
+    #     v2 = list(map(float, input().split()))
+    #     
+    #     result = fusio(v1, v2)
+    #     print(*result)
+    ```
+3.  **Ensure Consistent Type Hints (Minor):** If you decide to keep auxiliary functions for local development (and remove them before submission), make sure their type hints accurately reflect the data types they handle (e.g., `def llegir_dades(n: int) -> list[float]:` if reading floats).
+
+The `fusio` function itself is excellent and correctly solves the problem. The "Presentation Error" is purely due to non-adherence to the submission format specified in the problem statement.

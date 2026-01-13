@@ -1,0 +1,33 @@
+Here's a feedback text for the provided Python program:
+
+---
+
+### Feedback for "Fusió de taules"
+
+**Problem Summary:**
+The problem "Fusió de taules" asks for a function `fusio` that takes two already sorted lists of numbers (`v1` and `v2`) and merges them into a single sorted list. The crucial requirement is to preserve duplicate elements and maintain the ascending order. For example, merging `[2, 3, 5]` and `[3, 5, 5, 7]` should result in `[2, 3, 3, 5, 5, 5, 7]`.
+
+**Solution Approach:**
+The student's `fusio` function implements the classic two-pointer merge algorithm. It initializes two pointers, one for each input list, and an empty list to store the result. It then iteratively compares the elements pointed to by `i1` and `i2`, appending the smaller element to the result list and advancing the corresponding pointer. After one list is exhausted, it efficiently appends any remaining elements from the other list.
+
+**Code Analysis:**
+
+**Strengths:**
+1.  **Correct Algorithm:** The `fusio` function correctly implements the two-pointer merge algorithm, which is the most efficient method for merging two already sorted lists. This approach ensures the resulting list is sorted and includes all elements from both input lists, preserving duplicates.
+2.  **Efficiency:** The algorithm has an optimal time complexity of O(N + M), where N and M are the lengths of the input lists. This is because each element is visited and processed exactly once. The space complexity is O(N + M) for the new merged list.
+3.  **Readability:** The code for the `fusio` function is clear, well-structured, and easy to understand. Variable names like `llista_definitiva` are descriptive.
+4.  **Type Hinting:** The `fusio` function correctly uses type hints (`v1: list[float], v2: list[float]) -> list[float]`), aligning with modern Python best practices and the problem's MyPy interface.
+
+**Weaknesses:**
+1.  **"Presentation Error" - Unnecessary Main Program:** The problem statement explicitly specifies: "Només cal enviar el procediment demanat; el programa principal serà ignorat." (Only the requested procedure needs to be submitted; the main program will be ignored.) The student submitted the `llegir_dades` and `main` functions in addition to `fusio`. This is the most likely cause for the "Presentation Error" as the grading system expects *only* the `fusio` function and its output, not additional input/output operations from a `main` function.
+2.  **Incorrect Output Format in `main`:** If a `main` function *were* required, its output format would be incorrect. It first prints the sum of the lengths of the two input lists (`print(n1 + n2)`), then a single space (`print(" ", end="")`), and finally the merged list. The problem typically expects only the merged list, with elements separated by spaces (which `print(*list)` provides), without any extra lines or leading characters.
+3.  **Type Hint Inconsistency (`llegir_dades`):** In the `llegir_dades` function, the type hint `-> list[int]` contradicts the actual code `x = read(float)`, which reads floating-point numbers. While Python's dynamic typing handles this at runtime, it's a static type analysis inconsistency.
+
+**Suggestions for Improvement:**
+
+1.  **Adhere to Submission Requirements:** The most critical step is to **remove the `llegir_dades` and `main` functions** from the submission. Only the `fusio` function and its required imports (if any were specifically for `fusio`) should be submitted. This will directly address the "Presentation Error".
+2.  **Correct Type Hinting (if keeping `llegir_dades`):** If for any reason the `llegir_dades` function were to be kept (which it shouldn't be for this problem), its type hint should be corrected to `def llegir_dades(n: int) -> list[float]:` to accurately reflect that it reads and returns a list of floats.
+
+The `fusio` function itself is well-implemented and demonstrates a strong understanding of the merge algorithm. The issue lies entirely with the surrounding code and not following the submission instructions.
+
+---

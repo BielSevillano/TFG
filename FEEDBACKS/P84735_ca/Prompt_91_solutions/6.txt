@@ -1,0 +1,46 @@
+Here's a feedback text for your program:
+
+### Feedback: Múltiple més petit
+
+**1. Summary of the Problem and Solution Approach:**
+
+The problem "Múltiple més petit" asks you to find, for each given pair of natural numbers `a` and `b` (where `b >= 1`), the smallest natural number `x` that is both greater than or equal to `a` and a multiple of `b`. The output should include a case number, starting from 1.
+
+Your program approaches this by reading pairs `a` and `b`, then calculating `x` using the formula `(a + b - 1) // b * b`. This formula effectively performs a "ceiling division" `ceil(a/b)` and then multiplies by `b`, which correctly yields the smallest multiple of `b` that is greater than or equal to `a`. For example, if `a=7, b=3`, `(7+3-1)//3*3 = 9//3*3 = 3*3 = 9`. If `a=6, b=3`, `(6+3-1)//3*3 = 8//3*3 = 2*3 = 6`.
+
+**2. Analysis of the Code's Strengths and Weaknesses:**
+
+*   **Strengths:**
+    *   **Correct Logic:** The core mathematical formula `x = (a + b - 1) // b * b` is a very efficient and correct way to compute the desired value `x`. This is a strong point of your solution.
+    *   **Clear Formatting:** The output format `"#{} : {}"` and the incrementing case counter `i` correctly follow the problem's output requirements.
+
+*   **Weaknesses / Reason for "Wrong Answer":**
+    *   **Incorrect Input Handling:** The primary reason for the "Wrong Answer" is likely due to a misunderstanding of the input specification. The problem states: "L’entrada consisteix en una seqüència de parells de naturals a i b..." which means "The input consists of a sequence of pairs of natural numbers a and b...". This typically implies that the program should read pairs of `a` and `b` until the end of the input (EOF - End Of File), *without* an initial line specifying the total number of test cases.
+    *   Your current code starts with `casos = int(input())`, assuming the first line provides the count of subsequent `a, b` pairs. If the input instead immediately provides `a b` pairs, attempting to read `int(input())` will misinterpret the first `a` value as the number of cases, leading to incorrect processing or a runtime error.
+
+**3. Suggestions for Improvement:**
+
+To fix the "Wrong Answer" and make your program conform to the typical input style for this kind of problem, you should modify the input loop to read pairs `a` and `b` until EOF. Here's how you can do it in Python:
+
+```python
+i = 1
+while True:
+    try:
+        # Read a line from input
+        line = input()
+        # If input() raises EOFError, it means there's no more input
+        a, b = map(int, line.split()) # Split the line and convert to integers
+        
+        x = (a + b - 1) // b * b
+        print("#{} : {}".format(i, x))
+        i += 1
+    except EOFError:
+        # Break the loop when End Of File is reached
+        break
+    except ValueError:
+        # Optional: Handle cases where the line might not contain two integers
+        # For competitive programming, input is usually guaranteed valid, so EOFError is often enough.
+        break # Or log error and continue if appropriate for context
+```
+
+By changing the input mechanism, your program should correctly process all test cases as specified by the problem. The core logic for calculating `x` is already robust and efficient.

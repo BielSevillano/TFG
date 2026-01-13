@@ -1,0 +1,63 @@
+Here's a feedback text for your program:
+
+---
+
+**Feedback for "Múltiple més petit" Program**
+
+**1. Problem Summary and Solution Approach:**
+
+The problem "Múltiple més petit" asks you to find the smallest natural number `x` for given natural numbers `a` and `b` (where `b >= 1`), such that `x` is greater than or equal to `a` and `x` is a multiple of `b`. The program needs to process a sequence of `a, b` pairs and output the result for each pair, preceded by a case number.
+
+Your program's approach uses a standard mathematical formula to calculate `x`: `(a + b - 1) // b * b`. This formula correctly determines the smallest multiple of `b` that is greater than or equal to `a`. For example, if `a=12` and `b=5`, `(12 + 5 - 1) // 5 * 5 = 16 // 5 * 5 = 3 * 5 = 15`. If `a=10` and `b=5`, `(10 + 5 - 1) // 5 * 5 = 14 // 5 * 5 = 2 * 5 = 10`. This logic is sound.
+
+*(Note: The provided "other possible solutions" are for a completely different problem ("k most frequent words") and thus are not relevant to this specific problem or your code's analysis.)*
+
+**2. Analysis of the Code's Strengths and Weaknesses:**
+
+**Strengths:**
+
+*   **Correct Core Logic:** The most significant strength is that the core calculation `x = (a + b - 1) // b * b` is mathematically correct and efficiently solves the problem for each given `a` and `b`.
+*   **Concise and Readable:** The code is very compact and easy to understand, directly translating the mathematical solution into Python.
+*   **Efficiency:** The calculation for each pair `(a, b)` is a constant time operation (O(1)), making the solution highly efficient per test case.
+
+**Weaknesses:**
+
+*   **Incorrect Input Reading Assumption:** The primary reason for the "Wrong Answer" verdict is likely an incorrect assumption about the input format. The problem description states: "L’entrada consisteix en una seqüència de parells de naturals a i b amb b ≥ 1." This typically implies that the input is a continuous stream of `a, b` pairs, read until the End-Of-File (EOF).
+    Your program, however, starts with `casos = int(input())`, expecting the first line of input to be a single integer representing the total number of test cases. If the actual input immediately starts with an `a, b` pair (e.g., `"10 5"`) instead of a single integer (e.g., `"3"`), then `int(input())` will fail when trying to convert a string like `"10 5"` into an integer, resulting in a `ValueError` (often reported as `Runtime Error` or `Wrong Answer` on online judges).
+
+**3. Suggestions for Improvement:**
+
+The main improvement needed is to adjust how your program reads input to match the problem's specification of processing a "sequence of pairs" until EOF.
+
+**Suggested Code Modification:**
+
+```python
+import sys
+
+case_num = 1 # Renamed 'i' to 'case_num' for clarity
+
+# Iterate over lines from standard input until EOF
+for line in sys.stdin:
+    # Strip whitespace (like newline characters) and check if the line is not empty
+    if not line.strip():
+        continue # Skip empty lines, especially common at the very end of input
+
+    # Try to parse the line, handle potential errors gracefully
+    try:
+        a, b = map(int, line.split())
+        x = (a + b - 1) // b * b
+        print("#{} : {}".format(case_num, x))
+        case_num += 1
+    except ValueError:
+        # If a line cannot be parsed into two integers (e.g., malformed input or unexpected EOF)
+        break
+```
+
+**Explanation of Changes:**
+
+*   `import sys`: This is imported to use `sys.stdin` for iterating over lines.
+*   `for line in sys.stdin:`: This loop reads lines one by one until there are no more lines (EOF). This is the idiomatic way to handle "read until EOF" in Python.
+*   `if not line.strip(): continue`: This line ensures that empty lines (which can sometimes appear in input files, especially at the very end) are skipped, preventing `ValueError` from `map(int, "".split())`.
+*   `try-except ValueError`: While `for line in sys.stdin` handles EOF naturally, a `try-except` block for `ValueError` is a good practice if there might be malformed lines that `line.split()` produces incorrect numbers of tokens, though `map(int, ...)` often handles this by itself. In this specific problem, if `line.split()` produced a single element, `map` would still try to unpack it into `a,b` which would fail. For competitive programming, `sys.stdin` usually ensures valid `a b` pairs.
+
+By implementing this change, your program will correctly handle the input format described in the problem, allowing your robust core logic to produce the correct answers.

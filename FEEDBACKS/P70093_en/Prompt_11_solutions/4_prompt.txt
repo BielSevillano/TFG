@@ -1,0 +1,326 @@
+
+                Write a feedback text for the following program that solves the problem described below.
+                
+                                Array merge
+
+Write a function that merges the sorted vectors @v1@ and @v2@ and
+returns the result, repeated elements included. For instance, the result
+of merging a vector with 2, 3 and 5 with a vector with 3, 5, 5 and 7 is
+a vector with 2, 3, 3, 5, 5, 5 and 7.
+
+Interface
+
++-------:+:------------------------------------------------------------------------------+
+| C++    |     vector<double> merge(const vector<double>& v1, const vector<double>& v2); |
++--------+-------------------------------------------------------------------------------+
+| Java   |     public static double[] merge(double[] v1, double[] v2);                   |
++--------+-------------------------------------------------------------------------------+
+| Python |     merge(v1, v2)  # returns list                                             |
++--------+-------------------------------------------------------------------------------+
+| MyPy   |     merge(v1: list[float], v2: list[float]) -> list[float]:                   |
++--------+-------------------------------------------------------------------------------+
+
+Precondition
+
+@v1@ and @v2@ are sorted in nondecreasig order.
+
+Observation
+
+You only need to submit the required procedure; your main program will
+be ignored.
+
+Author
+
+Salvador Roura (en: Carlos Molina)
+
+© Jutge.org, 2006–2025.
+
+
+                
+
+                This is the program:
+
+                from yogi import read
+
+def escriure(m: int, v: list[float]) -> None:
+    print(m)
+    print(" ", end="")
+    print(" ".join([str(i) for i in v]))
+
+def merge_fus(v1: list[float], v2: list[float], i: int, j: int, n: int, m: int) -> tuple[int, list[float]]:
+    
+    fus : list[float] = []
+    while i < n and j < m:
+        while v1[i] <= v2[j] and i < n:
+            fus.append(v1[i])
+            i += 1
+        while j < m and v2[j] <= v1[i]:
+            fus.append(v2[j])
+            j += 1
+    fus.extend(v1[i:])
+    fus.extend(v2[j:])
+    
+    return n + m, fus
+
+def merge(v1: list[float], v2: list[float]) -> None:
+    
+    x = read(int)
+    for _ in range(x):
+        v1.append(read(float))
+    y = read(int)
+    for _ in range(y):
+        v2.append(read(float))
+
+    m, v = merge_fus(v1, v2, 0, 0, x, y)
+    escriure(m, v)
+
+def main() -> None:
+    v1 : list[float] = []
+    v2 : list[float] = []
+    print(merge(v1, v2))
+
+main()
+
+                The result of the program is: Wrong Answer
+
+                The feedback should include:
+                - A brief summary of the problem and the solution approach.
+                - An analysis of the code's strengths and weaknesses.
+                - Suggestions for improvement, if any.
+
+                You can rely on the following other possible solutions to the same problem for reference:
+                #include <iostream>
+#include <vector>
+using namespace std;
+
+
+vector<double> merge(const vector<double> &V1, const vector<double> &V2) {
+  vector<double> r(V1.size()+V2.size());
+  int i = 0;
+  int j = 0;
+  int k = 0;
+
+  while(i < V1.size() && j < V2.size()){
+      double temp1 = V1[i];
+      double temp2 = V2[j];
+
+      if(V1[i] > V2[j]){
+          r[k] = temp2;
+          k++;
+          j++;
+      }
+      else{
+          r[k] = temp1;
+          k++;
+          i++;
+      }
+  }
+  while(i < V1.size()){
+    r[k] = V1[i];
+    k++;
+    i++;
+  }
+  while(j < V2.size()){
+    r[k] = V2[j];
+    k++;
+    j++;
+  }
+
+  return r;
+}
+
+
+int main() {
+  cout.setf(ios::fixed, ios::floatfield);
+  cout.precision(1);
+
+  int n1;
+  while (cin >> n1) {
+    vector<double> V1(n1);
+    for (int i = 0; i < n1; ++i) cin >> V1[i];
+    int n2;
+    cin >> n2;
+    vector<double> V2(n2);
+    for (int i = 0; i < n2; ++i) cin >> V2[i];
+
+    vector<double> res = merge(V1, V2);
+
+    int n3 = res.size();
+    cout << n3 << endl;
+    for (int i = 0; i < n3; ++i) cout << " " << res[i];
+    cout << endl << endl;
+
+    for (int r = 0; r < 200; ++r) {
+      vector<double> res2 = merge(V1, V2);
+      if (res2 != res) cout << "Different results with the same input!" << endl;
+    }
+  }
+}
+
+from easyinput import read
+
+def merge (v1, v2):
+    v = v1 + v2
+
+    v.sort()
+    return v
+
+def main():
+    n = read(int)
+    v1 = []
+    for i in range (n):
+        v1.append(read(int))
+
+    m = read(int)
+    v2 = []
+    for i in range (m):
+        v2.append(read(int))
+
+    v3 = merge(v1, v2)
+
+    l = len(v3)
+    for i in range (l):
+        print (v3[i], " ", end = "", sep = "")
+    print("")
+
+main()
+
+#include <iostream>
+using namespace std;
+
+vector<double> merge(const vector<double>& v1, const vector<double>& v2){
+    int k = v1.size();
+    int z = v2.size();
+    int i, j;
+    i = j = 0;
+    vector<double> aux;
+    while(i < k and j < z){
+        if(v1[i] <= v2[j]){
+            aux.push_back(v1[i]);
+            ++i;
+        }
+        else{
+            aux.push_back(v2[j]);
+            ++j;
+        }
+    }
+    while(i <= k-1){
+        aux.push_back(v1[i]);
+        ++i;
+    }
+    while(j <= z-1){
+        aux.push_back(v2[j]);
+        ++j;
+    }
+    return aux;
+}
+def merge(v1,v2):
+	list = []
+	c1 = 0
+	c2 = 0
+	while c1<len(v1)>0 and c2<len(v2)>0:
+		if v1[c1] < v2[c2]:
+			list.append(v1[c1])
+			c1 += 1
+		else:
+			list.append(v2[c2])
+			c2 += 1
+	if len(v1[c1:])>0:
+		list += v1[c1:]
+	elif len(v2[c2:])>0:
+		list += v2[c2:]
+	return list
+
+from easyinput import read
+
+def merge(v1, v2):
+    v3=v1+v2
+    v3.sort()
+    return v3;
+
+#include <iostream>
+#include <vector>
+using namespace std;
+
+vector<double> merge(const vector<double>&v1, const vector<double> v2){
+	int l1=v1.size(); int l2=v2.size(); vector<double> v3; int max=l1; int min=l2;
+	if(l2>l1){ max=l2; min=l1;}
+	int j=0, i=0; while(i<max or j<max){
+		if(v1[j]>=v2[i] and j<l1) { v3.push_back(v1[j]); ++j;}
+		else (v2[j]>=v1[i] and j<l2) { v3.push_back(v2[i]); ++i;}
+	}
+	return v3;
+	}
+
+def merge(v1,v2):
+    L1 = []
+    for i,j in zip(v1,v2):
+        L1.append(i)
+        L1.append(j)
+    return sorted(L1)
+
+def merge(v1, v2):
+    resultado = []
+    for numero in v1:
+        resultado.append(numero)
+
+    for numero2 in v2:
+        resultado.append(numero2)
+    
+    resord = sorted(resultado)
+
+    return resord
+
+#print(merge((2,3,5),(3,5,5,7)))
+def merge(v1, v2):
+    v = v1+v2
+    v.sort()
+    return v
+
+def merge(v1, v2):
+    return sorted(v1 + v2)
+
+
+
+#Hem d'anar dividint la llista fins a que quedi dividida en parts d'un sol element i 
+# amb recursivititat anar-los ordenant per fusió.
+
+
+from yogi import tokens
+from typing import Any,TypeVar
+
+T=TypeVar('T')
+
+def mergesort(L:list[T])->None:
+    """Ordena la llista L per fusió."""
+    mergesort_rec(L,0,len(L)-1) #Ordena la llista des de la posició 0 fins al final
+
+def mergesort_rec(L:list[T],esq:int,dre:int)->None:
+    """Ordenar L[esq..dre].""" #L'últim element també està inclòs.
+    if esq<dre:
+        mig=(esq+dre)//2
+        mergesort_rec(L,esq,mig) #Li diem que ens ordeni la llista que queda a la part esquerra.
+        mergesort_rec(L,1+mig,dre) #Li diem que ens ordeni la llista de la dreta.
+        merge(L,esq,mig,dre)
+
+def merge(L:list[T],esq:int,mig:int,dre:int)->None:
+    """Ordena L[esq..dre] sabent que L[esq..mig]està ordenat i sabent que L[mig+1..dre]està ordenat."""
+    R=list[T]=[]
+    i=esq
+    j=mig+1
+    while i<=mig and j<=dre:
+        if L[i]<=L[j]:
+            R.append(L[i])
+            i +=1
+        else:
+            R.appen(L[j])
+            j +=1
+    R.extend(L[i:mig+1]) #així traslladem tots els valors de R
+    R.extend(L[j:dre+1])
+    L[esq:dre+1]=R #Passem tots els elements de R a la llista original L.
+
+
+
+
+
+                

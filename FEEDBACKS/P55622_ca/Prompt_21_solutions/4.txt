@@ -1,0 +1,69 @@
+Here's a feedback text for the provided program:
+
+---
+
+**Feedback for Program: Nombre de dígits (1)**
+
+**1. Summary of the Problem and Solution Approach**
+The problem "Nombre de dígits (1)" requires the program to read a single natural number `n` and then output the total count of its digits. For instance, if the input is `123`, the output should be `3`. If the input is `0`, the output should be `1`.
+
+The provided Python program implements a classic iterative approach to solve this. It handles the `n = 0` case specifically, assigning it `1` digit. For any positive integer, it repeatedly performs integer division by `10` (`n //= 10`) and increments a counter (`d`) until the number `n` becomes `0`. A temporary variable `n2` stores the original input to be used in the output message.
+
+**2. Analysis of the Code's Strengths and Weaknesses**
+
+**Strengths:**
+*   **Correct Digit Counting Logic:** The core algorithm of repeatedly dividing by 10 and counting iterations (`while n != 0: n = n // 10; d = d + 1`) is a mathematically sound and standard method for counting digits in positive integers.
+*   **Correct Edge Case Handling (n=0):** The program correctly identifies and treats `n = 0` as having one digit, which is the conventional expectation for this type of problem.
+*   **Original Input Preservation:** The use of `n2 = n` before modifying `n` in the loop is good practice, allowing the original value to be referenced later, although in this specific problem, it turns out to be unnecessary due to the output format requirement.
+
+**Weaknesses and Reason for "Wrong Answer":**
+*   **Incorrect Output Format:** This is almost certainly the reason for the "Wrong Answer" verdict. The problem statement "Cal escriure el nombre de dígits de n" (One must write the number of digits of n) typically implies that *only the numerical result* (the digit count) should be printed to standard output. The current program outputs a full sentence (e.g., `'El nombre de digits de 123 es 3'`), which does not match the strict output format required by most automated judging systems. Such systems expect only the numerical value, and any additional text or formatting leads to a "Wrong Answer."
+
+**3. Suggestions for Improvement**
+
+1.  **Address the Output Format (Crucial Fix):**
+    The most critical change is to modify the `print` statements to output *only* the integer `d`.
+    Change:
+    ```python
+    print('El nombre de digits de', n, 'es', d)
+    # and
+    print('El nombre de digits de', n2, 'es', d)
+    ```
+    To simply:
+    ```python
+    print(d)
+    ```
+
+2.  **Refactor for Conciseness and Clarity:**
+    The code can be streamlined by calculating `d` first, then printing `d` once. The `n2` variable becomes unnecessary if only the digit count is printed.
+
+    ```python
+    from yogi import read
+
+    n = read(int)
+
+    if n == 0:
+        d = 1
+    else:
+        d = 0
+        # No need for n2 if only d is printed, n can be modified directly
+        temp_n_for_count = n 
+        while temp_n_for_count > 0: # Condition can be `> 0` for positive numbers
+            temp_n_for_count = temp_n_for_count // 10
+            d = d + 1
+            
+    print(d) # Single print statement for the result
+    ```
+
+3.  **More Pythonic Alternative (String Conversion):**
+    For non-negative integers, a common and very concise Pythonic approach is to convert the number to a string and then get its length. This implicitly handles `n=0` correctly, as `str(0)` is `"0"`, which has a length of `1`.
+
+    ```python
+    from yogi import read
+
+    n = read(int)
+    print(len(str(n)))
+    ```
+    This solution is much shorter and often preferred in Python for its readability and simplicity.
+
+---

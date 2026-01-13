@@ -1,0 +1,52 @@
+The program received a "Wrong Answer" verdict. Let's analyze its components and identify the issue.
+
+### Feedback for "Paraules més freqüents"
+
+**1. Problem Summary and Solution Approach**
+
+The program's goal is to read `n` words and output the `k` most frequent ones. The sorting criteria are: first, by frequency in descending order, and second, by alphabetical order in ascending order for words with the same frequency. The solution needs to handle multiple test cases.
+
+The implemented solution follows these steps:
+1.  For each test case, it reads `n` and `k`, then collects all `n` input words into a list `P`.
+2.  It sorts `P` alphabetically, which groups identical words consecutively.
+3.  It then iterates through the sorted list `P` to count the occurrences of each unique word. Each unique word and its count are stored in an `Info` object (`par` for word, `num` for count). These `Info` objects are collected into a list `V`.
+4.  Finally, `V` is sorted using a custom comparison function `comp`. This function is intended to sort by frequency (descending) and then alphabetically (ascending).
+5.  The program prints the `par` attribute of the first `k` `Info` objects from the sorted list `V`, followed by a separator line.
+
+**2. Analysis of Code's Strengths and Weaknesses**
+
+**Strengths:**
+*   **Clear Problem Decomposition:** The solution breaks down the task into logical, manageable steps: input reading, initial sorting, frequency counting, final sorting, and output.
+*   **Custom Data Structure:** The `Info` class is a good choice for encapsulating a word and its associated frequency, improving code readability and organization.
+*   **Efficient Frequency Counting:** Sorting the initial list of words `P` makes the subsequent frequency counting highly efficient. By grouping identical words, a single pass with two pointers (`i` and `j`) accurately determines the count for each unique word.
+*   **Handling Multiple Test Cases:** The `while n is not None and k is not None:` loop correctly processes multiple input sets as required.
+
+**Weaknesses and Reason for "Wrong Answer":**
+
+The core issue that leads to a "Wrong Answer" lies in the application of the custom sorting logic in the line `V.sort(key=comp, reverse=True)`.
+
+*   **Incorrect Usage of `key` with a Comparison Function:** In Python 3, the `key` argument for `list.sort()` (or `sorted()`) expects a function that takes *one* element from the list and returns a value (or a tuple of values) that Python can use for sorting. It does *not* expect a two-argument comparison function like `comp(a, b)`.
+    *   If `comp` is passed as `key`, Python's `sort` will attempt to call `comp(an_Info_object)` for each item in `V`. Since `comp` is defined to accept two arguments, this would typically raise a `TypeError`.
+    *   Given that the result is "Wrong Answer" (and not a `TypeError`), it implies that the specific execution environment (e.g., an older Python version or a customized interpreter) might be misinterpreting `key=comp` in a way that doesn't produce an error but also doesn't perform the intended multi-criteria sort correctly. The sorting effectively fails to apply the desired order of descending frequency and ascending alphabetical order.
+
+**3. Suggestions for Improvement**
+
+The main improvement needed is to correctly implement the custom sorting logic in Python 3:
+
+1.  **Use a `lambda` expression with `key` for multi-criteria sorting:**
+    The most Pythonic and correct way to sort by multiple criteria in Python 3 is to provide a `key` function that returns a tuple of values. Python's default tuple comparison will handle the multi-level sorting naturally.
+
+    The desired sorting order is:
+    *   Primary criterion: `num` (frequency) in *descending* order.
+    *   Secondary criterion: `par` (word) in *ascending* alphabetical order.
+
+    You can achieve this by modifying the `list.sort()` call as follows, removing the `comp` function entirely:
+    ```python
+    V.sort(key=lambda info_obj: (-info_obj.num, info_obj.par))
+    # Remove 'reverse=True' because the negation of 'num' already handles descending order.
+    ```
+    In this `lambda` function:
+    *   `(-info_obj.num)` ensures that elements with higher `num` values (frequencies) are placed earlier in the sorted list (e.g., a frequency of 5 becomes -5, 3 becomes -3; since -5 is less than -3, 5 will appear before 3).
+    *   `info_obj.par` provides the secondary sort key, ensuring that if frequencies are tied (e.g., both are -5), words are sorted alphabetically in ascending order.
+
+By implementing this change, the `V` list will be correctly sorted according to the problem's requirements, resolving the "Wrong Answer".

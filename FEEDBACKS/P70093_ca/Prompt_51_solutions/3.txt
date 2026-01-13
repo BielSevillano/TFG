@@ -1,0 +1,68 @@
+Here's a feedback text for the provided Python program:
+
+---
+
+### Feedback: Fusió de taules (Table Fusion)
+
+**1. Problem and Solution Approach Summary**
+
+The problem requires implementing a function `fusio` that merges two already sorted lists (`v1` and `v2`) into a single new sorted list, retaining all duplicate elements. For instance, merging `[2, 3, 5]` and `[3, 5, 5, 7]` should yield `[2, 3, 3, 5, 5, 5, 7]`. The input lists are guaranteed to be sorted in ascending order.
+
+The provided `fusio` function employs a classic and efficient two-pointer (or two-iterator) approach. It initializes two pointers, `i1` and `i2`, to the beginning of `v1` and `v2` respectively, and an empty list `llista_definitiva`. It then iteratively compares the elements pointed to by `i1` and `i2`, appending the smaller element to `llista_definitiva` and advancing the corresponding pointer. Once one of the lists is fully traversed, the remaining elements of the other list are simply appended to `llista_definitiva`.
+
+**2. Analysis of the Code's Strengths and Weaknesses**
+
+*   **Strengths:**
+    *   **Correctness of `fusio` function:** The `fusio` function itself correctly implements the merge algorithm. It handles duplicates as specified and produces the expected sorted merged list.
+    *   **Efficiency:** The two-pointer approach is optimal for this problem, resulting in a time complexity of O(N+M), where N and M are the lengths of `v1` and `v2` respectively, as it only requires a single pass through both lists.
+    *   **Clarity and Readability:** The logic within the `fusio` function is straightforward and easy to understand. Variable names are descriptive.
+    *   **Pythonic:** The use of `append` for single elements and `extend` for remaining sub-lists is idiomatic Python and efficient.
+
+*   **Weaknesses:**
+    *   **Presentation Error Cause:** The primary reason for the "Presentation Error" is that the submission includes code beyond the requested function definition. The problem statement explicitly says: "Només cal enviar el procediment demanat; el programa principal serà ignorat." (Only the requested procedure needs to be sent; the main program will be ignored.) The `from yogi import read`, `llegir_dades`, and `main` functions, along with their input/output operations (`read`, `print`), constitute extraneous code that the judge does not expect.
+    *   **Unnecessary I/O logic:** The `main` function prints `n1+n2` and then the merged list, which is not part of the `fusio` function's contract and contributes to the Presentation Error.
+    *   **Dependency on `yogi`:** While `yogi` might be part of the judging environment, competitive programming problems usually expect self-contained solutions where only standard libraries or specific functions are used. Relying on an external helper library for I/O when only a function is requested is generally discouraged.
+
+**3. Suggestions for Improvement**
+
+1.  **Strictly Adhere to Problem Specifications (Crucial for "Presentation Error"):** Remove all code outside the `fusio` function. This means deleting `from yogi import read`, the `llegir_dades` function, and the `main` function (and its call). Submit *only* the `fusio` function itself:
+
+    ```python
+    def fusio(v1: list[float], v2: list[float]) -> list[float]:
+        i1 = 0
+        i2 = 0
+        llista_definitiva = []
+        while i1 < len(v1) and i2 < len(v2):
+            if v1[i1] < v2[i2]:
+                llista_definitiva.append(v1[i1])
+                i1 += 1
+            else:
+                llista_definitiva.append(v2[i2])
+                i2 += 1
+        llista_definitiva.extend(v1[i1:])
+        llista_definitiva.extend(v2[i2:])
+        return llista_definitiva
+    ```
+    This change alone should resolve the "Presentation Error".
+
+2.  **Add a Docstring (Optional but Recommended):** For better code documentation, especially in larger projects, a docstring explaining the function's purpose, arguments, and return value would be beneficial.
+
+    ```python
+    def fusio(v1: list[float], v2: list[float]) -> list[float]:
+        """
+        Merges two sorted lists into a single new sorted list, preserving duplicates.
+
+        Precondition: v1 and v2 are sorted in ascending order.
+
+        Args:
+            v1 (list[float]): The first sorted list.
+            v2 (list[float]): The second sorted list.
+
+        Returns:
+            list[float]: A new list containing all elements from v1 and v2,
+                         sorted in ascending order with duplicates preserved.
+        """
+        # ... (rest of the function code)
+    ```
+
+The `fusio` function itself is a well-implemented solution to the merge problem. The issue lies entirely with the surrounding boilerplate code that should not have been submitted.

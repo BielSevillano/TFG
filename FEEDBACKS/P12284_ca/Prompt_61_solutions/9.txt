@@ -1,0 +1,108 @@
+The program aims to solve the problem of finding the `k` most frequent words from a given sequence of `n` words. In case of ties in frequency, words should be sorted alphabetically (smallest first).
+
+### Summary of Problem and Solution Approach
+
+The problem requires reading `n` words, calculating their frequencies, and then printing the `k` words that appear most often. If two words have the same frequency, the one that comes first alphabetically should be prioritized. The program handles multiple test cases.
+
+The chosen approach involves:
+1.  Reading all `n` words into a list `P`.
+2.  Sorting `P` alphabetically. This step efficiently groups identical words together.
+3.  Iterating through the sorted list `P` to count the occurrences of each unique word. These unique words and their counts are stored as `Info` objects (containing `par` for word and `num` for frequency) in a list `V`.
+4.  Defining a custom comparison function `comp` to specify the desired sorting order: descending by frequency, then ascending alphabetically by word.
+5.  Sorting the list `V` of `Info` objects using this `comp` function.
+6.  Printing the `par` (word) of the first `k` elements from the sorted `V`.
+7.  Printing a separator line "----------" after each test case.
+
+### Analysis of Strengths and Weaknesses
+
+**Strengths:**
+
+*   **Clear Data Structure:** The `Info` class effectively encapsulates a word and its frequency, making the code readable and organized.
+*   **Efficient Frequency Counting:** Sorting the initial list of words (`P.sort()`) allows for a linear pass (`while i < n`) to count frequencies, which is an efficient approach (O(N log N) for sort + O(N) for count).
+*   **Logical Comparison Function:** The `comp` function's logic correctly implements the tie-breaking rules: `a.num > b.num` for descending frequency, and `a.par < b.par` for ascending alphabetical order when frequencies are equal.
+*   **Handles Multiple Test Cases:** The `while n is not None and k is not None:` loop correctly processes multiple input sets.
+
+**Weaknesses (Likely Cause of "Wrong Answer"):**
+
+*   **Incorrect Usage of `list.sort()` with `key` and `reverse`:** The most probable cause for the "Wrong Answer" lies in the line `V.sort(key=comp, reverse=True)`.
+    *   In standard Python 3, the `key` argument for `list.sort()` (or `sorted()`) expects a function that takes *one* argument (an element from the list) and returns a value to be used for comparison (e.g., `key=lambda x: x.num`).
+    *   However, your `comp` function is defined to take *two* arguments (`a`, `b`) and returns a boolean, acting as a comparison predicate.
+    *   If the `yogi` environment's Python interpreter strictly follows standard Python 3, this usage of `key=comp` would result in a `TypeError` because `comp` would be called with only one argument.
+    *   Given the "Wrong Answer" (not a `TypeError`), it's possible the `yogi` environment's `list.sort()` behaves like C++'s `std::sort`, where `key` (or a similar argument) accepts a binary comparison predicate that returns `True` if the first element should precede the second.
+    *   **Assuming this non-standard behavior:** If `comp(a, b)` correctly returns `True` when `a` *should precede* `b` in the final sorted list, then applying `reverse=True` will *invert* that order. This means the list `V` would be sorted by *ascending* frequency (or *descending* alphabetically in case of a frequency tie), which is the exact opposite of what the problem asks for. This would explain a "Wrong Answer".
+
+### Suggestions for Improvement
+
+1.  **Correct the Sorting Logic (Primary Fix):**
+    *   **If `yogi`'s `list.sort` acts like C++ `std::sort` (binary predicate):** The `comp` function is correctly defined as a binary predicate. The issue is `reverse=True`. Simply remove `reverse=True`:
+        ```python
+        # ...
+        V.sort(key=comp) # Remove reverse=True
+        # ...
+        ```
+        This would sort `V` directly in the desired order (descending frequency, then ascending alphabetical).
+
+    *   **More Pythonic & Robust (Recommended for standard Python 3):** Use a `lambda` function as the `key` to return a tuple that Python can natively sort. This avoids any ambiguity about how `comp` is interpreted. The `reverse` argument then becomes unnecessary as the key itself dictates the order.
+        ```python
+        # No need for the separate 'comp' function
+        # ...
+        class Info:
+          def __init__(self, par, num):
+            self.par = par
+            self.num = num
+
+        # main function
+        def main():
+          # ... (read n, k, P, then populate V) ...
+
+          # Sort V using a lambda function that returns a tuple as the key
+          # -x.num sorts frequency in descending order
+          # x.par sorts word alphabetically in ascending order
+          V.sort(key=lambda x: (-x.num, x.par))
+
+          # ... (print k elements) ...
+        ```
+        This is the most standard and reliable way to achieve multi-criteria sorting in Python.
+
+2.  **Use `collections.Counter` for Frequency Counting (Optional, for conciseness):**
+    While your current frequency counting logic is correct, Python's `collections.Counter` provides a more concise and often more optimized way to count occurrences.
+    ```python
+    import yogi
+    from collections import Counter # Add this import
+
+    class Info:
+      def __init__(self, par, num):
+        self.par = par
+        self.num = num
+
+    def main():
+      n = yogi.read(int)
+      k = yogi.read(int)
+      while n is not None and k is not None:
+        P = []
+        for i in range(n):
+          P.append(yogi.read(str))
+
+        # Use Counter to get word frequencies
+        word_counts = Counter(P)
+
+        # Convert to a list of Info objects
+        V = []
+        for word, count in word_counts.items():
+            V.append(Info(word, count))
+
+        # Sort V using the recommended lambda key
+        V.sort(key=lambda x: (-x.num, x.par))
+
+        for j in range(k):
+          print(V[j].par)
+
+        print("----------")
+
+        n = yogi.read(int)
+        k = yogi.read(int)
+
+    if __name__ == "__main__":
+      main()
+    ```
+    This refactor removes the initial `P.sort()` and the manual `while i < n` loop for counting, making the code more idiomatic Python.

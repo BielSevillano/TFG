@@ -1,0 +1,34 @@
+Here's a feedback text for the provided Python program:
+
+---
+
+### Feedback on "Fusió de taules" Program
+
+**Problem Summary:**
+The problem "Fusió de taules" (Table Merge) requires implementing a function that merges two already sorted lists (`v1` and `v2`) of floating-point numbers into a single new sorted list. The key requirement is to preserve all elements from both original lists, including any duplicates, ensuring the final output list is also sorted. For example, merging `[2, 3, 5]` and `[3, 5, 5, 7]` should result in `[2, 3, 3, 5, 5, 5, 7]`.
+
+**Solution Approach:**
+The provided Python code implements a classic and highly efficient two-pointer merge algorithm.
+1.  It initializes an empty list (`llista_definitiva`) to store the merged result and two pointers (`i1`, `i2`) to track the current positions in `v1` and `v2`, respectively.
+2.  It iterates through both lists simultaneously using a `while` loop, comparing the elements pointed to by `i1` and `i2`.
+3.  The smaller of the two elements is appended to `llista_definitiva`, and its corresponding pointer is incremented. This correctly handles cases where elements are equal, appending the one from `v2` first in such scenarios (due to `else` condition).
+4.  Once one of the input lists is fully traversed, the `while` loop terminates. The remaining elements from the other list (which are guaranteed to be larger than any elements already merged) are then efficiently appended to `llista_definitiva` using `extend()`.
+5.  Finally, the complete merged list is returned.
+
+**Code Strengths:**
+*   **Correctness of `fusio` function:** The `fusio` function flawlessly implements the specified merge logic. It correctly handles pre-sorted input, preserves all elements (including duplicates), and ensures the output list is also perfectly sorted.
+*   **Efficiency:** The two-pointer approach is optimal for this problem, providing a time complexity of O(n + m), where n and m are the lengths of `v1` and `v2` respectively. This is as fast as possible, as every element must be visited at least once.
+*   **Clarity and Readability:** The code for the `fusio` function is well-structured, easy to follow, and clearly reflects the merge algorithm.
+*   **Pythonic Usage:** Good use of `list.append()` for individual elements and `list.extend()` for adding remaining slices of lists, which are efficient Python operations.
+
+**Code Weaknesses and Explanation of Presentation Error:**
+*   **Primary Cause of "Presentation Error":** The most critical issue, leading to the "Presentation Error," is the inclusion of the `main()` function and the `llegir_dades()` helper function in the submission. The problem statement explicitly says: "Només cal enviar el procediment demanat; el programa principal serà ignorat." This translates to "Only the requested procedure needs to be submitted; the main program will be ignored." The judge system expects *only* the `fusio` function definition. By including `main`, you are producing output (`n1+n2`, then a space, then the merged list elements) that the judge system does not expect, resulting in a "Presentation Error." The judge would internally call your `fusio` function with its own test data.
+*   **Unnecessary Helper Functions:** For the problem's submission requirements, `llegir_dades` and the input reading using `yogi.read` are not needed, as the judge will provide the `v1` and `v2` lists directly to your `fusio` function.
+*   **Minor Type Hint Inconsistency (in `llegir_dades`):** If `llegir_dades` were to be kept (though it shouldn't be for this submission), its type hint `->list[int]` is inconsistent. Since `read(float)` is used and float values are appended, the return type should accurately be `-> list[float]`.
+
+**Suggestions for Improvement:**
+1.  **Remove Extraneous Code (Crucial):** For submission to the judge, **delete the `main()` function, the `llegir_dades()` function, and the `from yogi import read` line (if `yogi` is only used for `main`).** Submit *only* the `def fusio(...)` block. This is the single most important change to resolve the "Presentation Error."
+2.  **(If `llegir_dades` were to be used in a local testing environment):** Correct the type hint in `llegir_dades` from `list[int]` to `list[float]` to accurately reflect the data type being processed and returned.
+3.  **(Optional - Variable Naming):** While `llista_definitiva` is descriptive, using a more concise English name like `merged_list` or `result` might slightly enhance readability for a broader audience.
+
+The `fusio` function itself is perfectly implemented and demonstrates a strong understanding of the algorithm. The error is purely related to adhering to the specific submission instructions of the online judge.

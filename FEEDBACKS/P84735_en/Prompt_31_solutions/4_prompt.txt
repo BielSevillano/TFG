@@ -1,0 +1,570 @@
+
+                Write a feedback text for the following program that solves the problem described below.
+                
+                                Smallest multiple
+
+Write a program that reads pairs of natural numbers a and b, and for
+each one prints the smallest natural number that is greater than or
+equal to a and also a multiple of b.
+
+Input
+
+Input consists of a sequence of pairs of natural numbers a and b with
+b ≥ 1.
+
+Output
+
+For each a and b, print in a line the smallest natural number x such
+that x ≥ a and x = mb for some natural number m. Precede this with the
+case number starting at 1, following the format of the example.
+
+Author
+
+Salvador Roura (en: Carlos Molina)
+
+© Jutge.org, 2006–2025.
+
+
+                
+
+                This is the program:
+
+                from easyinput import read
+
+
+def multiple(a: int,  b: int) -> str:
+    x = a
+    while x%b!=0:
+        x+=a%b
+    return str(x)
+    
+i = 1
+a, b = read(int, int)
+while a is not None and b is not None:
+    print('#' + str(i) + " : " + multiple(a, b))
+    i+=1
+    a, b = read(int, int)
+
+                The result of the program is: Execution Error
+
+                The feedback should include:
+                - A brief summary of the problem and the solution approach.
+                - An analysis of the code's strengths and weaknesses.
+                - Suggestions for improvement, if any.
+
+                You can rely on the following other possible solutions to the same problem for reference:
+                import sys
+n=1
+for line in sys.stdin:
+    a,b=[int(i) for i in line.split()]
+    if(a%b!=0):
+        a=a-(a%b)+b
+    print("#"+str(n)+" : "+str(a))
+    n=n+1
+
+from jutge import read
+
+cas = 1
+a, b = read(int, int)
+while a is not None:
+  print("#" + str(cas) + " : ", end = '')
+  cas += 1
+  if a % b == 0: print(a)
+  else: print((a // b + 1) * b)
+  a, b = read(int, int)
+
+
+a=" "
+c=0
+k=[]
+while a!="":
+    c=c+1 
+    a=input()
+    if a!="":
+        a=a.split(" ")
+        m=0
+        while m*int(a[1])<int(a[0]):
+            m=m+1
+        
+    
+        k.append("#"+str(c)+" : "+str((m*int(a[1]))))
+    
+for i in range (len(k)):
+    print(k[i])
+bEOF =0
+k=[]
+c=0
+while bEOF==0:
+    a=""
+    try:
+       a=input()
+    except:
+        bEOF=1
+    if a=="":
+        bEOF=1
+    else:
+        c=c+1 
+        
+        if a!="":
+            a=a.split(" ")
+            m=0
+            while m*int(a[1])<int(a[0]):
+                m=m+1
+            
+        
+            k.append("#"+str(c)+" : "+str((m*int(a[1]))))
+    
+for i in range (len(k)):
+    print(k[i])
+def trunc(x):
+    x=str(x+0.000000000000000000000000000000000001).split(".")
+    return int(x[0])
+
+
+bEOF =0
+k=[]
+c=0
+while bEOF==0:
+    a=""
+    try:
+       a=input()
+    except:
+        bEOF=1
+    if a=="":
+        bEOF=1
+    else:
+        c=c+1
+        h=a.split(" ")
+        j= int(h[0])/int(h[1])
+        m=trunc(j)
+        if m*int(h[1])< int(h[0]):
+            k.append("#"+str(c)+" : "+str(((m+1)*int(h[1]))))
+        else:
+            k.append("#"+str(c)+" : "+str((m*int(h[1]))))
+    
+for i in range (len(k)):
+    print(k[i])
+def trunc(x):
+    x=str(x+0.000000000000000000000000000000000001).split(".")
+    return int(x[0])
+
+
+bEOF =0
+k=[]
+c=0
+while bEOF==0:
+    a=""
+    try:
+       a=input()
+    except:
+        bEOF=1
+    if a=="":
+        bEOF=1
+    else:
+        c=c+1
+        h=a.split(" ")
+        if h[0] != "0" and h[1]!="0":
+            j= int(h[0])/int(h[1])
+            m=trunc(j)
+        elif h[0]=="0" and h[1]!="0":
+            m=1
+        
+        if m*int(h[1])< int(h[0]):
+            k.append("#"+str(c)+" : "+str(((m+1)*int(h[1]))))
+        else:
+            k.append("#"+str(c)+" : "+str((m*int(h[1]))))
+    
+for i in range (len(k)):
+    print(k[i])
+from easyinput import read
+
+def smallest_multiple(a, b):
+    if a % b == 0:
+        return a
+    else:
+        return a + b - a % b
+
+
+a, b = read(int, int)
+i = 1
+
+while a is not None:
+    print("#", i, " : ", smallest_multiple(a, b), sep = '')
+    i = i + 1
+    a, b = read(int, int)
+
+// Smallest multiple
+
+#include <iostream>
+using namespace std;
+
+int main () {
+	int a, b;
+	while (cin >> a >> b) {
+		int trobat = false;
+		for (int i = 0; not trobat; ++i) {
+			if ((i+a) % b == 0) {
+				trobat = true;
+				cout << i+a << endl;
+			}
+		}
+	}
+}
+#include <iostream>
+using namespace std;
+
+int maxi(int x, int y, int& max, int& min){
+    if(x>y)max = x,min = y;
+    else max = y,min = x;
+}
+
+int mcm (int max, int min){
+    if (min == 1 or max == 1) return max*min;
+    if (max%min == 0) return max;
+    for(int i =2;i*i<max;++i) if(i*min>=max) return i*min;
+    return max*min;
+}
+
+int main(){
+    int x,y,max,min;
+    int contador = 1;
+    while (cin >> x >> y){
+        maxi(x,y,max,min);
+        cout <<"#" << contador << " : "<< mcm (max,min) << endl;
+        ++contador;
+    }
+}
+
+try:
+    i = 1
+    while True:
+        s = input().split()
+        a, b = int(s[0]), int(s[1])
+        x = a
+        while x%b != 0:
+            x += 1
+        print('#'+str(i),':',x)
+        i += 1
+        
+except:
+    pass
+
+n = 0
+
+while True:
+	try:
+		n += 1
+		i = input().split(' ')
+		a = int(i[0])
+		b = int(i[1])
+		r = a // b * b
+
+		if r < a:
+			r += b
+
+		print("#%d : %d" % (n, r))
+
+	except:
+		break
+from jutge import read
+
+a, b = read(int, int)
+counter = 1
+
+while a is not None and a >= b:
+    if a % b == 0:
+        print('#{} : {}'.format(counter, a))
+    a += 1
+    while True:
+        if a % b == 0:
+            print('#{} : {}'.format(counter, a))
+        a += 1
+    counter += 1
+    a, b = read(int, int)
+from jutge import read
+
+a, b = read(int, int)
+counter = 1
+
+while a is not None:
+    if a % b == 0:
+        print('#{} : {}'.format(counter, a))
+    else:
+        a += 1
+        while True:
+            if a % b == 0:
+                print('#{} : {}'.format(counter, a))
+                break
+            a += 1
+    counter += 1
+    a, b = read(int, int)
+from jutge import read
+
+a, b = read(int, int)
+counter = 1
+
+while a is not None:
+    counter += 1
+    a, b = read(int, int)
+
+from jutge import read
+import math
+
+a, b = read(int, int)
+counter = 1
+
+while a is not None:
+    if a % b == 0:
+        print('#{} : {}'.format(counter, a))
+    elif a == 999999999:
+        print('#{} : {}'.format(counter, 1000000000))
+    else:
+        for i in range(100):
+            if(b*i >= a):
+                print('#{} : {}'.format(counter, b*i))
+                break
+    counter += 1
+    a, b = read(int, int)
+
+from jutge import read
+a = read(int)
+for i in range (-10000, 10000):
+    if a < 10:
+        print("it's cold")
+        if a <= 0: 
+            print("it's cold" /n "water would freeze")
+    elif a > 30: 
+        print("it's hot")
+        if a => 100: 
+            print("it's hot" /n "water would boil")
+    else: 
+        print("it's ok")
+#include <iostream>
+using namespace std;
+
+int main()
+{
+    int a, b, i, j;
+    for (i = 1; cin >> a >> b; ++i) {
+        for (j = a; j % b != 0; ++j)
+            ;
+        cout << '#' << i << " : " << j << endl;
+    }
+}
+
+from easyinput import read
+
+x = 1
+a, b = read(int, int)
+while (a != None and b != None):
+    p = a % b
+    if (a % b == 0):
+        p = b
+    print("#", x, sep='', end='')
+    print(" :", a-p+b)
+
+    x = x + 1
+    a, b = read(int, int)
+
+import sys
+
+i = 1
+
+for case in sys.stdin:
+    if case == "" or len(case) <= 0:
+        break
+
+    a, b = map(int, case.split(' '))
+    A = max(a,b)
+    B = min(a,b)
+    while B:
+        mcd = B
+        B = A % B
+        A = mcd
+    mcm =  (a * b) // mcd
+        
+    print(f'#{i} : {mcm}')
+    i += 1
+l = input().split()
+a = int(l[0])
+b = int(l[1])
+for i in range(a, 100000, 1):
+    if b/i == b//i:
+        print(i)
+
+try:
+    case=1
+    while(True):
+        l = input().split()
+        a = int(l[0])
+        b = int(l[1])
+
+        print("#"+str(case)+" : "+str(a+(b-a%b)%b))
+        case=case+1
+except:
+    vera=1
+
+from easyinput import *
+
+i = 1
+
+for a in read_many(int):
+    b = read(int)
+
+    while (a % b != 0):
+        a += 1
+    
+    print ('#' + str(i) + " : " + str(a))
+    i += 1
+from easyinput import *
+
+i = 1
+
+for a in read_many(int):
+    b = read(int)
+
+    print ('#' + str(i) + " : " + str(a + ((b - a % b) % b)))
+    i += 1
+while True:                                 
+    try:
+        a = int(input()) #123
+        b = int(input()) #1
+
+        for i in range(a,10000):
+            if i % b == 0:
+                print(f"#1 : {i}")
+                break
+            
+            else:
+                pass
+                 
+    
+
+    except:
+        break
+while True:                                 
+    try:
+        x = str(input())
+
+        a = x.split()
+        b = x.split()
+
+        int(a)
+        int(b)
+
+        s = 1
+
+        for i in range(a,10000):
+            if i % b == 0:
+                print(f"#{s} : {i}")
+                s += 1
+                break
+            
+            else:
+                pass
+                 
+    
+
+    except:
+        break
+while True:                                 
+    try:
+        x = str(input())
+        
+        j = x.split()
+
+        a = j[0]
+        b = j[1]
+
+        int(a)
+        int(b)
+
+        s = 1
+
+        for i in range(a,10000):
+            if i % b == 0:
+                print(f"#{s} : {i}")
+                s += 1
+                break
+            
+            else:
+                pass
+                 
+    
+
+    except:
+        break
+s = 0
+while True:
+    s += 1
+    try:
+        x = str(input()).split()
+        a = int(x[0])
+        b = int(x[1])
+        for i in range(a,10000):
+            if i % b == 0:
+                print(f"#{s} : {i}")
+                break
+    except:
+        break
+
+s = 0
+while True:
+    s += 1
+    try:
+        x = str(input()).split()
+        a = int(x[0])
+        b = int(x[1])
+        '''
+        for i in range(a,10000):
+            if i % b == 0:
+                break
+        '''
+        if (a % b == 0):
+            i = a
+        else:
+            i = (int(a/b)+1)*b
+        print(f"#{s} : {i}")
+    except:
+        break
+
+s = 0
+while True:
+    s += 1
+    try:
+        x = str(input()).split()
+        a = int(x[0])
+        b = int(x[1])
+        if (a % b == 0):
+            i = a
+        else:
+            i = (int(a/b)+1)*b
+        print(f"#{s} : {i}")
+    except:
+        break
+import numpy as np
+
+def get_mult(a,b):
+    if a%b == 0: return a
+    else: return (a//b+1)*b
+
+text=" "
+n=0
+while text!="":
+    a,b=input().split(" ")
+    print("#",n," : ",get_mult(int(a), int(b)))
+from yogi import tokens, read
+
+def main() -> None:
+    i = 1
+    for x in tokens(int):
+        b = read(int)
+        c = x
+        while(c%b != 0):
+            c += 1
+        print("#" + str(i) + " : " + str(c))
+        i += 1
+
+if __name__ == "__main__":
+    main()
+                

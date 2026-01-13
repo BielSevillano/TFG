@@ -1,0 +1,52 @@
+Here's a feedback text for the provided Python program:
+
+---
+
+**Feedback for "Múltiple més petit" Program (Wrong Answer)**
+
+**1. Summary of the Problem and Solution Approach:**
+
+The problem "Múltiple més petit" asks to read pairs of natural numbers `a` and `b` (where `b ≥ 1`). For each pair, the program must find and print the smallest natural number `x` such that `x` is greater than or equal to `a` and `x` is also a multiple of `b`. The output for each case should be formatted as `#case_number : x`.
+
+The provided Python program attempts to solve this by using a mathematical formula: `x = (a + b - 1) // b * b`. This formula correctly calculates the smallest multiple of `b` that is greater than or equal to `a` by essentially performing a ceiling division (`ceil(a/b) * b`). It then prints the result in the specified format for a given number of test cases.
+
+**2. Analysis of the Code's Strengths and Weaknesses:**
+
+**Strengths:**
+
+*   **Correct Core Logic:** The most significant strength is that the mathematical formula `x = (a + b - 1) // b * b` is **correct** for calculating the smallest multiple of `b` that is greater than or equal to `a`. This is an efficient and standard way to solve this specific calculation.
+*   **Clear Variable Names:** Variables `a`, `b`, `x`, `casos`, and `i` are clearly named and represent their purpose.
+*   **Correct Output Formatting:** The `print("#{} : {}".format(i, x))` statement correctly formats the output as required by the problem description.
+
+**Weaknesses:**
+
+*   **Incorrect Input Handling (Primary Cause of "Wrong Answer"):** The main issue, and almost certainly the reason for the "Wrong Answer," lies in how the program reads input.
+    *   The problem statement says: "L’entrada consisteix en una seqüència de parells de naturals a i b..." (The input consists of a sequence of pairs of natural numbers a and b...). This implies that there is **no initial line specifying the number of test cases**.
+    *   Your code, however, starts by `casos = int(input())`, assuming the very first line of input is the count of subsequent `a, b` pairs. If the input begins directly with an `a, b` pair (e.g., "7 3"), then `int(input())` will try to read "7 3" as a single integer, leading to a `ValueError`, or if it reads just "7" (if input is line by line), it will misinterpret `a` as the number of cases, causing the loop to run incorrectly and subsequent `input().split()` calls to fail or read the wrong data.
+
+**3. Suggestions for Improvement:**
+
+The primary improvement needed is to adapt the input reading mechanism to match the problem's specification of a "sequence of pairs" rather than a fixed number of cases.
+
+*   **Modify Input Loop to Read Until EOF:**
+    Instead of reading a fixed number of cases, the program should read pairs of `a` and `b` until there is no more input (End Of File). In Python, this is typically done with a `while True` loop and a `try-except EOFError` block.
+
+    **Revised Code Structure:**
+
+    ```python
+    case_num = 1 # Initialize case counter
+    while True:
+        try:
+            a, b = map(int, input().split())
+            x = (a + b - 1) // b * b
+            print("#{} : {}".format(case_num, x))
+            case_num += 1
+        except EOFError:
+            break # Exit the loop when there's no more input
+        except ValueError:
+            # Handle potential empty lines or malformed input if necessary,
+            # though EOFError is usually sufficient for competitive programming
+            break 
+    ```
+
+By making this change, the program will correctly process all `a, b` pairs provided in the input stream, addressing the "Wrong Answer" issue stemming from the input format mismatch. The core logic for calculating `x` is already correct and efficient.

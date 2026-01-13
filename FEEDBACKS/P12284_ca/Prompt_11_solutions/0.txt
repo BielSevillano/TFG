@@ -1,0 +1,83 @@
+This feedback analyzes the provided Python program for solving the "Paraules més freqüents" problem.
+
+---
+
+### Feedback for "Paraules més freqüents" Program
+
+**Summary of the Problem and Solution Approach:**
+
+The problem requires reading a sequence of `n` words and identifying the `k` most frequent ones. The output must adhere to specific sorting criteria: words with higher frequency should appear first, and in the case of a tie in frequency, words should be sorted alphabetically in ascending order. The program needs to handle multiple test cases, with each case's output separated by a line of ten hyphens.
+
+The provided solution approaches this problem efficiently and elegantly:
+1.  **Frequency Counting:** It uses a Python dictionary (`freq`) to store the count of each unique word. For each test case, it iterates `n` times, reading words one by one. If a word is new, it's added to the dictionary with a count of 1; otherwise, its existing count is incremented.
+2.  **Custom Sorting:** After all words for a case are read and counted, the program sorts the *unique* words (dictionary keys). This sorting is crucial and correctly implemented using Python's `sorted()` function with a `lambda` expression as the `key`. The `key=lambda x: (-freq[x], x)` ensures that words are primarily sorted by frequency in *descending* order (using `-freq[x]`) and secondarily by the word itself in *ascending* alphabetical order (`x`) to handle ties.
+3.  **Output Generation:** Finally, it iterates through the first `k` words from the sorted list and prints them, followed by the "----------" separator for the case.
+4.  **Multi-case Handling:** The `yogi.tokens(int)` construct is effectively used in the `main` function to process multiple problem instances sequentially.
+
+**Analysis of the Code's Strengths and Weaknesses:**
+
+**Strengths:**
+
+*   **Correctness and Efficiency:** The core logic is sound. Using a dictionary for frequency counting provides average O(1) performance for insertions and lookups. The single sorting step, with its well-crafted `lambda` key, correctly implements the required complex sorting criteria and runs in O(U log U) time, where U is the number of unique words, which is highly efficient for this problem.
+*   **Pythonic and Concise:** The solution leverages Python's built-in data structures and features (dictionaries, `sorted()`, `lambda` functions) to produce compact, readable, and idiomatic code.
+*   **Readability and Clarity:** The code is well-structured into logical functions (`main`, `avalua`, `printea`), making it easy to understand the flow. Type hints (`dict[str, int]`, `int`, `str`) further enhance code clarity and maintainability.
+*   **Robust Multi-Case Handling:** The `for n in tokens(int):` loop correctly handles the input format for multiple test cases.
+
+**Weaknesses:**
+
+*   **Minor Variable/Function Naming (Stylistic):** While perfectly understandable in a Catalan/Spanish context, `printea` (print) and `avalua` (evaluate) could be renamed to more universally descriptive English terms like `print_top_words` or `process_case` for broader accessibility.
+*   **Redundant `aux` variable:** In the `avalua` function, the `aux` variable used for incrementing `freq[a]` is slightly redundant. `freq[a] = aux + 1` can be simplified.
+
+**Suggestions for Improvement:**
+
+1.  **Simplify Word Count Increment:**
+    The `if/else` block within the `avalua` function for updating word counts can be made more concise:
+    ```python
+    def avalua(n: int, k: int, freq: dict[str, int]):
+        for _ in range(n):
+            a = read(str)
+            # Option 1: Using dict.get()
+            freq[a] = freq.get(a, 0) + 1
+            # Option 2: Simplified else branch (no aux needed)
+            # if a not in freq:
+            #     freq[a] = 1
+            # else:
+            #     freq[a] += 1
+        printea(freq, k)
+        print("-" * 10)
+    ```
+
+2.  **Utilize `collections.Counter` for Frequency Counting:**
+    For frequency counting tasks, Python's standard library `collections.Counter` is the idiomatic and often most efficient tool. It simplifies the counting logic significantly:
+    ```python
+    from yogi import *
+    from collections import Counter # Import Counter
+
+    def printea(freq: Counter[str, int], k: int): # Type hint for Counter
+        for paraula in sorted(freq.keys(), key=lambda x: (-freq[x], x)):
+            if k > 0:
+                print(paraula)
+                k -= 1
+            else:
+                break
+
+    def avalua(n: int, k: int, freq: Counter[str, int]): # Pass Counter instance
+        for _ in range(n):
+            a = read(str)
+            freq[a] += 1 # Counter handles new keys automatically, initializing their count to 0
+        printea(freq, k)
+        print("-" * 10)
+
+    def main() -> None:
+        for n in tokens(int):
+            freq: Counter[str, int] = Counter() # Initialize Counter for each case
+            k = read(int)
+            avalua(n, k, freq)
+
+    main()
+    ```
+    This approach makes the frequency counting part of `avalua` even cleaner and leverages a highly optimized Python class.
+
+---
+
+The program is well-designed and correctly solves the problem with an efficient approach, justifying its "Accepted" status. The suggested improvements are primarily stylistic or introduce more specialized standard library features for even greater conciseness and robustness.

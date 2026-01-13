@@ -1,0 +1,52 @@
+### Feedback for "Fusió de taules" Program
+
+**1. Summary of the Problem and Solution Approach**
+
+The problem "Fusió de taules" asks for a function `fusio` that takes two already sorted lists of numbers (`v1` and `v2`) and merges them into a single sorted list, preserving all duplicate elements. For example, merging `[2, 3, 5]` and `[3, 5, 5, 7]` should result in `[2, 3, 3, 5, 5, 5, 7]`.
+
+The submitted `fusio` function correctly implements the standard two-pointer merge algorithm. It iterates through both input lists simultaneously, comparing elements at the current pointer positions. The smaller element is appended to a new result list, and its corresponding pointer is advanced. Once one list is exhausted, the remaining elements of the other list are simply appended to the result.
+
+**2. Analysis of the Code's Strengths and Weaknesses**
+
+**Strengths:**
+
+*   **Correct Algorithm for `fusio`:** The `fusio` function is well-implemented and correctly solves the problem as described. It accurately merges two sorted lists while preserving duplicates.
+*   **Efficiency:** The algorithm used in `fusio` is efficient, running in O(n + m) time complexity, where n and m are the lengths of the input lists. This is optimal for merging sorted lists.
+*   **Clear Logic:** The two-pointer approach is clear and easy to understand.
+*   **Use of `extend`:** Using `extend` to append the remaining elements of a list is a concise and efficient way to handle that part of the merge process.
+*   **Type Hinting:** The `fusio` function includes appropriate type hints, which is good practice for code clarity and maintainability.
+
+**Weaknesses and Cause of "Presentation Error":**
+
+*   **Inclusion of `main` function and I/O:** The problem statement explicitly mentions: "Només cal enviar el procediment demanat; el programa principal serà ignorat." This means that only the `fusio` function itself should be submitted. The inclusion of the `main` function, the `llegir_dades` helper function, and all associated input/output operations (`read`, `print`) are not required and actively interfere with the judging system.
+*   **Incorrect Output Format:** The `Presentation Error` typically indicates that the program's output format does not match the judge's expectations. In this case, the `main` function prints additional, unexpected information before the merged list:
+    *   `print(n1+n2)`: Prints the sum of the lengths of the input lists.
+    *   `print(" ",end="")`: Prints an extra space.
+    These lines precede the correct output of the merged list (`print(*fusio(v1,v2))`), causing the output to differ from what the judge expects.
+*   **Minor Type Hint Inconsistency:** In the `llegir_dades` function, the return type hint is `list[int]`, but `read(float)` is used to read floating-point numbers. While not causing a functional error here (as Python lists can hold mixed types), it's a minor inconsistency with best practices for type hinting. The problem defines input as `double`/`float`.
+
+**3. Suggestions for Improvement**
+
+*   **Submit Only the Required Function:** The most critical improvement is to remove all code outside the `fusio` function. Your submission should *only* contain the `fusio` function definition. This includes removing the `from yogi import read` statement, `llegir_dades` function, and the entire `main` function.
+
+    **Example of what to submit:**
+    ```python
+    def fusio(v1: list[float], v2: list[float]) -> list[float]:
+        i1 = 0
+        i2 = 0
+        llista_definitiva=[]
+        while i1 < len(v1) and i2 < len(v2):
+            if v1[i1] < v2[i2]:
+                llista_definitiva.append(v1[i1])
+                i1 += 1
+            else: # This covers v1[i1] >= v2[i2]
+                llista_definitiva.append(v2[i2])
+                i2 += 1
+        llista_definitiva.extend(v1[i1:])
+        llista_definitiva.extend(v2[i2:])
+        return llista_definitiva
+    ```
+*   **Review Problem Constraints Carefully:** Always pay close attention to statements like "Només cal enviar el procediment demanat" to avoid submitting unnecessary code that can lead to errors.
+*   **Ensure Type Hint Consistency (Minor):** If `llegir_dades` were to be part of the solution (which it isn't for this problem), its return type hint should be `list[float]` to accurately reflect the data type being stored.
+
+By submitting only the `fusio` function, your code should correctly pass the problem tests.

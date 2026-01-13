@@ -1,0 +1,40 @@
+Here's a feedback text for your program:
+
+---
+
+### Feedback for "Múltiple més petit" Program
+
+**1. Summary of the Problem and Solution Approach:**
+
+The problem "Múltiple més petit" asks you to find, for given natural numbers `a` and `b` (with `b >= 1`), the smallest natural number `x` such that `x` is a multiple of `b` and `x` is greater than or equal to `a`.
+
+Your solution employs a common and efficient mathematical formula: `x = (a + b - 1) // b * b`. This formula correctly calculates the ceiling of the division `a/b` using integer division (`//`) and then multiplies it by `b` to get the desired multiple.
+
+*   **Example 1:** If `a = 10`, `b = 5`. `(10 + 5 - 1) // 5 * 5 = 14 // 5 * 5 = 2 * 5 = 10`. (10 is a multiple of 5 and >= 10).
+*   **Example 2:** If `a = 12`, `b = 5`. `(12 + 5 - 1) // 5 * 5 = 16 // 5 * 5 = 3 * 5 = 15`. (15 is a multiple of 5 and >= 12).
+*   **Example 3:** If `a = 1`, `b = 5`. `(1 + 5 - 1) // 5 * 5 = 5 // 5 * 5 = 1 * 5 = 5`. (5 is a multiple of 5 and >= 1).
+
+**2. Analysis of the Code's Strengths and Weaknesses:**
+
+*   **Strengths:**
+    *   **Correct Logic:** The mathematical formula used is sound and provides the correct result for the problem as described.
+    *   **Efficiency:** The solution is highly efficient, involving only a few basic arithmetic operations per test case. It runs in constant time, `O(1)`, for each pair `a, b`.
+    *   **Readability:** The code is clear, concise, and easy to understand.
+    *   **Input/Output Handling:** It correctly processes multiple test cases and formats the output as specified (case number and result).
+
+*   **Weaknesses:**
+    *   **Problem Misinterpretation (Likely Cause of "Wrong Answer"):** The "Wrong Answer" verdict, especially when contrasted with the provided reference solutions (which solve a "Most Frequent Words" problem), strongly suggests that your Python code is being submitted to the **wrong problem statement** on the online judge. The Python code perfectly solves "Múltiple més petit", but the C++ solutions are for a completely different task (counting word frequencies and printing top `k` words). If your Python code were run against "Múltiple més petit", it should yield an "Accepted" verdict.
+
+**3. Suggestions for Improvement:**
+
+1.  **Verify the Problem Submission:** The most crucial step is to **confirm that you are submitting this Python code to the correct problem ("Múltiple més petit")** in the online judge system. If the code is being evaluated against the "Most Frequent Words" problem (as implied by the other solutions), it will naturally fail, regardless of its correctness for "Múltiple més petit".
+
+2.  **Edge Case Consideration (if problem is indeed "Múltiple més petit"):**
+    While your formula is robust, if the "Wrong Answer" persists even after confirming the problem statement, you might double-check:
+    *   **`a = 0`:** If "natural numbers" include 0, the formula `(0 + b - 1) // b * b` correctly yields 0 (which is a multiple of any `b` and `>= 0`).
+    *   **Very large numbers:** Python handles arbitrary-precision integers, so overflow is not an issue. If this were in C++ or Java, it might be a concern for `a + b - 1`.
+    *   **Input format variations:** Ensure no subtle differences in how `a` and `b` are provided or read (e.g., whitespace). Your `map(int, input().split())` is standard for space-separated integers.
+
+In summary, your Python program is logically sound for the "Múltiple més petit" problem. The "Wrong Answer" is almost certainly a mismatch between the problem your code solves and the problem it's being judged against.
+
+---

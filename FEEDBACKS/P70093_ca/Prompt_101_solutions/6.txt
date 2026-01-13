@@ -1,0 +1,56 @@
+Here's a feedback text for the provided Python program:
+
+---
+
+### Feedback on "Fusió de taules" Program
+
+**Problem Summary:**
+The problem "Fusió de taules" requires implementing a function `fusio` that merges two pre-sorted lists (`v1` and `v2`) of floating-point numbers into a single sorted list. The merged list should retain all duplicate elements. For example, merging `[2, 3, 5]` and `[3, 5, 5, 7]` should yield `[2, 3, 3, 5, 5, 5, 7]`. The input lists are guaranteed to be sorted in ascending order.
+
+**Solution Approach:**
+The `fusio` function uses a classic two-pointer merge algorithm. It initializes two pointers (`i1`, `i2`) to the beginning of `v1` and `v2` respectively, and an empty list `llista_definitiva` to store the result. It iteratively compares the elements pointed to by `i1` and `i2`, appending the smaller element to `llista_definitiva` and advancing the corresponding pointer. If elements are equal, it appends the element from `v2` (or `v1`, the choice doesn't matter for correctness) and advances `i2`. Once one list is exhausted, it efficiently appends the remaining elements of the other list to `llista_definitiva`. This is a standard and optimal approach for this problem.
+
+The program also includes a `main` function with helper functions (`llegir_dades`) to handle input reading and output printing, which is typical for local testing in competitive programming.
+
+**Code Analysis:**
+
+*   **Strengths:**
+    *   **Correctness:** The `fusio` function correctly implements the merge logic as described. It handles all cases, including empty lists, identical elements, and elements from one list entirely preceding elements from another.
+    *   **Efficiency:** The algorithm employed is highly efficient, running in O(N + M) time complexity, where N and M are the lengths of `v1` and `v2` respectively. This is optimal as every element from both input lists must be examined at least once.
+    *   **Clarity:** The `fusio` function is well-structured and easy to understand due to descriptive variable names (`i1`, `i2`, `llista_definitiva`).
+    *   **Adherence to Interface:** The signature of the `fusio` function perfectly matches the problem's Python interface (`fusio(v1: list[float], v2: list[float]) -> list[float]`).
+
+*   **Weaknesses:**
+    *   **Presentation Error (Output Format):** The observed "Presentation Error" is not due to the `fusio` function's logic, but rather the output format produced by the `main` function. The problem statement explicitly mentions, "Només cal enviar el procediment demanat; el programa principal serà ignorat." (Only the requested procedure needs to be sent; the main program will be ignored.). This implies that the submission should ideally *only* contain the `fusio` function.
+        *   The current `main` function prints the total number of elements (`n1+n2`) on one line, followed by a leading space and then the merged list elements on the next line. This deviates from typical judge expectations, which usually involve just printing the merged elements on a single line, space-separated. The extra line and the leading space are the most probable causes for the "Presentation Error".
+        ```
+        (total_elements)
+         (merged_list_elements_space_separated)
+        ```
+        This output format does not match what the judge's output checker expects.
+
+**Suggestions for Improvement:**
+
+1.  **Remove the `main` function and auxiliary I/O:** For submission to a platform like Jutge.org, it is best practice to submit *only* the `fusio` function as requested by the problem description. The judge system will provide its own `main` program to call your function with test cases and handle the output. This is the simplest and most robust way to avoid "Presentation Errors."
+
+2.  **If `main` is intended for local testing, correct the output format:** If you wish to keep the `main` function for local testing, modify its output to match standard expectations for such problems (i.e., just the merged list elements, space-separated, on a single line):
+    ```python
+    # ... (fusio function and llegir_dades function) ...
+
+    def main():
+        n1 = read(int)
+        v1 = llegir_dades(n1)
+        n2 = read(int)
+        v2 = llegir_dades(n2)
+        # Remove these lines:
+        # print(n1+n2)
+        # print(" ",end="")
+        print(*fusio(v1,v2))
+
+    main()
+    ```
+    By removing the first two `print` statements in `main`, the program would output just the merged list elements space-separated, which is the most common expected format for this type of problem.
+
+The core `fusio` function is excellent and correctly solves the problem. The issue lies purely in how the supplementary `main` function formats its output.
+
+---

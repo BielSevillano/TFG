@@ -1,0 +1,36 @@
+## Feedback for Program: Fusió de taules
+
+### Problem Summary and Solution Approach:
+
+The problem "Fusió de taules" requires implementing a function that merges two given sorted lists (or vectors/arrays) of floating-point numbers into a single sorted list, preserving all duplicate elements. For example, merging `[2, 3, 5]` and `[3, 5, 5, 7]` should result in `[2, 3, 3, 5, 5, 5, 7]`.
+
+The submitted Python program correctly implements a classic two-pointer merge algorithm within its `fusio` function. It initializes two pointers (`i1`, `i2`) to track the current position in `v1` and `v2` respectively, and an empty list `llista_definitiva` for the result. It iteratively compares the elements pointed to by `i1` and `i2`, appending the smaller one to `llista_definitiva` and advancing its corresponding pointer. Once one list is exhausted, the remaining elements of the other list are appended to `llista_definitiva`.
+
+### Code Analysis:
+
+**Strengths:**
+
+*   **Correct Algorithm:** The `fusio` function accurately implements the merge operation for two sorted lists. It successfully combines the elements while maintaining sorted order and correctly handles duplicates, as required by the problem statement.
+*   **Optimal Time Complexity:** The algorithm used has an optimal time complexity of O(N + M), where N and M are the lengths of `v1` and `v2`, respectively, as it iterates through each element of both input lists at most once.
+*   **Readability:** The `fusio` function is well-structured, clear, and easy to understand.
+*   **Type Hinting:** The use of type hints (`v1: list[float], v2: list[float]) -> list[float]`) is good practice, enhancing code clarity and maintainability.
+
+**Weaknesses:**
+
+*   **Presentation Error (Input/Output Mismatch):** The "Presentation Error" arises because the submitted code includes a `main` function that performs input reading and output printing, which is not expected by the grading system for this specific problem.
+    *   The problem statement explicitly notes: "Només cal enviar el procediment demanat; el programa principal serà ignorat." This means **only the `fusio` function should be submitted**.
+    *   Even if a `main` function were allowed, its output format is incorrect:
+        *   It prints `n1+n2` (the total number of elements), which is not part of the expected output.
+        *   It prints a leading space (`print(" ",end="")`) before the merged list, which would cause a presentation error if any output at all was expected.
+
+### Suggestions for Improvement:
+
+1.  **Remove `main` Function and All Associated I/O:** The most crucial improvement is to remove all code that is not part of the `fusio` function definition. This includes:
+    *   `from yogi import read`
+    *   The `llegir_dades` helper function.
+    *   The entire `main` function.
+    *   The call to `main()` at the end of the file.
+
+    The submitted code should strictly contain **only** the `fusio` function as defined in the problem interface. The grading system will call your `fusio` function directly with appropriate inputs and check its return value.
+
+By strictly adhering to the submission guidelines and providing only the requested function, your solution will pass the "Presentation Error" and likely be accepted, as the core `fusio` logic is correct and efficient.

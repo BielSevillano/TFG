@@ -1,0 +1,50 @@
+### Feedback for "Múltiple més petit" Program
+
+**1. Problem Summary:**
+The problem "Múltiple més petit" (Smallest Multiple) requires reading pairs of natural numbers, `a` and `b`, where `b` is always greater than or equal to 1. For each pair, the task is to find and print the smallest natural number `x` such that `x` is both greater than or equal to `a` and a multiple of `b`. The output for each calculated `x` must be preceded by a case number, starting from 1, following a specific format (e.g., `#1 : 10`).
+
+**2. Solution Approach:**
+The provided Python program adopts a mathematical approach to find the desired `x`. For each input pair `(a, b)`, it calculates `x` using the formula `(a + b - 1) // b * b`. This formula is a standard and efficient way to determine the smallest multiple of `b` that is greater than or equal to `a`.
+
+**3. Code Analysis:**
+
+*   **Strengths:**
+    *   **Correct Core Logic:** The formula `x = (a + b - 1) // b * b` is mathematically sound and correctly solves the problem of finding the smallest multiple of `b` that is greater than or equal to `a` for positive integers `a` and `b`. This is highly efficient, performing the calculation in constant time for each pair.
+    *   **Conciseness:** The code is very compact and easy to understand due to the direct application of the mathematical formula.
+    *   **Clear Output Formatting (if input is correct):** The `print("#{} : {}".format(i, x))` statement correctly implements the specified output format for case numbering.
+
+*   **Weaknesses (Likely cause of "Wrong Answer"):**
+    *   **Incorrect Input Handling:** The primary reason for the "Wrong Answer" verdict is almost certainly the way the program handles input. The problem description states, "L’entrada consisteix en una seqüència de parells de naturals a i b," implying that pairs should be read until the End-Of-File (EOF). However, the current code starts by reading `casos = int(input())`, assuming that the first line of input provides the *total number of test cases* that will follow. This mismatch between the expected input format (fixed number of cases) and the actual problem input format (sequence until EOF) will cause the program to fail on testing systems.
+    *   **Case Numbering (consequence):** As a direct result of the incorrect input handling, the `while i <= casos:` loop and the case numbering will not function as intended for an EOF-driven input. If there's no initial `casos` line, attempting to parse it as an integer will likely raise an error or consume a pair of `a, b` values if the first line happens to be a single number, leading to incorrect processing.
+
+**4. Suggestions for Improvement:**
+
+The key to fixing this program is to adjust its input reading mechanism to align with the problem's specification:
+
+1.  **Change to EOF-driven Input Loop:** Modify the main loop to continuously read input pairs until there are no more lines to read. In Python, this is typically done using a `while True:` loop combined with a `try-except EOFError` block:
+
+    ```python
+    import sys
+
+    i = 1 # Initialize case counter for output
+    while True:
+        try:
+            line = input() # Read a line from standard input
+            if not line: # Handle potential empty lines or immediate EOF after previous read
+                break
+            
+            a, b = map(int, line.split()) # Parse a and b from the line
+            
+            x = (a + b - 1) // b * b # Calculate the smallest multiple
+            
+            print("#{} : {}".format(i, x)) # Print with correct formatting
+            i += 1 # Increment case counter
+        except EOFError:
+            # Break the loop when End-Of-File is reached
+            break
+        except ValueError:
+            # Handle potential errors if a line doesn't contain two integers
+            # (e.g., if there's an unexpected blank line or malformed input)
+            break 
+    ```
+    This modification ensures that the program correctly processes each pair `(a, b)` in the sequence until the end of the input, assigning accurate case numbers. The core calculation for `x` is already robust and efficient, so no changes are needed there.

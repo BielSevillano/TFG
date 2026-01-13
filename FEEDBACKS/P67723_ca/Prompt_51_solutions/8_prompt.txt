@@ -1,0 +1,879 @@
+
+                Write a feedback text for the following program that solves the problem described below.
+                
+                                Màxim comú divisor
+
+Feu un programa que calculi el màxim comú divisor de dos nombres.
+
+Entrada
+
+L’entrada consisteix en dos naturals estrictament positius a i b.
+
+Sortida
+
+Cal escriure el màxim comú divisor de a i b.
+
+Observació
+
+Encara que la solució d’aquest exercici no cal que sigui gaire eficient,
+tampoc no hauria de ser excessivament lenta.
+
+Autor
+
+Jordi Petit
+
+© Jutge.org, 2006–2025.
+
+
+                
+
+                This is the program:
+
+                from yogi import read
+a=read(int)
+b=read(int)
+aoriginal=a
+while b!=0:
+	n=a%b
+	a=b
+	b=n
+
+print(f'El mcd de {aoriginal} i {b} es {a}.)
+
+                The result of the program is: Compilation Error
+
+                The feedback should include:
+                - A brief summary of the problem and the solution approach.
+                - An analysis of the code's strengths and weaknesses.
+                - Suggestions for improvement, if any.
+
+                You can rely on the following other possible solutions to the same problem for reference:
+                from easyinput import *
+from math import gcd
+
+x=read(int)
+y=read(int)
+a = gcd(x,y)
+a=str(a)
+print("El mcd de {} i {} es".format(x,y), a+".")  
+
+
+from easyinput import *
+from math import *
+
+for i in read_many(int):
+    a = read(int)
+    x = gcd(a,i)
+    print(f'El mcd de {i} i {a} es {x}.')
+from easyinput import*
+from math import gcd  
+x= read(int)  
+y= read (int)
+print("El mcd de {} i {} es".format(x,y))  
+print(gcd(x,y)) 
+
+from easyinput import*
+from math import gcd  
+x= read(int)  
+y= read (int)
+print("El mcd de {} i {} es".format(x,y),gcd(x,y),".")  
+
+
+from easyinput import*
+from math import gcd  
+x= read(int)  
+y= read (int)
+print("El mcd de {} i {} es".format(x,y),gcd(x,y))  
+
+
+from easyinput import *
+from math import *
+
+a = read(int)
+b = read(int)
+
+x = gcd(a,b)
+print(f"El mcd de {a} i {b} es {x}.")
+
+from easyinput import*
+from math import gcd  
+x= read(int)  
+y= read (int)
+mitjana=gcd(x,y)
+print("El mcd de {} i {} es {}.".format(x,y,mitjana))  
+
+
+from easyinput import*
+
+from math import gcd
+
+x= read(int)  
+y= read (int)
+mitjana=gcd(x,y)
+print("El mcd de {} i {} es {}.".format(x,y,mitjana))
+
+#include <iostream>
+
+using namespace std;
+
+//EUCLIDES: dividir gran (a) entre petit (b)
+int mcd(int a, int b)
+{
+    int auxiliar;
+    if (b > a) {
+        auxiliar = a;
+        a = b;
+        b = auxiliar;
+    }
+
+    if (b == 0) {
+        return a;
+    }
+    if (a % b == 0) {
+        return b;
+    } else {
+        return mcd(b, a % b);
+    }
+}
+
+int main()
+{
+    int a, b;
+    cin >> a >> b;
+    cout << "El mcd de " << a << " i " << b << " es " << mcd(a, b) << "." << endl;
+}
+
+from yogi import read
+def main():
+    a = read(int)
+    b = read(int)
+
+    
+    div_a = []
+    div_b = []
+
+    troba_primers(a, div_a)
+    troba_primers(b, div_b)
+    m = troba_mcd(div_a, div_b)
+    print("El mcd de ", a, " i ", b, " es ", m, sep="")
+
+def troba_primers(num,l):
+    primers = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59]
+
+    for primer in primers:
+        while (num%primer == 0 and num > 1):
+            l.append(primer)
+            num = num/primer
+   # print(l)
+
+def troba_mcd(la, lb):
+    mcd = 1
+    if len(la)<len(lb):
+        curta = la
+        llarga = lb
+    else:
+        curta = lb
+        llarga = la
+    for l in curta:
+        if l in llarga:
+            llarga.remove(l)
+            mcd = mcd *l
+    return(mcd)
+
+main()
+
+from yogi import read
+def main():
+    a = read(int)
+    b = read(int)
+
+    
+    div_a = []
+    div_b = []
+
+    troba_primers(a, div_a)
+    troba_primers(b, div_b)
+    m = troba_mcd(div_a, div_b)
+    print("El mcd de ", a, " i ", b, " es ", m, ".", sep="")
+
+def troba_primers(num,l):
+    primers = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59]
+
+    for primer in primers:
+        while (num%primer == 0 and num > 1):
+            l.append(primer)
+            num = num/primer
+   # print(l)
+
+def troba_mcd(la, lb):
+    mcd = 1
+    if len(la)<len(lb):
+        curta = la
+        llarga = lb
+    else:
+        curta = lb
+        llarga = la
+    for l in curta:
+        if l in llarga:
+            llarga.remove(l)
+            mcd = mcd *l
+    return(mcd)
+
+main()
+
+#mcd
+from unittest import result
+from yogi import read
+
+a = read(int)
+b = read(int)
+c = b
+
+if a >= b:
+    b = a
+    a = c
+
+contador = a
+
+while contador > 0:
+    resultat1 = b%contador
+    if resultat1 == 0:
+        resultat2 = a%contador
+        if resultat2 == 0:
+            mcd = contador
+    else:
+        contador -= 1
+print("El mcd de ", a, " i ", b, " es ", mcd, ".")
+
+#llista1 = []
+#
+#contador = 1
+#
+#while contador <= a:
+#    resultado = a % contador
+#    if resultado == 0:
+#        llista1.append(contador)
+#    contador += 1
+#    
+#llista2 = []
+#
+#
+#contador2 = 2
+#while contador2 <= b:
+#    resultado2 = b % contador2
+#    if resultado2 == 0:
+#        llista2.append(contador2)
+#    contador2 += 1
+
+#print (MCD)
+
+
+
+#mcd
+from unittest import result
+from yogi import read
+
+a = read(int)
+b = read(int)
+c = b
+
+if a >= b:
+    b = a
+    a = c
+
+contador = a
+
+while contador > 0:
+    resultat1 = b%contador
+    if resultat1 == 0:
+        resultat2 = a%contador
+        if resultat2 == 0:
+            print("El mcd de ", a, " i ", b, " es ", contador, ".")
+            break
+    else:
+        contador -= 1
+
+
+#llista1 = []
+#
+#contador = 1
+#
+#while contador <= a:
+#    resultado = a % contador
+#    if resultado == 0:
+#        llista1.append(contador)
+#    contador += 1
+#    
+#llista2 = []
+#
+#
+#contador2 = 2
+#while contador2 <= b:
+#    resultado2 = b % contador2
+#    if resultado2 == 0:
+#        llista2.append(contador2)
+#    contador2 += 1
+
+#print (MCD)
+
+
+
+from yogi import read
+a=read(int)
+b=read(int)
+
+if a>b:
+	d=b
+else:
+	d=a
+
+while a%d!=0 or b%d!=0:
+	d=d-1
+print(d)
+import yogi
+
+a = yogi.read(int)
+b = yogi.read(int)
+
+d = a 
+while not (a % d == 0 and b % d == 0):
+    d  = d-1
+print(d)
+
+from yogi import read
+
+a = read(int)
+b = read(int)
+if a >= b:
+    d = b
+else:
+    d = a
+if d < 0:
+    while not (a % d == 0 and b % d == 0):
+        d = d + 1
+else:
+    while not (a % d == 0 and b % d == 0):
+        d = d - 1
+
+print(F"El mcd de {a} i {b} es {d}.")
+
+import yogi
+a = yogi.read(int)
+b = yogi.read(int)
+num1 = a
+num2 = b
+
+while b != 0:
+    r = a % b
+    a = b
+    b = r
+print("El mcd de ",num1," i ",num2," es ",a,".",sep="")
+#programa maxim comu divisor
+from calendar import c
+from yogi import read
+a = read(int)
+b = read(int)
+c = a
+d = b
+
+while a != b:
+    if b < a:
+        a = a - b
+    else:
+        b = b - a
+
+print(F"El mcd de {c} i {d} es {a}.")
+
+
+
+
+
+from yogi import read
+
+a = read(int)
+b = read(int)
+num1 = a
+num2 = b
+while b != 0:
+    r = a % b
+    a = b
+    b = r
+
+
+print(F"El mcd de {num1} i {num2} es {a}.")
+
+from yogi import read
+
+a = read(int)
+b = read(int)
+
+x = a
+y = b
+
+if a > b:
+    pass
+else:
+    aux = a
+    a = b
+    b = aux
+
+while b != 0:
+    residu = a % b
+    a = b
+    b = residu
+
+print("El mcd de ", x, " i ", y ," es ", a ,".", sep="")
+from yogi import read
+
+a = read(int)
+b = read(int)
+
+if a>b:
+    r=b
+else:
+    r=a
+
+while not (a%r==0 and b%r==0):
+    r= r-1
+
+print(r)
+from yogi import read
+
+a = read(int)
+b = read(int)
+
+if a>b:
+    r=b
+else:
+    r=a
+
+while not (a%r==0 and b%r==0):
+    r= r-1
+
+print('El mcd de', a, 'i', b, 'es', r)
+from yogi import read
+
+a = read(int)
+b = read(int)
+
+r=a
+s=b
+
+
+while a!=b:
+    if a>b:
+        a=a-b
+
+    else:
+        b=b-a
+
+print('El mcd de ', r, ' i ', s, ' es ', b, '.', sep='')
+
+
+
+from yogi import read
+a=read(int)
+b=read(int)
+if a<b :
+    d=a
+else:
+    d=b
+while a%d !=0 or b%d!=0:
+    d=d-1
+print("El mcd de",str(a),"i",str(b) ,"es",str(d)+".")
+
+from yogi import read
+
+def mcd1(a,b):
+    if (a ==b):
+        return a
+    else:
+        if (a>b):
+            return mcd1(a-b,b)
+        else:
+            return mcd1(b-a, a)
+
+
+a = read(int)
+b = read(int)
+print("El mcd de " + str(a)+ " i " + str(b) + " es " + str(mcd1(a,b)) + ".")
+from yogi import read
+
+a = read(int)
+b = read(int)
+
+n = a
+z = b
+
+while a != b:
+    if a > b:
+        a = a - b
+    else:
+        b = b - a
+
+
+print("El mcd de " + str(n)+ " i " + str(z) + " es " + str(a) + ".")
+import yogi
+
+x = yogi.read(int)
+y = yogi.read(int)
+
+a = x
+b = y
+
+if x == y:
+    mcd = x
+elif x>y:
+    while y!=0 :
+        r = x%y
+        x = y
+        y = r
+    mcd = x
+else: # y>x
+    while x!=0 :
+        r = y%x
+        y = x
+        x = r
+    mcd = y
+
+print("El mcd de", a, "i", b, "es", mcd, end=".\n")
+
+from yogi import read
+a=read(int)
+b=read(int)
+
+while b!=0:
+	n=a%b
+	a=b
+	b=n
+
+print(a)
+from yogi import read
+a=read(int)
+b=read(int)
+aoriginal=a
+while b!=0:
+	n=a%b
+	a=b
+	b=n
+
+print(f'El mcd de {aoriginal} i {b} es {a}.)
+from yogi import read
+
+a = read(int)
+b = read(int)
+c = a
+d = b
+while b != 0:
+    r = a % b 
+    a = b
+    b = r
+print('El mcd de', c, 'i', d, 'es', a, end='')
+print('.', sep='')
+x,y=input().split()
+x=int(x)
+y=int(y)
+a=min(x,y)
+
+while max(x,y)%a!=0 or min(x,y)%a!=0:
+    a=a-1
+print('El mcd de ',x,' i ',y,' es ',a,'.',sep='')
+
+from yogi import read
+
+a = read(int)
+b = read(int)
+d = 0
+if a > b:
+    d = b
+    while (a % d != 0):
+        d = d - 1
+else:
+    d = a
+    while (b % d != 0):
+        d = d - 1
+print('El mcd de ', a,' i ', b, ' es ', d,'.', sep = "")
+
+
+from yogi import read
+
+x = read(int)
+y = read(int)
+a = x
+b = y
+
+while (b != 0):
+    r = a % b
+    a = b
+    b = r
+print('El mcd de ', x,' i ', y, ' es ', a,'.', sep = "")
+
+
+from yogi import read
+
+x = read(int)
+y = read(int)
+while y != 0:
+    r = x % y
+    x = y 
+    y = r
+print(x)
+from yogi import read
+
+a = read(int)
+b = read(int)
+
+def mcd(a: int, b: int) -> int:
+    if(b == 0):
+        return (a)
+    else:
+        return mcd(b , a%b)
+
+
+print("El mcd de " + str(a) + " i " + str(b) + " es " + str(mcd(a, b)))
+from yogi import read
+
+a = read(int)
+b = read(int)
+
+def mcd(a: int, b: int) -> int:
+    if(b == 0):
+        return (a)
+    else:
+        return mcd(b , a%b)
+
+
+print("El mcd de " + str(a) + " i " + str(b) + " es " + str(mcd(a, b)) + '.')
+from yogi import read
+
+x = read(int)
+y = read(int)
+d = x
+g = y
+while g != 0:
+    r = d % g
+    d = g 
+    g = r
+print(f'El mcd de {x} i {y} es {d}.')
+from yogi import *
+from math import *
+
+def mcd_recursiu(a:int,b:int)->int:
+    divident=a
+    divisor=b
+    r=divident%divisor
+    if r == 0:
+        return divisor
+    else:
+        mcd_recursiu(divisor,r)
+
+def main()->None:
+    a=read(int)
+    b=read(int)
+    mcd=mcd_recursiu(max(a,b),min(a,b))
+    print("El mcd de ",a," i ",b," es ",mcd," .", sep="")
+
+if __name__ == "__main__":
+    main()
+
+    
+from yogi import *
+from math import *
+a=read(int)
+b=read(int)
+
+x=max(a,b)
+y=min(a,b)
+
+while y != 0:
+    r = x % y
+    x = y 
+    y = r
+
+print("El mcd de ",a," i ",b," es ",x,".", sep="")
+    
+from jutge import read
+
+def mcd(a, b):
+    while b:
+        a, b = b, a % b
+    return a
+
+a = int(input("Entra el primer nombre: "))
+b = int(input("Entra el segon nombre: "))
+print("El mcd de", a, "i", b, "es", mcd(a, b))
+from jutge import read
+
+a = int(read())
+b = int(read())
+
+while b != 0:
+    r = a % b
+    a = b
+    b = r
+  
+
+print(a)
+
+from yogi import read
+def gcd(a, b):
+    if b == 0:
+        return a
+    else:
+        return gcd(b, a % b)
+
+
+a = read(int)
+b = read(int)
+
+
+print("El mcd de", a,"i", b,"es", gcd(a, b),".") 
+from yogi import read
+
+a, b = read(int), read(int)
+print("El mcd de " + str(a) + " i " + str(b) + " es ", end='')
+while a != b:
+    if a > b:
+        a = a - b
+    else:
+        b = b - a
+print(str(a) + ".")
+
+
+import yogi
+
+x = yogi.read(int)
+y = yogi.read(int)
+
+a = x
+b = y
+while x != y:
+  
+    if x < y:
+        y = y - x 
+    else:
+        x = x - y
+
+print('El mcd de ',a, ' i ', b, ' es ', x,'.', sep='')
+import yogi #read
+n=yogi.read(int)
+
+for i in range (n):
+    print ((n-1-i)*" ",((2*i+1)*"*"))
+    i=i+1
+
+for i in range (n-2,-1,-1):
+    print ((n-1-i)*" ",((2*i+1)*"*"))
+    i=i-1
+import yogi #read
+a=yogi.read(int)
+c=a
+b=yogi.read(int)
+e=b
+while a!=b:
+    if a>b:
+        a=a-b
+    else: b=b-a
+
+print('El mcd de ',c ,' i ',e,' es ',a,'.', sep='')
+from yogi import *
+
+a = read(int)
+b = read(int)
+
+a=read(int)
+b=read(int)
+m=a
+n=b
+
+#algortime d'Euclídes
+#si els dos nombres són iguals, mcd = el nombre
+#sino resta el més petit al més gran i repetir la comparació...
+
+
+while b != 0:
+    r=a%b       #si restem un numero multiples vegades fins que quedi el residu, calculem directament el residu
+    a=b         
+    b=r         
+
+    
+print('The gcd of ',m,' and ',n,' is ',a,'.',sep='')
+from re import M
+from yogi import read
+
+a=read(int)
+b=read(int)
+m=a
+n=b
+
+#algortime d'Euclídes
+#si els dos nombres són iguals, mcd = el nombre
+#sino resta el més petit al més gran i repetir la comparació...
+
+
+while b != 0:
+    r=a%b       #si restem un numero multiples vegades fins que quedi el residu, calculem directament el residu
+    a=b         
+    b=r         
+
+    
+print('The gcd of ',m,' and ',n,' is ',a,'.',sep='')
+import yogi
+
+a = yogi.read(int)
+b = yogi.read(int)
+ax = a 
+bx = b
+
+
+while a % b != 0 or b % a != 0:
+    
+        if a > b:
+            a = a - b
+        elif a < b:
+            b = b - a
+
+if a == b:
+        m = a    
+elif a > b:
+     m = a // b
+elif b: 
+     m = b // a
+
+print(f'El mcd de {ax} i {bx} es {m}.')
+import yogi
+x=yogi.read(int)
+y=yogi.read(int)
+
+print(f"El mcd de {x} i {y} es", end=' ')
+    #primer=x
+    #segon=y
+
+while x!=y:
+    if x>y:
+        x=x-y
+    if y>x:
+       y=y-x
+
+print(f"{x}.")
+
+    #print(f"El mcd de {primer} i {segon} es {x}.")
+import yogi
+
+a = yogi.read(int)
+b = yogi.read(int)
+         
+
+def mcd(a: int, b: int) -> int:
+    """Calcula el mcd de dos nombres a través de l'algoritme d'Euclides"""
+
+    while b:
+        a, b = b, a % b
+    return a
+
+
+
+print(f'El mcd de {a} y {b} es {mcd(a, b)}.')
+
+
+                

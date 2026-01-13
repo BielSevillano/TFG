@@ -1,0 +1,57 @@
+This program effectively solves the problem of finding the `k` most frequent words from a sequence of `n` words, correctly handling tie-breaking by alphabetical order. The solution is well-structured, efficient, and demonstrates good understanding of Python's data structures and sorting capabilities.
+
+### Summary of Problem and Solution Approach
+
+The problem requires reading `n` words and then printing the `k` words that appear most frequently. In case of a tie in frequency, words should be ordered alphabetically. The program must handle multiple test cases, each followed by a line of ten hyphens.
+
+The submitted program employs a highly suitable approach:
+1.  **Frequency Counting:** It uses a Python dictionary (`freq: dict[str, int]`) to store each unique word and its corresponding count. This allows for efficient (amortized O(1)) lookup and update of word frequencies.
+2.  **Sorting:** After all words for a given test case have been processed and their frequencies tallied, the program sorts the dictionary's keys (the words). The sorting key is a lambda function `lambda x: (-freq[x], x)`. This ingenious key ensures that words are primarily sorted in descending order of frequency (`-freq[x]`) and secondarily, for ties in frequency, in ascending alphabetical order (`x`).
+3.  **Output:** Finally, it iterates through the sorted words and prints the first `k` of them, followed by the required separator line.
+
+### Analysis of the Code's Strengths and Weaknesses
+
+**Strengths:**
+
+*   **Correctness:** The logic for counting frequencies and especially the custom sort key `(-freq[x], x)` perfectly addresses both primary and secondary sorting requirements (frequency descending, alphabetical ascending).
+*   **Efficiency:**
+    *   Using a dictionary for frequency counting is highly efficient, offering amortized O(1) time complexity for insertions and lookups.
+    *   The single `sorted()` call on the distinct words (`M` distinct words) has a time complexity of O(M log M). Since `M <= N` (total words), this is at most O(N log N), which is optimal for this type of problem.
+    *   Compared to several other solutions that might sort the entire list of `N` words first (O(N log N)) and *then* process frequencies, or repeatedly find the maximum `k` times, this approach is more efficient.
+*   **Conciseness and Readability:** Python's built-in `dict` and `sorted()` with a lambda function allow for a very compact and expressive solution. The code is clean and easy to understand.
+*   **Modularity:** The program is well-organized into `main`, `avalua`, and `printea` functions, separating concerns.
+*   **Robustness for Multiple Cases:** The `for n in tokens(int):` loop correctly processes multiple test cases, and the `freq` dictionary is re-initialized for each case, preventing data leakage between cases.
+
+**Weaknesses:**
+
+*   **Minor Syntax for Counting:** The way frequencies are updated:
+    ```python
+    if a not in freq:
+        freq[a] = 1
+    else:
+        aux = freq[a]
+        freq[a] = aux + 1
+    ```
+    can be simplified.
+*   **Slightly Less Pythonic Loop in `printea`:** The `while k > 0` loop with `k -= 1` is functional, but Python offers a more direct way to limit iterations after sorting.
+
+### Suggestions for Improvement
+
+1.  **Simplify Frequency Counting:** The frequency update logic can be more concise:
+    ```python
+    freq[a] = freq.get(a, 0) + 1
+    ```
+    This uses the `dict.get()` method to retrieve the current count (defaulting to `0` if the word isn't yet in the dictionary) and then increments it. Alternatively, for an even more "Pythonic" approach, `collections.Counter` could be used, but your current dictionary implementation is perfectly clear and sufficient.
+
+2.  **Simplify `printea` loop using Slicing:** Instead of manually decrementing `k`, you can slice the sorted list of words directly:
+    ```python
+    def printea(freq: dict[str, int], k: int):
+        # Sort once
+        sorted_words = sorted(freq.keys(), key=lambda x: (-freq[x], x))
+        # Print the first k words using slicing
+        for paraula in sorted_words[:k]:
+            print(paraula)
+    ```
+    This removes the explicit `if k > 0 / else break` logic, making the function slightly cleaner.
+
+Overall, this is an excellent solution. It's efficient, correct, and well-written, earning its "Accepted" status. The suggested improvements are minor stylistic refinements rather than critical fixes.

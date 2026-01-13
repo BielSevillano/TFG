@@ -1,0 +1,57 @@
+## Feedback for "Paraules més freqüents" Program
+
+This program efficiently solves the problem of finding the `k` most frequent words from a given sequence of `n` words, applying specific tie-breaking rules.
+
+### Problem Summary and Solution Approach
+
+The problem asks to read `n` words and output the `k` words that appear most frequently. In case of a tie in frequency, words should be ordered lexicographically (alphabetically). The program correctly handles multiple test cases, each with its own `n`, `k`, and sequence of words.
+
+The chosen approach is highly effective and idiomatic Python:
+1.  **Frequency Counting:** It uses a dictionary (`freq`) to store the count of each unique word. This is an optimal way to count occurrences, as dictionary lookups and updates are, on average, O(1) operations.
+2.  **Sorting and Selection:** After counting all words, it sorts the keys (words) of the frequency dictionary. The sorting key is a `lambda` function that prioritizes higher frequencies (by negating the frequency value for descending order) and then lexicographical order for words (ascending) in case of a frequency tie.
+3.  **Output:** It iterates through the first `k` elements of the sorted list and prints them, followed by the required separator.
+
+### Code Strengths
+
+1.  **Correctness:** The program correctly implements both sorting criteria:
+    *   Words with higher frequency appear first due to `-freq[x]`.
+    *   For words with the same frequency, `x` ensures lexicographical ordering.
+2.  **Efficiency:** The solution is very efficient.
+    *   Counting word frequencies using a dictionary takes O(N) time on average (where N is the total number of words).
+    *   Sorting the unique words (let D be the number of distinct words) takes O(D log D) time.
+    *   Printing the top `k` words takes O(k) time.
+    *   Overall, the time complexity is dominated by counting and sorting, resulting in approximately O(N + D log D), which is optimal for this problem.
+3.  **Pythonic Design:**
+    *   Leverages Python's built-in `dict` and `sorted` function with a `lambda` key, leading to concise and readable code.
+    *   Type hints (`dict[str, int]`) enhance clarity and maintainability.
+4.  **Modularity:** The problem is broken down into clear, single-responsibility functions: `avalua` for reading and counting, `printea` for sorting and printing, and `main` for managing test cases. This improves code organization and readability.
+5.  **Resource Management:** For each test case, a new empty dictionary (`freq = {}`) is initialized, ensuring that word counts from previous cases do not interfere.
+
+### Code Weaknesses and Suggestions for Improvement
+
+1.  **Wildcard Import (`from yogi import *`):** While common in competitive programming environments for brevity, in larger or more formal projects, it's generally recommended to import specific functions (e.g., `from yogi import tokens, read`) to avoid potential name collisions and improve code clarity regarding dependencies. For this context, it's a minor point.
+2.  **Slightly Redundant `aux` Variable:** In the `avalua` function, the lines:
+    ```python
+    else:
+        aux = freq[a]
+        freq[a] = aux + 1
+    ```
+    can be more concisely written as `else: freq[a] += 1`. This is a very minor stylistic point.
+3.  **Printing Loop Optimization (Minor):** The `printea` function uses a `k > 0` check and `k -= 1` within the loop to print the first `k` items. A slightly more Pythonic way to do this after sorting would be to slice the list directly:
+    ```python
+    sorted_words = sorted(freq.keys(), key=lambda x: (-freq[x], x))
+    for paraula in sorted_words[:k]:
+        print(paraula)
+    ```
+    This achieves the same result with potentially clearer intent for slicing the first `k` elements.
+
+### Comparison with Other Possible Solutions
+
+The provided solution stands out as one of the most efficient and elegant among the reference solutions, particularly in Python.
+
+*   **Compared to solutions using `list.sort()` then `dict.items().sort()` (e.g., `Solution 2`, `Solution 10`, `Solution 11`):** Your solution directly sorts `freq.keys()` using a clever `lambda` for the key, which is equivalent in efficiency to converting to a list of tuples and sorting. Solution 2's double sort (first by word, then by frequency descending using `itemgetter`) is also a valid and common strategy due to stable sort properties. Your single `lambda` sort is perhaps slightly more direct. Solutions 10 and 11 had a minor error in the lambda sort (sorting frequency ascending by default or wrong order).
+*   **Compared to solutions that sort the entire input list first (e.g., `Solution 4`, `Solution 6`, `Solution 7`, `Solution 8 (C++)`, `Solution 9`):** These solutions perform an initial `O(N log N)` sort on all input words, then iterate through to count frequencies `O(N)`, and finally sort the unique words `O(D log D)`. While also correct and efficient, your approach avoids the `O(N log N)` step if `N` is significantly larger than `D log D`, relying on `dict`'s average O(1) performance for `N` words. This can make your solution slightly faster in cases with many repeated words.
+*   **Compared to solutions that repeatedly find the maximum (e.g., `Solution 1`, `Solution 5`):** These approaches are generally less efficient, as they involve `k` iterations, each requiring scanning through all unique words (or what's left of them) to find the next most frequent. This can lead to a complexity closer to `O(k * D)`, which is less optimal than `O(D log D)` for sorting once.
+*   **Compared to solutions that try to maintain sorted order incrementally (e.g., `Solution 3`):** These can be significantly less efficient, potentially leading to `O(N * D)` or even `O(N^2)` worst-case complexities due to repeated insertions and shifts in the lists, especially if not implemented very carefully.
+
+In conclusion, the program is well-written, correct, and highly efficient. It showcases excellent use of Python's data structures and sorting capabilities to tackle a common algorithmic problem.

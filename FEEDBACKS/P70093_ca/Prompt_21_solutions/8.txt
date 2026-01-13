@@ -1,0 +1,76 @@
+### Feedback for the "Fusió de taules" Program
+
+This feedback addresses the provided Python program designed to merge two sorted lists.
+
+#### 1. Summary of the Problem and Solution Approach
+
+The problem "Fusió de taules" requires implementing a function, `fusio`, that takes two already sorted lists of floating-point numbers (`v1` and `v2`) as input. The goal is to merge these two lists into a single new list, which must also be sorted in ascending order, and importantly, must retain all duplicate elements from both original lists.
+
+The implemented solution employs a classic **two-pointer merge algorithm**. This approach initializes two pointers (or indices), `i1` and `i2`, pointing to the beginning of `v1` and `v2` respectively. It iteratively compares the elements at these pointers. The smaller of the two elements is appended to a new `llista_definitiva` (final list), and its corresponding pointer is advanced. This process continues until one of the lists is fully traversed. Finally, any remaining elements from the other list are appended to the `llista_definitiva`.
+
+#### 2. Analysis of the Code's Strengths and Weaknesses
+
+**Strengths:**
+
+*   **Correctness of `fusio` Function:** The `fusio` function perfectly implements the merge logic. It correctly handles the merging of sorted lists, including cases with duplicate elements and lists of different lengths, producing the expected sorted output.
+*   **Optimal Time Complexity:** The `fusio` function runs in linear time, O(N + M), where N and M are the lengths of `v1` and `v2`. This is the most efficient possible algorithm for merging two sorted lists.
+*   **Readability and Clarity:** The code is clean, well-structured, and uses descriptive variable names (`llista_definitiva`, `i1`, `i2`), making it easy to understand the logic.
+*   **Pythonic Handling of Remaining Elements:** The use of `llista_definitiva.extend(v1[i1:])` and `llista_definitiva.extend(v2[i2:])` is an elegant and efficient way to append any leftover elements from either list after the main `while` loop concludes.
+*   **Type Hinting:** The `fusio` function utilizes type hints (`v1: list[float], v2: list[float] -> list[float]`), which is excellent practice for improving code readability, maintainability, and enabling static analysis.
+
+**Weaknesses:**
+
+*   **"Presentation Error" Cause (Likely due to `main` function):** The most significant weakness, and the probable cause of the "Presentation Error" result, is the inclusion and execution of the `main` function and its associated input/output operations. The problem statement explicitly says, "Només cal enviar el procediment demanat; el programa principal serà ignorat." This strongly implies that only the `fusio` function should be submitted. Automated judging systems typically call the requested function directly with their test cases and do not expect any additional input reading or output printing from the student's submission. Any output produced by the `main` function (like the total count and the merged list with a leading space) would cause a "Presentation Error" because it doesn't match the judge's expected format (which might be no output at all from the submission, or only the return value of the function).
+*   **Minor Type Hint Inconsistency in `llegir_dades`:** The `llegir_dades` function is typed as `->list[int]`, but it reads `float` values. While Python's dynamic typing handles this without runtime error, the type hint should accurately reflect `list[float]`.
+
+#### 3. Suggestions for Improvement
+
+1.  **Remove or Isolate the `main` Function for Submission:**
+    The most crucial step to resolve the "Presentation Error" is to ensure that *only* the `fusio` function is submitted. For local testing, you can keep your `main` function, but it should be encapsulated within an `if __name__ == "__main__":` block. This block ensures that the code inside it only runs when the script is executed directly, not when it's imported (as it would be by an automated judge).
+
+    **Revised Structure for Submission:**
+
+    ```python
+    # No need to import yogi if only 'fusio' is submitted
+    # from yogi import read 
+
+    def fusio(v1: list[float], v2: list[float]) -> list[float]:
+        i1 = 0
+        i2 = 0
+        llista_definitiva = []
+        while i1 < len(v1) and i2 < len(v2):
+            if v1[i1] < v2[i2]:
+                llista_definitiva.append(v1[i1])
+                i1 += 1
+            else: # Handles v1[i1] >= v2[i2], correctly appending v2[i2] if equal
+                llista_definitiva.append(v2[i2])
+                i2 += 1
+        llista_definitiva.extend(v1[i1:])
+        llista_definitiva.extend(v2[i2:])
+        return llista_definitiva
+
+    # --- Everything below this line should be for local testing only ---
+    if __name__ == "__main__":
+        from yogi import read # Import yogi only if running locally
+
+        def llegir_dades(n: int) -> list[float]: # Corrected type hint
+            """Llegeix tots els nombres i els afegeix a la llista"""
+            L = []
+            for i in range(n):
+                x = read(float)
+                L.append(x)
+            return L
+
+        n1 = read(int)
+        v1 = llegir_dades(n1)
+        n2 = read(int)
+        v2 = llegir_dades(n2)
+        print(n1 + n2) # Example output format, might not be what the judge expects if a full program was required
+        print(" ", end="")
+        print(*fusio(v1, v2))
+    ```
+
+2.  **Correct Type Hint in `llegir_dades`:**
+    Change the return type hint of `llegir_dades` from `list[int]` to `list[float]` to match the actual type of elements being read and stored. This is a minor consistency improvement.
+
+By implementing the first suggestion, your excellent `fusio` function will be evaluated correctly by the judging system, and the "Presentation Error" should be resolved.

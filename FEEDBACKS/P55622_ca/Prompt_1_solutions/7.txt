@@ -1,0 +1,62 @@
+This feedback analyzes the provided Python program designed to count the number of digits in an input integer.
+
+---
+
+### Feedback: Nombre de dígits (1)
+
+**1. Summary of the Problem and Solution Approach**
+
+The problem asks to read a natural number `n` and output the count of its digits.
+The provided Python program approaches this by:
+*   Reading the integer `n`.
+*   Storing the original value of `n` in `n2` for later output.
+*   Handling the special case where `n` is `0` by directly assigning `1` digit to it.
+*   For any other (positive) number, it enters a `while` loop that repeatedly performs integer division (`//`) by `10` and increments a counter (`d`). The loop continues until `n` becomes `0`, at which point `d` holds the total number of digits.
+*   Finally, it prints the original number and its digit count.
+
+**2. Analysis of the Code's Strengths and Weaknesses**
+
+**Strengths:**
+*   **Clear Logic for Positive Integers:** The core algorithm of repeatedly dividing by 10 and counting iterations (`while n != 0: n = n // 10; d = d + 1`) is a standard and correct way to count digits for positive integers.
+*   **Correct Edge Case Handling (Logic-wise):** The program correctly identifies that `0` has `1` digit and sets `d = 1` for this case.
+*   **Original Value Preservation:** Using `n2` to store the original input `n` is good practice, as `n` is modified within the loop.
+*   **Readability:** The variable names (`n`, `d`, `n2`) are clear and the code is generally easy to understand.
+
+**Weaknesses (Cause of "Wrong Answer"):**
+*   **Redundant Output for `n = 0`:** The primary reason for the "Wrong Answer" status is that the program produces two lines of output when the input `n` is `0`. There's a `print` statement inside the `if n == 0:` block, and another `print` statement at the very end of the script which *always* executes. For `n=0`, both print "El nombre de digits de 0 es 1", which violates the typical expectation of an online judge for a single, specific output.
+*   **Robustness with Negative Numbers (Minor, given "natural n"):** Although the problem specifies "natural n" (implying non-negative integers), it's worth noting that if a negative number were ever provided, the current `while` loop (`while n != 0: n = n // 10`) would enter an infinite loop. For example, `-1 // 10` in Python is still `-1`, so `n` would never reach `0`. However, this is likely outside the problem's scope given the input constraints.
+
+**3. Suggestions for Improvement**
+
+The most critical improvement is to fix the redundant output.
+
+*   **1. Consolidate Print Statements (Recommended Fix):**
+    Remove the `print` statement from within the `if n == 0:` block. The `d` variable will be correctly assigned `1` in that branch, and then the single print statement at the end of the script will correctly output the result for all cases.
+
+    ```python
+    from yogi import read
+
+    n = read(int)
+    n2 = n
+    if n == 0:
+        d = 1  # d is correctly set to 1 for n=0
+    else:
+        d = 0
+        while n != 0:
+            n = n // 10
+            d = d + 1
+    # This single print statement handles all cases
+    print('El nombre de digits de', n2, 'es', d)
+    ```
+
+*   **2. Alternative, More Concise Solution (for consideration):**
+    For non-negative integers, converting the number to a string and getting its length is often the most straightforward and Pythonic approach.
+
+    ```python
+    from yogi import read
+
+    n = read(int)
+    d = len(str(n))
+    print('El nombre de digits de', n, 'es', d)
+    ```
+    This solution implicitly handles `0` correctly (`len(str(0))` is `1`) and is very robust for all non-negative integers.

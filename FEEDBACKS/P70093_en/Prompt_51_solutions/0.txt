@@ -1,0 +1,91 @@
+The feedback for your program, specifically the `merge` function, is provided below.
+
+---
+
+### Feedback for `merge(v1, v2)`
+
+**1. Problem Summary and Solution Approach**
+
+The problem "Array merge" requires you to merge two input lists, `v1` and `v2`, which are guaranteed to be sorted in non-decreasing order. The output should be a single new list containing all elements from both input lists, also sorted and including any repeated elements.
+
+Your `merge` function attempts to iterate through `v1` and `v2` using nested loops. Inside the inner loop, it tries to compare elements from `v1` and `v2` to determine a "minimum" element and append it to a `resultat` list.
+
+**2. Analysis of the Code's Strengths and Weaknesses**
+
+**Strengths:**
+
+*   **Correct Function Signature:** The `merge(v1, v2)` function signature correctly matches the problem's interface requirements for Python.
+*   **Initialization:** It correctly initializes an empty list `resultat` to store the merged elements.
+
+**Weaknesses:**
+
+*   **Incorrect Algorithm for Merging Sorted Lists:**
+    *   The use of nested loops (`for i in range(len(v1))` and `for j in range(len(v2))`) is fundamentally inefficient and incorrect for merging two *already sorted* lists. A proper merge algorithm for sorted lists uses a two-pointer approach, which has a time complexity of O(N+M) (where N and M are the lengths of the lists) instead of O(N\*M) like your current solution.
+    *   The logic inside the loops does not correctly build the merged list. It attempts to compare `v1[i]` with *all* elements `v2[j]` before moving to `v1[i+1]`, which is not how a merge operates.
+*   **Premature Function Termination and Incorrect Return Value:**
+    *   The line `return resultat.append(minim)` is placed inside the *outer* loop. The `append()` method in Python modifies the list in place and returns `None`. Therefore, your function returns `None` after processing only the first element of `v1`, resulting in an empty or partially built list (if `minim` was even correctly assigned). This is the primary reason for the "Wrong Answer".
+    *   The final `return resultat` statement at the end of the function is unreachable because the function returns early.
+*   **Flawed Comparison and Appending Logic:**
+    *   When `v1[i] == v2[j]`, your code appends only `v2[j]`. A correct merge should append both elements and advance both pointers.
+    *   The `minim` variable is not consistently updated or used to ensure the `resultat` list remains sorted and contains all elements.
+
+**3. Suggestions for Improvement**
+
+To correctly and efficiently merge two sorted lists, you should use the **two-pointer approach**:
+
+1.  **Initialize Pointers and Result List:**
+    *   Create two pointers (e.g., `ptr1`, `ptr2`) initialized to `0` for `v1` and `v2` respectively.
+    *   Create an empty list `merged_list`.
+
+2.  **Iterate While Both Pointers Are Valid:**
+    *   Use a `while` loop that continues as long as `ptr1` is less than `len(v1)` AND `ptr2` is less than `len(v2)`.
+    *   Inside the loop, compare `v1[ptr1]` and `v2[ptr2]`:
+        *   If `v1[ptr1] <= v2[ptr2]`, append `v1[ptr1]` to `merged_list` and increment `ptr1`.
+        *   Else (if `v2[ptr2] < v1[ptr1]`), append `v2[ptr2]` to `merged_list` and increment `ptr2`.
+
+3.  **Append Remaining Elements:**
+    *   After the main `while` loop finishes, one of the lists might still have remaining elements. Append all remaining elements from `v1` (from `ptr1` onwards) and `v2` (from `ptr2` onwards) to `merged_list`.
+
+4.  **Return Result:**
+    *   Return the `merged_list`.
+
+Here's an example of how the improved `merge` function could look:
+
+```python
+def merge(v1: list[float], v2: list[float]) -> list[float]:
+    ptr1 = 0
+    ptr2 = 0
+    merged_list = []
+
+    # Iterate while both pointers are within bounds
+    while ptr1 < len(v1) and ptr2 < len(v2):
+        if v1[ptr1] <= v2[ptr2]:
+            merged_list.append(v1[ptr1])
+            ptr1 += 1
+        else:
+            merged_list.append(v2[ptr2])
+            ptr2 += 1
+
+    # Append any remaining elements from v1
+    while ptr1 < len(v1):
+        merged_list.append(v1[ptr1])
+        ptr1 += 1
+
+    # Append any remaining elements from v2
+    while ptr2 < len(v2):
+        merged_list.append(v2[ptr2])
+        ptr2 += 1
+
+    return merged_list
+
+# Test with the example
+# print(merge([2, 3, 5], [3, 5, 5, 7])) # Expected: [2, 3, 3, 5, 5, 5, 7]
+# print(merge([1,2,3], [4,5,6])) # Expected: [1,2,3,4,5,6]
+# print(merge([4,5,6], [1,2,3])) # Expected: [1,2,3,4,5,6]
+# print(merge([], [1,2,3])) # Expected: [1,2,3]
+# print(merge([1,2,3], [])) # Expected: [1,2,3]
+# print(merge([], [])) # Expected: []
+
+```
+
+By implementing this two-pointer approach, your `merge` function will be both correct and efficient, resolving the "Wrong Answer" issue.

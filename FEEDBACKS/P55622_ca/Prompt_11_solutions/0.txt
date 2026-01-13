@@ -1,0 +1,67 @@
+Here's a feedback text for the provided Python program:
+
+---
+
+**Feedback for "Nombre de dígits (1)" Program**
+
+**1. Summary of the Problem and Solution Approach:**
+
+The problem "Nombre de dígits (1)" requires a program to read a natural number `n` and output the count of its digits.
+The submitted Python program adopts an iterative approach:
+*   It handles the special case where `n` is `0`, correctly assigning it 1 digit.
+*   For any other natural number, it repeatedly performs integer division by 10 (`n //= 10`) until `n` becomes `0`, incrementing a digit counter in each step. This effectively counts how many times a digit can be "removed" from the right.
+*   The original value of `n` is stored in `n2` to be displayed in the final output message.
+
+**2. Analysis of the Code's Strengths and Weaknesses:**
+
+**Strengths:**
+*   **Correct Logic:** The core algorithm for counting digits is sound. The iterative division by 10 is a standard and effective method for this problem.
+*   **Correct Base Case Handling:** It correctly identifies that `0` has one digit, which is a common edge case to consider.
+*   **Readability:** The code is clear, well-structured, and easy to understand, with descriptive variable names.
+*   **Preserves Original Value:** Storing the initial `n` in `n2` is good practice, allowing the original input to be printed alongside the result.
+
+**Weaknesses and Cause of "Wrong Answer":**
+*   **Output Duplication for `n = 0`:** The main reason for the "Wrong Answer" is likely due to redundant output. When `n` is `0`, the program executes the `if n == 0:` block, which includes a `print` statement. However, the `print` statement outside the `if/else` block is also executed afterward, leading to the result being printed twice for this specific input. Most online judges expect a single, specific output format.
+
+    *Example for `n = 0` input:*
+    Expected output: `El nombre de digits de 0 es 1`
+    Actual output:
+    `El nombre de digits de 0 es 1`
+    `El nombre de digits de 0 es 1`
+
+*   **Reference Solutions:** The provided C++ reference solutions are for a completely different problem ("Paraules més freqüents" - Most Frequent Words). Therefore, they cannot be used to compare different algorithmic approaches for counting digits, nor do they offer insights into alternative implementations for this specific problem.
+
+**3. Suggestions for Improvement:**
+
+1.  **Refactor Printing Logic (Primary Fix):**
+    To resolve the "Wrong Answer" caused by duplicate output, move the final `print` statement outside the `if/else` block, ensuring `d` is correctly assigned in all cases before printing.
+
+    ```python
+    from yogi import read
+
+    n = read(int)
+    n2 = n # Store original n for printing
+
+    if n == 0:
+        d = 1
+    else:
+        d = 0
+        while n != 0:
+            n = n // 10
+            d = d + 1
+
+    print('El nombre de digits de', n2, 'es', d)
+    ```
+
+2.  **More Concise/Pythonic Alternative:**
+    For a more concise and often preferred Pythonic solution, you can convert the number to a string and then get its length. This handles `n=0` correctly as well.
+
+    ```python
+    from yogi import read
+
+    n = read(int)
+    d = len(str(n))
+    print('El nombre de digits de', n, 'es', d)
+    ```
+
+By implementing the first suggestion, the program should produce the correct output format and pass the test cases. The second suggestion offers an even simpler, more idiomatic Python solution.

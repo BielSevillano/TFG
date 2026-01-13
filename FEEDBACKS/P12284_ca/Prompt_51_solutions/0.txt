@@ -1,0 +1,140 @@
+This feedback addresses the provided Python program for the "Paraules més freqüents" problem, which resulted in a "Wrong Answer."
+
+---
+
+### Feedback for "Paraules més freqüents" Program
+
+**1. Problem Summary and Solution Approach**
+
+The problem requires reading a sequence of `n` words and identifying the `k` most frequent ones. The output should list these `k` words, ordered primarily by their frequency (from highest to lowest). In cases where words have the same frequency, they should be ordered lexicographically (alphabetically, from smallest to largest).
+
+The provided Python program employs a standard and generally efficient approach:
+*   It reads all `n` words into a list.
+*   It sorts this list alphabetically (`P.sort()`). This crucial step groups identical words together, making frequency counting easier.
+*   It then iterates through the sorted list, counting consecutive occurrences of each unique word. These unique words and their counts are stored as `Info` objects (containing `par` for the word and `num` for its frequency) in a new list `V`.
+*   Finally, it attempts to sort `V` based on the specified criteria (frequency descending, then word ascending) and prints the `par` attribute of the first `k` `Info` objects.
+
+**2. Analysis of Code's Strengths and Weaknesses**
+
+**Strengths:**
+*   **Clear Data Structure:** The `Info` class is well-defined and clearly represents the word and its associated frequency, enhancing code readability.
+*   **Efficient Frequency Counting:** The method of sorting the input words first and then iterating once to count frequencies is efficient. The initial sort takes `O(N log N)` time, and the subsequent frequency counting is `O(N)`.
+*   **Modular Design:** The separation of the `Info` class and the comparator function (intended for sorting) promotes modularity.
+*   **Handles Multiple Test Cases:** The `while n is not None and k is not None:` loop correctly handles multiple input scenarios as described in the problem statement.
+
+**Weaknesses and Reason for "Wrong Answer":**
+*   **Incorrect Custom Sorting in Python 3:** The core issue and likely reason for the "Wrong Answer" is the way the custom comparison logic is applied to `list.sort()`.
+    The `comp(a, b)` function is designed as a two-argument comparison function (returning a boolean `True` or `False`). However, in Python 3, the `list.sort()` method's `key` argument expects a function that takes *one* argument (an element from the list) and returns a value to be used for comparison.
+    When `sort(key=comp, reverse=True)` is called, `sort` attempts to call `comp(element)` for each element, which is not how `comp(a, b)` is structured or intended to be used. This leads to incorrect keys being generated for sorting, resulting in an improperly sorted list `V` and thus a "Wrong Answer."
+
+**3. Suggestions for Improvement**
+
+To fix the sorting issue and align the code with Python 3's idiomatic sorting practices, consider the following improvements:
+
+1.  **Use a Tuple as the `key` for Sorting (Recommended Pythonic Approach):**
+    This is generally the most straightforward and Pythonic way to implement multi-criteria sorting. You provide a `key` function that returns a tuple. Python's default tuple comparison handles lexicographical ordering, and you can negate numerical values to achieve descending order.
+
+    ```python
+    import yogi
+
+    class Info:
+      def __init__(self, par, num):
+        self.par = par
+        self.num = num
+
+    # No need for the 'comp' function with this approach
+
+    def main():
+      n = yogi.read(int)
+      k = yogi.read(int)
+      while n is not None and k is not None:
+        P = []
+        for i in range(n):
+          P.append(yogi.read(str))
+
+        P.sort() # Sorts alphabetically
+
+        V = []
+        i = 0
+        while i < n:
+          j = i + 1
+          while j < n and P[j] == P[i]:
+            j += 1
+          a = Info(P[i], j - i)
+          V.append(a)
+          i = j
+
+        # Corrected sorting:
+        # Sorts primarily by frequency (descending, using -x.num)
+        # Secondarily by word (ascending, using x.par)
+        V.sort(key=lambda x: (-x.num, x.par)) # Remove reverse=True
+
+        for j in range(k):
+          print(V[j].par)
+
+        print("----------")
+
+        n = yogi.read(int)
+        k = yogi.read(int)
+
+    if __name__ == "__main__":
+      main()
+    ```
+
+2.  **Define `__lt__` in the `Info` Class:**
+    By defining the `__lt__` (less than) method, you tell Python how to compare `Info` objects directly, allowing `list.sort()` to work without a `key` argument.
+
+    ```python
+    import yogi
+
+    class Info:
+      def __init__(self, par, num):
+        self.par = par
+        self.num = num
+
+      # Define how Info objects are compared
+      def __lt__(self, other):
+        # First, compare frequencies in descending order
+        # self is "less than" other if its frequency is GREATER (comes first)
+        if self.num != other.num:
+          return self.num > other.num
+        # If frequencies are equal, compare words in ascending alphabetical order
+        return self.par < other.par
+
+    # No need for the separate 'comp' function with this approach
+
+    def main():
+      n = yogi.read(int)
+      k = yogi.read(int)
+      while n is not None and k is not None:
+        P = []
+        for i in range(n):
+          P.append(yogi.read(str))
+
+        P.sort()
+
+        V = []
+        i = 0
+        while i < n:
+          j = i + 1
+          while j < n and P[j] == P[i]:
+            j += 1
+          a = Info(P[i], j - i)
+          V.append(a)
+          i = j
+
+        # Corrected sorting:
+        # V.sort() will now use the __lt__ method defined in Info
+        V.sort() # Remove key=comp and reverse=True
+
+        for j in range(k):
+          print(V[j].par)
+
+        print("----------")
+
+        n = yogi.read(int)
+        k = yogi.read(int)
+
+    if __name__ == "__main__":
+      main()
+    ```

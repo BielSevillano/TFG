@@ -1,0 +1,94 @@
+This feedback analyzes the provided Python program designed to solve the "Paraules més freqüents" problem.
+
+---
+
+### Problem Summary
+
+The problem requires writing a program that reads a sequence of `n` words and identifies the `k` most frequent words among them. In cases where words have the same frequency, they should be ordered alphabetically (lexicographical order, smallest first). The output for each test case should be the `k` selected words, each on a new line, followed by a separator line of ten hyphens.
+
+### Solution Approach
+
+The provided Python program implements the following steps:
+
+1.  **Input Reading:** It reads `n` and `k`, then `n` words using the `yogi.read()` function.
+2.  **Word Storage:** All `n` words are initially stored in a list `P`.
+3.  **Initial Sort:** The list `P` is sorted alphabetically (`P.sort()`). This crucial step groups identical words together, making it easier to count their frequencies.
+4.  **Frequency Counting:** The program then iterates through the sorted list `P` to count consecutive occurrences of each unique word. For each unique word, it creates an `Info` object (a custom class `Info` stores the `par` (word) and `num` (count)) and appends it to a new list `V`.
+5.  **Final Sort:** The list `V` (containing `Info` objects) is sorted using a custom comparison function `comp`. The `comp` function is designed to sort primarily by frequency in descending order, and secondarily by the word itself in ascending alphabetical order to break ties.
+6.  **Output:** Finally, the program prints the `par` (word) attribute of the first `k` `Info` objects from the sorted list `V`, followed by the required separator.
+7.  **Multi-Case Handling:** The entire process is enclosed in a `while` loop to handle multiple test cases.
+
+### Analysis of Strengths and Weaknesses
+
+**Strengths:**
+
+*   **Clear Data Structure:** The `Info` class is a good choice for encapsulating word and its frequency, making the code readable.
+*   **Efficient Frequency Counting:** Sorting the initial list of words `P` (`P.sort()`) is an effective pre-processing step. It allows the subsequent frequency counting loop (`while i < n`) to operate in a single pass, which is efficient (the overall complexity for this part being dominated by the initial sort, O(N log N)).
+*   **Structured Code:** The use of a `main` function and a separate custom comparison function (`comp`) promotes good code organization.
+*   **Multi-Test Case Ready:** The `while n is not None and k is not None:` loop correctly handles the problem's specification for multiple input cases.
+
+**Weaknesses (Reason for "Wrong Answer"):**
+
+*   **Incorrect Usage of `key` in `list.sort()` (Python 3):** The primary reason for the "Wrong Answer" verdict is likely the line `V.sort(key=comp, reverse=True)`. In Python 3, the `key` argument for `list.sort()` expects a function that takes *one* argument (an element from the list) and returns a value to be used for comparison. However, the `comp(a, b)` function is defined to take *two* arguments.
+    *   In a standard Python 3 environment, this would lead to a `TypeError` (e.g., `comp() missing 1 required positional argument`).
+    *   If the competitive programming platform's Python environment behaves differently (perhaps implicitly trying to convert `comp` to a Python 2-style `cmp` function), the boolean return values (`True`/`False`) might be misinterpreted, especially when combined with `reverse=True`, leading to an incorrect sort order and thus "Wrong Answer".
+
+### Suggestions for Improvement
+
+To rectify the "Wrong Answer" and improve the code, the following changes are highly recommended:
+
+1.  **Correct the Sorting Logic (Critical Fix):**
+    Modify the `V.sort()` call to use a `lambda` function as the `key`. This is the standard and most idiomatic way to perform custom sorts in Python 3. The `lambda` should return a tuple `(-x.num, x.par)`. Python sorts tuples lexicographically:
+    *   `-x.num` (negative frequency) ensures that words with higher frequency come first (descending order).
+    *   `x.par` ensures that words with the same frequency are sorted alphabetically (ascending order).
+
+    ```python
+    # Remove the 'comp' function definition as it's no longer needed for key.
+    # Replace: V.sort(key=comp, reverse=True)
+    V.sort(key=lambda x: (-x.num, x.par))
+    # No 'reverse=True' is needed here because (-x.num, x.par) already defines the desired order.
+    ```
+    This modification directly implements the problem's sorting criteria robustly.
+
+2.  **Simplify Frequency Counting with `collections.Counter` (Optional, for conciseness):**
+    For a more concise way to count word frequencies, Python's `collections.Counter` can be very useful:
+
+    ```python
+    import yogi
+    from collections import Counter # Add this import at the top
+
+    class Info:
+      def __init__(self, par, num):
+        self.par = par
+        self.num = num
+
+    def main():
+      n = yogi.read(int)
+      k = yogi.read(int)
+      while n is not None and k is not None:
+        all_words = []
+        for _ in range(n):
+          all_words.append(yogi.read(str))
+
+        # Use Counter to get word frequencies
+        word_counts = Counter(all_words)
+
+        # Convert to a list of Info objects
+        V = [Info(word, count) for word, count in word_counts.items()]
+
+        # Sort V using the corrected key
+        V.sort(key=lambda x: (-x.num, x.par))
+
+        for j in range(k):
+          print(V[j].par)
+
+        print("----------")
+
+        n = yogi.read(int)
+        k = yogi.read(int)
+
+    if __name__ == "__main__":
+      main()
+    ```
+
+By implementing the first suggestion (correcting the `sort` key), the program should correctly pass the test cases. The `collections.Counter` suggestion is an improvement for readability and Pythonic style but not strictly necessary for correctness.

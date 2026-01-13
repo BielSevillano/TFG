@@ -1,0 +1,66 @@
+Here's a feedback text for the provided Python program:
+
+---
+
+### Feedback: Paraules més freqüents (Most Frequent Words)
+
+**Problem Summary:**
+The problem requires reading `n` words and identifying the `k` most frequent ones. In cases where words have the same frequency, they should be ordered lexicographically (alphabetically ascending). The output for each test case should consist of these `k` words, followed by a separator line of ten hyphens.
+
+**Solution Approach:**
+The program implements the following strategy:
+1.  **Read Input:** It reads `n` words into a list `P`.
+2.  **Initial Sort:** It sorts the `P` list alphabetically. This step is crucial for efficient frequency counting of adjacent identical words.
+3.  **Count Frequencies:** It iterates through the sorted `P` list, grouping identical consecutive words. For each unique word, it creates an `Info` object (containing the word itself and its count) and stores these objects in a list `V`.
+4.  **Custom Sort:** It attempts to sort the `V` list using a custom comparison function `comp`. The intent is to sort primarily by frequency in descending order, and secondarily by word alphabetically in ascending order.
+5.  **Output:** Finally, it prints the `par` (word) attribute of the first `k` elements from the sorted `V` list, followed by the "----------" separator.
+
+**Code Strengths:**
+*   **Clear Structure:** The use of the `Info` class neatly encapsulates a word and its frequency, making the data representation intuitive.
+*   **Logical Frequency Counting:** The method of sorting the input list `P` and then iterating with two pointers (`i` and `j`) to count consecutive identical words is an efficient and well-understood approach for frequency counting in a sorted list.
+*   **Handles Multiple Test Cases:** The `while n is not None and k is not None:` loop correctly handles multiple test cases as specified by the problem.
+
+**Code Weaknesses and Reason for "Wrong Answer":**
+The primary issue leading to the "Wrong Answer" verdict lies in the usage of the `sort` method with the custom `comp` function:
+
+*   **Incorrect `key` Usage:** In Python 3, the `list.sort()` method's `key` argument expects a function that takes *one* argument (an element from the list) and returns a value to be used for comparison. The provided `comp` function, however, takes *two* arguments (`a` and `b`). When `V.sort(key=comp, reverse=True)` is called, Python attempts to pass a single `Info` object to `comp`, which results in a `TypeError` (e.g., `comp() missing 1 required positional argument: 'b'`). Competitive programming platforms often classify such runtime errors as "Wrong Answer".
+
+**Suggestions for Improvement:**
+
+1.  **Correct Sorting Logic (Most Pythonic):**
+    The most idiomatic and correct way to achieve multi-criteria sorting in Python 3 is to use a `lambda` function for the `key` argument that returns a tuple. Python's default tuple comparison handles multi-criteria sorting efficiently. For descending frequency, you use a negative frequency value.
+
+    *   **Remove the `comp` function entirely.**
+    *   **Modify the sorting line as follows:**
+        ```python
+        # V.sort(key=comp, reverse=True)  <-- Original incorrect line
+        V.sort(key=lambda info_obj: (-info_obj.num, info_obj.par))
+        ```
+        This `lambda` function tells `sort` to:
+        *   Prioritize sorting by `info_obj.num` (frequency) in descending order (achieved by ` -info_obj.num`).
+        *   If frequencies are tied, then sort by `info_obj.par` (word) in ascending lexicographical order.
+        Since the negative frequency handles descending order, `reverse=True` is no longer needed.
+
+2.  **Alternative Sorting Logic (Using `__lt__` in class):**
+    You could also define the "less than" comparison directly within your `Info` class. This allows you to simply call `V.sort()` without any `key` argument.
+
+    *   **Modify the `Info` class:**
+        ```python
+        class Info:
+          def __init__(self, par, num):
+            self.par = par
+            self.num = num
+          
+          # Define how two Info objects are compared for sorting
+          # 'self < other' should return True if 'self' should come BEFORE 'other' in the sorted list.
+          def __lt__(self, other):
+            if self.num != other.num:
+              return self.num > other.num # If self is more frequent, it comes before other.
+            return self.par < other.par   # If frequencies are equal, smaller word comes before.
+        ```
+    *   **Then, the sorting line becomes:**
+        ```python
+        V.sort() # No key or reverse needed, as __lt__ defines the order.
+        ```
+
+By implementing one of these sorting corrections, the program should produce the correct output according to the problem specifications.

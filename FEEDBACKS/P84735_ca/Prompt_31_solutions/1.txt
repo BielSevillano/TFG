@@ -1,0 +1,46 @@
+Here's a feedback text for the program:
+
+---
+
+### Feedback for Program: "Múltiple més petit"
+
+**Problem Summary:**
+The problem "Múltiple més petit" (Smallest Multiple) requires the program to read pairs of natural numbers `a` and `b` (where `b >= 1`). For each pair, it must calculate and output the smallest natural number `x` that is both greater than or equal to `a` and a multiple of `b`. The output should be formatted with a case number, starting from 1, e.g., `#1 : result`.
+
+**Solution Approach:**
+The program correctly identifies the mathematical approach to solve this problem. To find the smallest multiple of `b` that is `>= a`, one can use the ceiling division concept. If `a` is a multiple of `b`, then `x = a`. Otherwise, `x` is the next multiple of `b` after `a`. This can be efficiently computed using the formula `x = ((a + b - 1) // b) * b`. This formula effectively calculates `ceil(a / b) * b` using integer arithmetic, which is suitable for positive integers `a` and `b`.
+
+**Analysis of Code's Strengths and Weaknesses:**
+
+*   **Strengths:**
+    *   **Correct Mathematical Logic:** The core calculation `x = (a + b - 1) // b * b` is mathematically sound and correctly solves the problem for given `a` and `b` values. It handles cases where `a` is already a multiple of `b` as well as when it's not.
+    *   **Efficiency:** The calculation for each pair `(a, b)` involves a constant number of arithmetic operations, making the solution very efficient per test case.
+    *   **Output Formatting:** The program adheres to the specified output format `#{} : {}` for printing the case number and the result.
+
+*   **Weaknesses:**
+    *   **Incorrect Input Handling:** The primary reason for the "Wrong Answer" is likely how the program reads input. The problem description states, "L’entrada consisteix en una seqüència de parells de naturals a i b," which typically implies reading pairs of numbers until the End-Of-File (EOF) is reached.
+        However, your program starts by `casos = int(input())`, expecting the first line to be an integer indicating the *total number of test cases*. This mismatch means the program will try to interpret the `a` value of the first actual `(a, b)` pair as the number of cases, leading to incorrect parsing of subsequent input lines or premature termination, thus causing a "Wrong Answer".
+
+**Suggestions for Improvement:**
+
+1.  **Adjust Input Reading for EOF:** Modify the input loop to continuously read pairs of `a` and `b` until there is no more input (EOF). A common pattern for this in Python, especially in competitive programming environments like Jutge.org, is to iterate over `sys.stdin` or use a `while True: try-except EOFError:` block.
+
+    *Example of corrected input handling:*
+
+    ```python
+    import sys
+
+    case_num = 1  # Initialize case counter
+    for line in sys.stdin:
+        # Each line from standard input is a new pair
+        a, b = map(int, line.split())
+
+        # Apply the correct mathematical formula
+        x = (a + b - 1) // b * b
+
+        # Print the result in the specified format
+        print("#{} : {}".format(case_num, x))
+        case_num += 1 # Increment case counter for the next pair
+    ```
+
+By making this change to how the program reads its input, the correct mathematical logic and output formatting will be applied to all provided test cases, likely resolving the "Wrong Answer".

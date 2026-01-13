@@ -1,0 +1,2 @@
+Mean analysis score: 4.333333333333334
+Success rate: 1.0

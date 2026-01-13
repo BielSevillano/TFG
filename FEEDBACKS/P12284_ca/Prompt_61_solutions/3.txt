@@ -1,0 +1,90 @@
+Here's a feedback text for the provided Python program:
+
+---
+
+### Feedback for "Paraules més freqüents" Program
+
+**1. Problem Summary and Solution Approach**
+
+The problem "Paraules més freqüents" asks for a program that reads a sequence of `n` words and outputs the `k` most frequent words. In the case of a tie in frequency, words should be ordered alphabetically. Each test case should be followed by a line of ten dashes.
+
+The program's approach is as follows:
+1.  It reads `n` and `k`, then all `n` words into a list `P`.
+2.  It sorts `P` alphabetically, which groups identical words together.
+3.  It then iterates through the sorted list `P` to count the occurrences of each unique word. These words and their counts are stored in a list `V` of custom `Info` objects (containing `par` for the word and `num` for its frequency).
+4.  A custom comparison function `comp` is defined to prioritize higher frequency, then smaller alphabetical order for ties.
+5.  Finally, it attempts to sort `V` using this `comp` function and prints the first `k` words.
+
+**2. Analysis of Strengths and Weaknesses**
+
+**Strengths:**
+
+*   **Clear Structure:** The code is well-organized with a dedicated `Info` class, a comparator function, and a main logic block, enhancing readability.
+*   **Logical Initial Steps:** The strategy of sorting the input words (`P.sort()`) to easily group and count frequencies is sound and efficient (O(N log N) for sort, O(N) for counting).
+*   **Correct Sorting Logic Intent:** The `comp` function correctly defines the *desired* sorting logic: descending frequency first, then ascending alphabetical order for ties.
+
+**Weaknesses and Reason for "Wrong Answer":**
+
+*   **Incorrect Use of `key` in `list.sort()`:** This is the primary reason for the "Wrong Answer" verdict. The `list.sort()` method's `key` argument expects a function that takes *one* argument (an element from the list) and returns a value to be used for comparison. Your `comp` function, however, takes *two* arguments (`a`, `b`) and returns a boolean value (`True` or `False`), which is suitable for a `cmp`-style comparison (like Python 2's `cmp` or `functools.cmp_to_key` in Python 3), not for a `key` function. When `sort(key=comp, reverse=True)` is called, Python attempts to call `comp` with a single argument (each item from `V`), leading to a `TypeError`, or if somehow it manages to call it, the boolean result (`True`/`False`) is not the intended comparison key.
+*   **Efficiency for Frequency Counting (Minor):** While the current approach works, Python's standard library offers more concise and potentially more optimized ways to count frequencies.
+
+**3. Suggestions for Improvement**
+
+The core issue can be fixed by correctly implementing the sorting logic in a Pythonic way:
+
+1.  **Correct Sorting with a `key` function (Recommended fix):**
+    Instead of a `cmp`-style function, use a `lambda` function as the `key` that returns a tuple. Python sorts tuples lexicographically. By returning `(-x.num, x.par)`, we achieve the desired order:
+    *   `-x.num`: The negative frequency ensures that higher frequencies come first (descending order).
+    *   `x.par`: For items with the same (negative) frequency, `x.par` (the word itself) is used for the next comparison, ensuring ascending alphabetical order.
+
+    Replace your `comp` function definition and the sorting line with this:
+    ```python
+    # No need for the 'comp' function
+    # ...
+    # After populating V with Info objects:
+    V.sort(key=lambda x: (-x.num, x.par))
+    # No need for reverse=True here, as -x.num handles descending order
+    # ...
+    ```
+
+2.  **Using `collections.Counter` for Frequency Counting (Optional, for conciseness):**
+    For a more Pythonic and efficient way to count word frequencies, you can use `collections.Counter`.
+
+    ```python
+    import yogi
+    from collections import Counter # Import Counter
+    # No need for Info class or comp function if using Counter directly
+
+    def main():
+      n = yogi.read(int)
+      k = yogi.read(int)
+      while n is not None and k is not None:
+        words = []
+        for i in range(n):
+          words.append(yogi.read(str))
+
+        # Count frequencies using Counter
+        word_counts = Counter(words)
+
+        # Convert to a list of (word, count) tuples for sorting
+        # Or you can keep it as dict_items and sort
+        # Example: V = [Info(word, count) for word, count in word_counts.items()]
+        # or even simpler, sort the items directly:
+        sorted_items = sorted(word_counts.items(), key=lambda item: (-item[1], item[0]))
+
+        # Print the first k elements
+        for j in range(k):
+          print(sorted_items[j][0]) # Access the word part of the tuple
+
+        print("----------")
+        n = yogi.read(int)
+        k = yogi.read(int)
+
+    if __name__ == "__main__":
+      main()
+    ```
+    This approach simplifies the frequency counting and the subsequent sorting considerably.
+
+By applying the first suggestion (correcting the `sort` key), your program should pass the test cases. The second suggestion (using `collections.Counter`) further improves conciseness and potentially performance.
+
+---

@@ -1,0 +1,50 @@
+Here's a feedback text for the provided Python program:
+
+---
+
+### Feedback: Fusió de taules
+
+**Problem Summary and Solution Approach:**
+
+The problem asks for a function `fusio` that merges two pre-sorted lists (`v1` and `v2`) of floating-point numbers into a single, sorted list. The merged list should contain all elements from both input lists, preserving duplicates. For instance, merging `[2, 3, 5]` and `[3, 5, 5, 7]` should result in `[2, 3, 3, 5, 5, 5, 7]`. The precondition is that both input lists are already sorted in ascending order.
+
+The student's `fusio` function implements the classic two-pointer merge algorithm, which is the standard and most efficient approach for this problem. It uses two index pointers (`i1`, `i2`) to iterate through `v1` and `v2` simultaneously. In each step, it compares the elements pointed to by `i1` and `i2`, appending the smaller element to a new `llista_definitiva` and advancing the corresponding pointer. After one list is fully traversed, any remaining elements from the other list are appended directly to the result.
+
+**Code Analysis:**
+
+**Strengths:**
+
+1.  **Correctness of `fusio`:** The `fusio` function correctly implements the specified merge logic. It handles duplicates appropriately (by simply appending them as encountered) and efficiently manages the remaining elements once one of the input lists is exhausted.
+2.  **Optimal Time Complexity:** The `fusio` function operates in O(N + M) time complexity, where N and M are the lengths of `v1` and `v2` respectively. This is optimal as every element from both input lists must be examined at least once.
+3.  **Optimal Space Complexity:** The `fusio` function uses O(N + M) space complexity to store the new merged list, which is also optimal for this problem, as a new list of this size must be created.
+4.  **Clear Variable Names:** Variable names like `i1`, `i2`, and `llista_definitiva` are descriptive and easy to understand within the context of the algorithm.
+5.  **Pythonic `extend`:** The use of `extend(v1[i1:])` and `extend(v2[i2:])` is a concise and efficient way to handle the remaining elements of the lists.
+
+**Weaknesses:**
+
+1.  **Output Format (Leading to "Presentation Error"):** The "Presentation Error" result is directly related to the `main` function's output format, not the `fusio` function's logic.
+    *   The line `print(n1+n2)` prints the total count of elements, which is not requested by the problem statement. This extra output is the primary cause of a `Presentation Error`.
+    *   The line `print(" ",end="")` adds an unnecessary leading space before the merged list's elements. Standard output for space-separated lists typically expects no leading space.
+2.  **Unnecessary `main` function for submission:** The problem statement explicitly mentions: "Només cal enviar el procediment demanat; el programa principal serà ignorat." (Only the requested procedure needs to be submitted; the main program will be ignored.) While useful for local testing, the `main` function should ideally be removed or guarded by `if __name__ == "__main__":` for final submission to avoid confusion.
+
+**Suggestions for Improvement:**
+
+1.  **Remove or Correct `main` Function Output:** For submission, completely remove the `main()` function and the `llegir_dades()` helper function, as only the `fusio` procedure is evaluated. If you wish to keep `main()` for local testing, modify it to only print the merged list without additional information or leading spaces:
+    ```python
+    # ... (fusio and llegir_dades functions) ...
+
+    def main():
+        n1 = read(int)
+        v1 = llegir_dades(n1)
+        n2 = read(int)
+        v2 = llegir_dades(n2)
+        # Only print the merged list, space-separated
+        print(*fusio(v1, v2))
+
+    if __name__ == "__main__":
+        main()
+    ```
+    This change would resolve the "Presentation Error".
+2.  **Type Hinting Consistency:** The `llegir_dades` function is hinted to return `list[int]`, but it reads `float`s. It should be `def llegir_dades(n: int) -> list[float]:`. (Though this function is not needed for submission based on the problem statement).
+
+---

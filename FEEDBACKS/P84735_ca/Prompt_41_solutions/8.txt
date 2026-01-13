@@ -1,0 +1,32 @@
+A continuació, es presenta el feedback per al programa:
+
+**Resum del Problema i de l'Enfocament de la Solució:**
+
+El problema "Múltiple més petit" demana trobar, per a cada parell de nombres naturals `a` i `b` (amb `b >= 1`), el nombre natural més petit `x` tal que `x` sigui major o igual que `a` i, alhora, múltiple de `b`. La solució proposada utilitza una fórmula matemàtica directa `(a + b - 1) // b * b` per calcular aquest múltiple.
+
+**Anàlisi dels Punts Forts i Dèbils del Codi:**
+
+*   **Punts Forts:**
+    *   **Lògica Correcta:** La fórmula `(a + b - 1) // b * b` és una manera estàndard i eficient de calcular el múltiple més petit de `b` que sigui major o igual que `a` per a nombres naturals positius. Funciona correctament tant si `a` ja és un múltiple de `b` com si no ho és.
+    *   **Claredat i Eficiència:** El codi és concís, fàcil d'entendre i la lògica principal s'executa en temps constant per a cada parell d'entrada.
+    *   **Format de Sortida Correcte:** El format d'impressió (`#{} : {}`) s'ajusta exactament al que demana l'enunciat, incloent-hi el número de cas.
+
+*   **Punts Dèbils:**
+    *   **Gestió de l'Entrada Incorrecta (Causa Probable del "Wrong Answer"):** El punt feble més significatiu, i la raó gairebé segura del veredicte "Wrong Answer", rau en la manera com el programa llegeix les dades d'entrada. L'enunciat del problema indica que "L’entrada consisteix en una seqüència de parells de naturals a i b", la qual cosa sol implicar que el programa ha de llegir parells de `a` i `b` contínuament fins que no hi hagi més dades (EOF - End Of File). Tanmateix, el codi actual primer llegeix un enter `casos` i després itera exactament `casos` vegades. Si el sistema de jutjat proporciona l'entrada com una seqüència contínua de parells sense un nombre inicial de casos, el programa interpretarà erròniament l'entrada (per exemple, el primer `a` es llegiria com `casos`) o finalitzarà incorrectament.
+
+**Suggeriments de Millora:**
+
+1.  **Modificar la Lectura d'Entrada per Adaptar-se a l'Especificació del Problema:** Per processar correctament l'entrada segons la descripció ("seqüència de parells de naturals a i b"), el programa hauria de llegir parells de `a` i `b` en un bucle que continuï fins que s'arribi a la fi de l'entrada (EOF). Una implementació habitual en Python per a aquest tipus de problemes seria:
+
+    ```python
+    i = 1
+    while True:
+        try:
+            a, b = map(int, input().split()) # Aquesta línia llançarà EOFError quan no hi hagi més entrada
+            x = (a + b - 1) // b * b
+            print("#{} : {}".format(i, x))
+            i += 1
+        except EOFError:
+            break
+    ```
+    Aquest canvi és crucial per solucionar el "Wrong Answer", ja que la lògica del càlcul en si mateixa és robusta.

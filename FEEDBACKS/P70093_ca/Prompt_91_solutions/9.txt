@@ -1,0 +1,42 @@
+Here's a feedback text for the provided Python program:
+
+---
+
+### Feedback on "Fusió de taules" Program
+
+**Problem Summary and Solution Approach:**
+
+The problem "Fusió de taules" requires merging two input lists (`v1` and `v2`) which are guaranteed to be sorted in ascending order. The goal is to produce a single sorted list containing all elements from both input lists, including duplicates. For example, merging `[2, 3, 5]` and `[3, 5, 5, 7]` should result in `[2, 3, 3, 5, 5, 5, 7]`.
+
+The submitted `fusio` function correctly addresses this problem using a standard **two-pointer merge algorithm**. It initializes two pointers (`i1` and `i2`) to the beginning of each input list. It then iteratively compares the elements pointed to by `i1` and `i2`, appending the smaller element to a `llista_definitiva` (final list) and advancing the corresponding pointer. Once one of the lists is exhausted, the remaining elements of the other list are simply appended to the `llista_definitiva`.
+
+**Code Analysis:**
+
+*   **Strengths:**
+    *   **Correct Algorithm:** The `fusio` function implements the classic two-pointer merge algorithm efficiently and correctly. This approach ensures the resulting list remains sorted and handles duplicates as required.
+    *   **Efficiency:** The algorithm has a time complexity of O(N + M), where N and M are the lengths of `v1` and `v2`, respectively. This is optimal for merging two sorted lists.
+    *   **Readability:** Variable names within `fusio` like `i1`, `i2`, and `llista_definitiva` are descriptive. The use of `extend(v1[i1:])` and `extend(v2[i2:])` is a concise way to handle remaining elements.
+    *   **Type Hinting:** The function `fusio` includes type hints (`v1: list[float]`, `v2: list[float] -> list[float]`), which is good practice for code clarity and maintainability.
+
+*   **Weaknesses:**
+    *   **Presentation Error (Main Function Output):** The primary reason for the "Presentation Error" is that the `main` function prints additional information that is not requested by the problem statement. Specifically, it prints `n1+n2` and then a leading space before printing the merged list (`print(" ",end="")`). The problem explicitly states: "Només cal enviar el procediment demanat; el programa principal serà ignorat." (Only the requested procedure needs to be submitted; the main program will be ignored.) This implies that *only* the `fusio` function itself should be submitted, or if a `main` function is included, it must produce *no output whatsoever* beyond what is implicitly expected from the `fusio` function if it were called by the testing system.
+    *   **Inconsistent Language (Minor):** While `fusio` and `llista_definitiva` are in Catalan, the `llegir_dades` function is also in Catalan, but the comments and general programming style might mix languages. For consistency, it's often best to stick to one language for identifiers and comments (e.g., all English or all Catalan).
+
+**Suggestions for Improvement:**
+
+1.  **Crucial for Submission:** For submission to a platform like Jutge.org, **remove or comment out the entire `main()` function and `llegir_dades()` function, along with the `from yogi import read` line.** The testing system will only call your `fusio` function directly with its own test data. The extra output from your `main` function is causing the "Presentation Error".
+    *   If you need a `main` function for local testing, ensure it's placed under an `if __name__ == "__main__":` block and that its output strictly adheres to expected formats or is completely suppressed for submission.
+
+2.  **Code Documentation (Optional but Recommended):** Consider adding a docstring to the `fusio` function to explain its purpose, parameters, and what it returns.
+
+    ```python
+    def fusio(v1: list[float], v2: list[float]) -> list[float]:
+        """
+        Merges two sorted lists of floats into a single sorted list, preserving duplicates.
+
+        Precondition: v1 and v2 are sorted in ascending order.
+        """
+        # ... rest of the function ...
+    ```
+
+The core `fusio` function is excellent and correctly solves the problem. The issue is solely related to the auxiliary code and output formatting in `main` when the full file is run.

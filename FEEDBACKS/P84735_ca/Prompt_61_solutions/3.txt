@@ -1,0 +1,50 @@
+Here's a feedback text for your Python program, analyzing the problem, your solution, and potential reasons for the "Wrong Answer" status.
+
+---
+
+### Feedback: Múltiple més petit (Smallest Multiple)
+
+**1. Problem Summary and Solution Approach**
+
+The problem "Múltiple més petit" asks you to find, for given natural numbers `a` and `b` (with `b >= 1`), the smallest natural number `x` such that `x` is greater than or equal to `a` and `x` is also a multiple of `b`. This is equivalent to finding the smallest multiple of `b` that "ceilings" `a`.
+
+Your program adopts a standard and efficient mathematical approach to calculate this value. For a given `a` and `b`, the expression `(a + b - 1) // b * b` correctly computes the smallest multiple of `b` that is greater than or equal to `a`.
+
+**2. Analysis of Code's Strengths and Weaknesses**
+
+*   **Strengths:**
+    *   **Mathematical Correctness:** The core formula `(a + b - 1) // b * b` is a well-known and correct method for finding the smallest multiple of `b` that is greater than or equal to `a` for positive integers `a` and `b`. It also handles `a=0` correctly, returning `0`.
+    *   **Efficiency:** The calculation for each pair `(a, b)` is a constant-time operation (O(1)), making the solution highly efficient regardless of the magnitude of `a` or `b` (within Python's integer limits).
+    *   **Conciseness:** The code is very compact and clearly expresses the intended calculation.
+    *   **Output Formatting:** The `print("#{} : {}".format(i, x))` statement accurately matches the specified output format, including the case number.
+
+*   **Weaknesses (Likely reason for "Wrong Answer"):**
+    *   **Input Format Discrepancy:** The most probable reason for receiving a "Wrong Answer" lies in a mismatch between how your program expects input and how the judging system actually provides it. The problem statement specifies: "L’entrada consisteix en una seqüència de parells de naturals a i b". This wording typically implies that `a` and `b` pairs are read continuously until the end of the input stream (EOF - End Of File). However, your code begins by reading `casos = int(input())`, suggesting it expects the *first line* of input to be an integer indicating the *total number of test cases* that will follow. If the judging system's input does not include this initial integer, but immediately starts with `a b` pairs, your program will misinterpret the first `a` value as the number of cases, leading to incorrect parsing of subsequent lines or runtime errors.
+
+**3. Suggestions for Improvement**
+
+1.  **Adjust Input Handling (Crucial):** To address the most likely cause of the "Wrong Answer", modify your input loop to continuously read pairs of `a` and `b` until the end of the input stream is reached. This is the standard way to handle "sequence of inputs" problems when an explicit count (`casos`) is not mentioned in the problem description.
+
+    ```python
+    i = 1
+    while True:
+        try:
+            line = input()
+            # If the line is empty or an EOFError occurs, break the loop
+            if not line:
+                break
+            a, b = map(int, line.split())
+            
+            x = (a + b - 1) // b * b
+            print("#{} : {}".format(i, x))
+            i += 1
+        except EOFError:
+            break # Reached end of input
+        except ValueError:
+            # Handle cases where input line isn't two integers,
+            # or break if it signals the end of valid input.
+            break
+    ```
+    *(Note: The other possible solutions provided (C++ code snippets) appear to be for a completely different problem ("most frequent words") and are not relevant to this specific numerical problem or your Python code.)*
+
+By adjusting the input reading mechanism to align with the typical interpretation of "a sequence of pairs," your program should correctly process the test cases and resolve the "Wrong Answer."

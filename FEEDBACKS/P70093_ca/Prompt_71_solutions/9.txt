@@ -1,0 +1,40 @@
+Here's a feedback text for your program:
+
+---
+
+### Feedback for program `fusio.py`
+
+**Problem Summary:**
+The problem "Fusió de taules" asks for a function `fusio` that takes two already sorted lists (or vectors/arrays) of numbers, `v1` and `v2`, and merges them into a single sorted list, preserving all duplicate elements. For example, merging `[2, 3, 5]` and `[3, 5, 5, 7]` should result in `[2, 3, 3, 5, 5, 5, 7]`. The problem explicitly states that only the requested function should be submitted.
+
+**Solution Approach:**
+Your `fusio` function correctly implements a classic two-pointer (or merge) algorithm. It initializes two pointers (`i1` and `i2`) to the beginning of `v1` and `v2`, respectively. It then iteratively compares the elements pointed to by `i1` and `i2`, appending the smaller element to a new list (`llista_definitiva`) and advancing the corresponding pointer. Once one of the lists is exhausted, it efficiently appends any remaining elements from the other list using `extend`.
+
+**Code Strengths:**
+*   **Correct Algorithm:** The `fusio` function accurately implements the merge operation for two sorted lists, respecting the problem's requirements to preserve duplicates and maintain order.
+*   **Efficiency:** The two-pointer approach yields an optimal time complexity of O(n + m), where n and m are the lengths of `v1` and `v2`, respectively, as each element is visited and appended exactly once.
+*   **Readability:** The variable names are clear and descriptive (e.g., `i1`, `i2`, `llista_definitiva`), making the merging logic easy to follow.
+*   **Proper Handling of Remaining Elements:** The `extend` calls after the `while` loop correctly append any elements that remain in either `v1` or `v2` once one list has been fully processed.
+
+**Code Weaknesses and Suggestions for Improvement:**
+
+The "Presentation Error" you received is directly related to the structure of your submission, not the correctness of your `fusio` function itself.
+
+1.  **Adherence to Interface Requirements (Critical):**
+    *   **Weakness:** The problem statement explicitly says: "Només cal enviar el procediment demanat; el programa principal serà ignorat." This means you should **only** submit the `fusio` function. Your submission includes a `main` function and auxiliary input reading functions (`llegir_dades`), which are considered extraneous output/code by the judging system.
+    *   **Suggestion:** Remove the `from yogi import read`, `llegir_dades` function, and the entire `main` function block. Your submission should consist solely of the `def fusio(...)` function.
+
+2.  **Output Format (if `main` were allowed):**
+    *   **Weakness:** Even if a `main` function were permitted, your current output format:
+        ```python
+        print(n1+n2)
+        print(" ",end="")
+        print(*fusio(v1,v2))
+        ```
+        would produce an additional leading space before the merged list elements (`print(" ",end="")`). While `print(*list)` correctly unpacks and prints elements space-separated, an initial space is usually not desired unless specified.
+    *   **Suggestion (if main were needed):** A more standard way to print space-separated elements without a leading space would be `print(' '.join(map(str, fusio(v1, v2))))`. However, for this specific problem, **no output is expected from your submitted code.**
+
+**Conclusion:**
+Your `fusio` function is well-written and correctly solves the merging problem. The "Presentation Error" is caused by including the `main` function and associated input/output logic, which goes against the problem's submission instructions. To fix this, simply remove all code outside of the `fusio` function definition.
+
+*(Note: The provided "other possible solutions" seem to be for a completely different problem about finding frequent words, not merging lists. I have focused my feedback solely on your code and the problem description "Fusió de taules".)*

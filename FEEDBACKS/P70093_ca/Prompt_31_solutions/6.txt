@@ -1,0 +1,71 @@
+### Feedback for the "Fusió de taules" Program
+
+**Problem Summary:**
+The problem "Fusió de taules" requires implementing a function `fusio` that takes two already sorted lists of floating-point numbers (`v1` and `v2`) and merges them into a single sorted list, preserving all duplicate elements. For example, merging `[2, 3, 5]` and `[3, 5, 5, 7]` should result in `[2, 3, 3, 5, 5, 5, 7]`. The problem statement explicitly indicates that only the requested procedure (the `fusio` function) should be submitted, and the main program will be ignored.
+
+**Solution Approach:**
+The provided Python program implements the `fusio` function using a standard two-pointer merge algorithm. It initializes two pointers (`i1` and `i2`) to track the current position in `v1` and `v2`, respectively, and an empty list `llista_definitiva` to store the merged result. The core logic iterates while both pointers are within their respective list bounds, comparing the elements at the current pointers and appending the smaller one to `llista_definitiva`, then advancing the corresponding pointer. After one list is fully processed, any remaining elements from the other list are appended to `llista_definitiva`.
+
+**Code Analysis:**
+
+**Strengths:**
+*   **Correctness of `fusio` function:** The `fusio` function correctly implements the merge logic for two sorted arrays. It accurately combines the elements while maintaining sorted order and including all duplicates, as required.
+*   **Efficiency:** The algorithm used in `fusio` has a time complexity of O(N + M), where N and M are the lengths of `v1` and `v2`. This is optimal for merging two already sorted lists, as every element needs to be visited once.
+*   **Clarity:** The variable names (`i1`, `i2`, `llista_definitiva`) are well-chosen and make the code easy to understand. The use of `extend` for remaining elements is a Pythonic and efficient way to handle that part of the merge.
+
+**Weaknesses and Reason for "Presentation Error":**
+The "Presentation Error" encountered by the program is almost certainly due to the presence of code outside the requested `fusio` function that produces unexpected output. The problem statement explicitly forbids this: "Només cal enviar el procediment demanat; el programa principal serà ignorat."
+
+Specifically:
+1.  **Extraneous `main` function and helpers:** The `main()` function, `llegir_dades()` function, and the `from yogi import read` import are all part of the program's driver code, not the core `fusio` function requested.
+2.  **Unexpected `print` statements:**
+    *   `print(n1+n2)`: This line prints the total number of elements, which is not part of the expected output for the `fusio` problem.
+    *   `print(" ",end="")`: This prints an extra space character before the actual merged list elements, leading to an incorrect output format.
+    The judge expects *only* the output of the `fusio` function in a specific format (typically space-separated elements on a single line, or one element per line, but definitely no extra meta-information or leading spaces).
+
+**Suggestions for Improvement:**
+
+1.  **Remove Extraneous Code (Crucial):** To fix the "Presentation Error", you must remove the `main()` function, the `llegir_dades()` function, and the `from yogi import read` statement. Only the `fusio` function definition should remain in the submitted file.
+    ```python
+    # This is the only part that should be submitted:
+    def fusio(v1: list[float], v2: list[float]) -> list[float]:
+        i1 = 0
+        i2 = 0
+        llista_definitiva=[]
+        while i1 < len(v1) and i2 < len(v2):
+            if v1[i1] < v2[i2]:
+                llista_definitiva.append(v1[i1])
+                i1 += 1
+            else:
+                llista_definitiva.append(v2[i2])
+                i2 += 1
+        llista_definitiva.extend(v1[i1:])
+        llista_definitiva.extend(v2[i2:])
+        return llista_definitiva
+    ```
+2.  **Use `if __name__ == "__main__":` for Local Testing (Good Practice):** If you want to keep the testing code (input reading and printing the result) for local development and debugging without interfering with judge submissions, encapsulate it within an `if __name__ == "__main__":` block. This ensures the code only runs when the script is executed directly.
+
+    ```python
+    # For local testing, you would structure it like this:
+    # from yogi import read # Keep this line for local testing if 'read' is needed
+
+    def fusio(v1: list[float], v2: list[float]) -> list[float]:
+        # ... (your correct fusio implementation) ...
+        return llista_definitiva
+
+    if __name__ == "__main__":
+        # from yogi import read # Put read import here if not globally needed for fusio
+        def llegir_dades(n:int)->list[int]:
+            # ... (your llegir_dades implementation) ...
+            pass # Placeholder
+            
+        n1 = read(int)
+        v1 = llegir_dades(n1)
+        n2 = read(int)
+        v2 = llegir_dades(n2)
+        
+        result = fusio(v1, v2)
+        # The following line would print the merged list correctly if a print was expected:
+        # print(*result) 
+    ```
+    However, for Jutge.org, simply submitting the `fusio` function alone is sufficient and required.

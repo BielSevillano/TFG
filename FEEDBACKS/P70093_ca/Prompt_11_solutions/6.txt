@@ -1,0 +1,50 @@
+## Feedback for Program: Fusió de taules
+
+### 1. Problem Summary and Solution Approach
+
+The problem "Fusió de taules" requires implementing a function that merges two already sorted lists (or vectors) of numbers, `v1` and `v2`, into a single new sorted list. The key constraint is that duplicate elements must be preserved. For example, merging `[2, 3, 5]` and `[3, 5, 5, 7]` should result in `[2, 3, 3, 5, 5, 5, 7]`. The problem explicitly states that only the requested procedure (`fusio`) should be submitted, and any main program will be ignored.
+
+The provided Python program implements the `fusio` function using a standard two-pointer (or merge) algorithm. It initializes two pointers, `i1` and `i2`, to the beginning of `v1` and `v2`, respectively, and an empty list `llista_definitiva`. It then iteratively compares the elements pointed to by `i1` and `i2`, appending the smaller element to `llista_definitiva` and advancing its corresponding pointer. Once one list is exhausted, the remaining elements of the other list are appended to `llista_definitiva`.
+
+### 2. Code Analysis
+
+**Strengths:**
+
+*   **Correct Algorithm:** The `fusio` function correctly implements the two-pointer merge algorithm, which is the standard and most efficient way to merge two sorted lists. It accurately handles the case of equal elements (appending `v2[i2]` when `v1[i1] >= v2[i2]`) and preserves duplicates as required.
+*   **Efficiency:** The algorithm has a time complexity of O(N + M), where N and M are the lengths of `v1` and `v2` respectively, as it iterates through each list element at most once. This is optimal for this problem.
+*   **Readability:** The variable names (`i1`, `i2`, `llista_definitiva`) are clear and descriptive, making the code easy to understand.
+*   **Proper Handling of Remaining Elements:** The use of `extend(v1[i1:])` and `extend(v2[i2:])` is an elegant and efficient way to append any remaining elements from either list after the main `while` loop finishes.
+*   **Type Hinting:** The `fusio` function includes type hints (`v1: list[float], v2: list[float]) -> list[float]`), which is good practice for code clarity and maintainability.
+
+**Weaknesses and Cause of Presentation Error:**
+
+*   **Problem Statement Violation (Primary Issue):** The main reason for the "Presentation Error" is the presence of the `main()` function, the `llegir_dades()` function, and the `from yogi import read` statement. The problem description explicitly states: "Només cal enviar el procediment demanat; el programa principal serà ignorat." (Only the requested procedure needs to be submitted; the main program will be ignored.) This means the submission should *only* contain the `fusio` function. Any attempt to read input or print output in a `main` function will lead to a Presentation Error or Compilation Error on Jutge.org, as the testing system expects only the function to be available for calling.
+*   **Type Hint Inconsistency (Minor):** In the `llegir_dades` function, the type hint for the return value is `->list[int]`, but the function itself reads `float` values (`x = read(float)`). While this function should be removed, it's a minor inconsistency.
+
+### 3. Suggestions for Improvement
+
+1.  **Remove Unnecessary Code (Crucial):**
+    *   Delete the line `from yogi import read`.
+    *   Delete the entire `llegir_dades` function.
+    *   Delete the entire `main` function, including its call `main()`.
+    *   Your submission should **only** contain the `fusio` function, exactly as specified in the problem interface.
+
+    **Corrected Submission Structure:**
+    ```python
+    def fusio(v1: list[float], v2: list[float]) -> list[float]:
+        i1 = 0
+        i2 = 0
+        llista_definitiva = []
+        while i1 < len(v1) and i2 < len(v2):
+            if v1[i1] < v2[i2]:
+                llista_definitiva.append(v1[i1])
+                i1 += 1
+            else:
+                llista_definitiva.append(v2[i2])
+                i2 += 1
+        llista_definitiva.extend(v1[i1:])
+        llista_definitiva.extend(v2[i2:])
+        return llista_definitiva
+    ```
+
+By making this change, your excellent `fusio` function will be correctly evaluated by the online judge, and the "Presentation Error" will be resolved.

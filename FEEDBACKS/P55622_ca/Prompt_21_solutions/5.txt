@@ -1,0 +1,51 @@
+Here's a feedback text for the provided Python program:
+
+---
+
+### Feedback: Nombre de dígits (1)
+
+**Summary of the Problem and Solution Approach:**
+The problem "Nombre de dígits (1)" requires writing a program that reads a natural number `n` and outputs the total number of digits it contains.
+The provided Python program attempts to solve this by:
+1.  Handling the special case where `n` is `0`, assigning it `1` digit.
+2.  For positive `n`, iteratively dividing `n` by `10` (integer division) until `n` becomes `0`, incrementing a counter (`d`) with each division. This counter effectively tracks the number of digits.
+
+**Analysis of the Code's Strengths and Weaknesses:**
+
+**Strengths:**
+*   **Correct Logic for Digit Counting:** The core algorithm using integer division (`n = n // 10`) is a standard and correct way to count digits for positive integers. Each division by 10 effectively removes the least significant digit, and counting these operations yields the total number of digits.
+*   **Correct Handling of Zero:** The program correctly identifies that `0` has `1` digit, which is a common edge case for this type of problem.
+*   **Clarity:** The variable names (`n`, `d`) and the control flow (`if`/`else`, `while`) are straightforward and easy to understand.
+
+**Weaknesses:**
+*   **Incorrect Output Format (Primary Issue):** The most significant issue, likely causing the "Wrong Answer" verdict, is the output format. Automated judges like Jutge.org typically expect *only* the requested output (in this case, just the integer representing the digit count). The program, however, prints a descriptive sentence: `'El nombre de digits de', n2, 'es', d`. This extra text will cause a "Wrong Answer" or "Presentation Error".
+*   **Redundant Print Statement:** For the input `n = 0`, the program prints the descriptive sentence *twice*. Once inside the `if n == 0:` block and again at the very end of the script. This redundant output is also a common reason for "Wrong Answer". For `n > 0`, it prints once, but still in the incorrect format.
+
+*(Note: The "other possible solutions" provided in the prompt are for a completely different problem ("most frequent words") and are therefore not relevant for reference to this specific "Nombre de dígits (1)" problem.)*
+
+**Suggestions for Improvement:**
+
+1.  **Correct the Output Format:** Change the `print` statements to output *only* the integer `d` (the digit count). This is crucial for passing automated tests.
+2.  **Consolidate Print Statements:** Ensure that the final result `d` is printed only *once* after it has been fully determined for all possible inputs (including `n=0`). The most straightforward way is to calculate `d` and then have a single `print(d)` statement at the very end of the script.
+
+**Revised Code (Mental or Actual):**
+
+```python
+from yogi import read
+
+n = read(int)
+
+d = 0 # Initialize d outside to be accessible everywhere
+
+if n == 0:
+    d = 1
+else:
+    # No need for n2 if original n is not printed.
+    # The loop modifies n, which is fine if we only need the final d.
+    while n != 0:
+        n = n // 10
+        d = d + 1
+
+print(d) # Print only the digit count
+```
+Applying these changes should resolve the "Wrong Answer" verdict.

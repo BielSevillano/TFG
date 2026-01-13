@@ -1,0 +1,54 @@
+Here's a feedback text for the provided Python program:
+
+---
+
+### Feedback on "Fusió de taules"
+
+**1. Problem Summary and Solution Approach**
+
+The problem requires implementing a function `fusio` that merges two pre-sorted lists (`v1` and `v2`) into a single new sorted list. Crucially, duplicate elements must be preserved. For example, merging `[2, 3, 5]` and `[3, 5, 5, 7]` should result in `[2, 3, 3, 5, 5, 5, 7]`.
+
+The provided Python program implements the `fusio` function using a classic **two-pointer (or merge) algorithm**. It initializes two pointers (`i1` and `i2`) to the beginning of `v1` and `v2` respectively, and an empty list `llista_definitiva`. It then iteratively compares the elements pointed to by `i1` and `i2`, appending the smaller element to `llista_definitiva` and advancing the corresponding pointer. Once one of the lists is fully traversed, the remaining elements of the other list are appended to `llista_definitiva`.
+
+**2. Code Strengths and Weaknesses**
+
+**Strengths:**
+
+*   **Correct Algorithm:** The `fusio` function correctly implements the merge algorithm. This approach is highly efficient for merging sorted lists, offering an optimal time complexity of O(N + M), where N and M are the lengths of the input lists.
+*   **Handles Duplicates:** The logic correctly preserves all duplicate elements, as specified in the problem description.
+*   **Readability:** The `fusio` function is well-structured and easy to understand.
+*   **Type Hinting:** The use of type hints (`v1: list[float]`, `-> list[float]`) is good practice and improves code clarity and maintainability.
+
+**Weaknesses (leading to "Presentation Error"):**
+
+*   **Unnecessary `main` function and I/O for submission:** The problem statement explicitly says: "Només cal enviar el procediment demanat; el programa principal serà ignorat." (Only the requested procedure needs to be submitted; the main program will be ignored.) This means the platform expects *only* the `fusio` function definition. The `main` function, and all related input/output code (`from yogi import read`, `llegir_dades`, `print(n1+n2)`, `print(" ",end="")`, `print(*fusio(v1,v2))`), should not be part of the submission. When you submit a full program, its output (like `n1+n2` and the leading space) deviates from what the system expects from the *function's return value*, causing a "Presentation Error".
+*   **Incorrect Output Format (if a full program were expected):** Even if a full program *were* expected, the output format is slightly off:
+    *   `print(n1+n2)`: Printing the sum of the lengths is not requested by the problem interface.
+    *   `print(" ",end="")`: This adds an unnecessary leading space before the merged list elements.
+
+**3. Suggestions for Improvement**
+
+The core `fusio` function is well-implemented and correct according to the problem description. The primary issue is how the code is structured for submission on the platform.
+
+1.  **Remove the `main` function and all I/O code:** For submission to Jutge.org (or similar platforms that only require a specific function), you should **delete** everything outside the `fusio` function definition. Your submission should look like this:
+
+    ```python
+    def fusio(v1: list[float], v2: list[float]) -> list[float]:
+        i1 = 0
+        i2 = 0
+        llista_definitiva=[]
+        while i1 < len(v1) and i2 < len(v2):
+            if v1[i1] < v2[i2]:
+                llista_definitiva.append(v1[i1])
+                i1 += 1
+            else:
+                llista_definitiva.append(v2[i2])
+                i2 += 1
+        llista_definitiva.extend(v1[i1:])
+        llista_definitiva.extend(v2[i2:])
+        return llista_definitiva
+    ```
+
+    The testing system will then directly call your `fusio` function with various inputs and check its return value.
+
+By making this change, your solution should pass the tests, as the `fusio` function itself is correctly implemented.

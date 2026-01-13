@@ -1,0 +1,52 @@
+Here's a feedback text for your program:
+
+---
+
+### Feedback: Nombre de dígits (1)
+
+**1. Summary of the Problem and Solution Approach:**
+
+The problem "Nombre de dígits (1)" requires a program to read a natural number `n` and output the total count of its digits. The provided Python solution attempts to solve this by first storing the original number. It then handles the special case where `n` is `0` by assigning `1` digit. For any other positive number, it iteratively divides the number by `10` (integer division) and increments a counter until the number becomes `0`, effectively counting the digits.
+
+**2. Analysis of the Code's Strengths and Weaknesses:**
+
+*   **Strengths:**
+    *   **Correct Logic for Digit Counting:** The core logic of using integer division (`n = n // 10`) and a counter (`d = d + 1`) is a correct and common method for determining the number of digits in a positive integer.
+    *   **Handles `n = 0` Explicitly:** The code correctly identifies `n = 0` as a special case and assigns it `1` digit, which is a common and appropriate interpretation for this problem.
+    *   **Preserves Original Input:** The variable `n2` is used to store the original input `n`, ensuring that the output message can display the initial number, even after `n` has been modified by the `while` loop.
+
+*   **Weaknesses:**
+    *   **Redundant Output (Main Cause of "Wrong Answer"):** The primary flaw in the program is the duplicate `print` statement. When `n` is `0`, the `print` statement inside the `if` block executes. Subsequently, the `print` statement *after* the entire `if/else` block also executes. This results in the correct answer being printed twice for `n=0`, which an automated judge system will mark as "Wrong Answer". For `n > 0`, the `if` block is skipped, and only the final `print` statement executes, leading to correct single output.
+
+**3. Suggestions for Improvement:**
+
+1.  **Consolidate Output Statement:** The most critical change to fix the "Wrong Answer" is to ensure the result is printed only once. Move the `print` statement so it's executed regardless of whether `n` was `0` or not, but only once.
+
+    ```python
+    from yogi import read
+
+    n = read(int)
+    n2 = n
+
+    if n == 0:
+        d = 1
+    else:
+        d = 0
+        while n != 0:
+            n = n // 10
+            d = d + 1
+    
+    # This print statement now handles both cases correctly and only once
+    print('El nombre de digits de', n2, 'es', d)
+    ```
+
+2.  **Alternative Simpler Approach (Recommended):** For Python, the most straightforward and often preferred way to count digits in a number is to convert it to a string and get its length. This approach inherently handles `n=0` correctly (`len(str(0))` is `1`).
+
+    ```python
+    from yogi import read
+
+    n = read(int)
+    print('El nombre de digits de', n, 'es', len(str(n)))
+    ```
+
+This revised feedback addresses the specific problem and the provided Python code, explaining the "Wrong Answer" verdict and offering clear improvements.

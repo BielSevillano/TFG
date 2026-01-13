@@ -1,0 +1,1232 @@
+
+                Write a feedback text for the following program that solves the problem described below.
+                
+                                Múltiple més petit
+
+Feu un programa que llegeixi parells de naturals a i b, i que per a
+cadascun escrigui el natural més petit que és més gran o igual que a i
+alhora múltiple de b.
+
+Entrada
+
+L’entrada consisteix en una seqüència de parells de naturals a i b amb
+b ≥ 1.
+
+Sortida
+
+Per a cada a i b, escriviu en una línia el natural més petit x tal que
+x ≥ a i x = mb per a algun natural m. Precediu-ho pel número de cas
+començant en 1, seguint el format de l’exemple.
+
+Autor
+
+Salvador Roura
+
+© Jutge.org, 2006–2025.
+
+
+
+                This is the program:
+
+                from yogi import *
+
+cas = 1
+a, b = scan(int), scan(int)
+while a is not None:
+    print("#" + str(cas) + " : ", end='')
+    cas += 1
+    if a % b == 0:
+        print(a)
+    else:
+        print((a // b + 1) * b)
+    a, b = scan(int), scan(int)
+
+
+                The result of the program is: Accepted
+
+                The feedback should include:
+                - A brief summary of the problem and the solution approach.
+                - An analysis of the code's strengths and weaknesses.
+                - Suggestions for improvement, if any.
+
+                You can rely on the following other possible solutions to the same problem for reference:
+                from jutge import read
+
+cas = 1
+a, b = read(int, int)
+while a is not None:
+  print("#" + str(cas) + " : ", end = '')
+  cas += 1
+  if a % b == 0: print(a)
+  else: print((a // b + 1) * b)
+  a, b = read(int, int)
+
+
+from jutge import read
+
+
+n, m = read(int, int)
+i = 1
+while (n and m) is not None:
+    print ('#', i, " : ", (1+(n-1)//m) * m, sep = '')
+    n, m = read(int, int)
+    i += 1
+
+// Múltiple més petit
+
+#include <iostream>
+using namespace std;
+
+int main() {
+  int a, b;
+  int multipleB;
+  int cas = 1;
+
+  while (cin >> a >> b) {
+    multipleB = a / b;
+    if (multipleB * b < a) multipleB = (multipleB + 1) * b;
+    else multipleB = multipleB * b;
+    cout << '#' << cas << " : "<< multipleB << endl;
+    cas++;
+  }
+}
+
+from jutge import read
+
+a, b = read(int, int)
+cas = 1
+while a is not None and b is not None:
+    multipleB = a // b
+    if multipleB * b < a:
+        multipleB = (multipleB + 1) * b
+    else:
+        multipleB = multipleB * b
+    print('#', cas, " : ", multipleB)
+    cas += 1
+    a, b = read(int, int)
+
+from jutge import read
+
+def multiple_mes_petit(a,b):
+    i = a
+    while True:
+        if i%b==0: return i
+        i += 1
+
+
+def main():
+    a,b = read(int,int)
+    cas = 1
+    while a is not None:
+        print('#',cas,' : ',multiple_mes_petit(a,b), sep = '')
+        cas += 1
+        a,b = read(int,int)
+
+main()    
+from jutge import read
+
+def multiple_mes_petit(a,b):
+    if a%b == 0: return a;
+    else: return (a//b)*b + b;
+
+
+def main():
+    a,b = read(int,int)
+    cas = 1
+    while a is not None:
+        print('#',cas,' : ',multiple_mes_petit(a,b), sep = '')
+        cas += 1
+        a,b = read(int,int)
+
+main()    
+from easyinput import read
+
+
+cas = 1
+a, b = read(int, int)
+while a is not None:
+    res = (a//b)*b
+    if res < a:
+        res += b
+    print("#" + str(cas) + " : " + str(res))
+    cas += 1
+    a, b = read(int, int)
+
+from jutge import read
+from math import *
+
+
+def main():
+    i = 1
+    while True:
+        a = read(int)
+        if a is None:
+            break
+        b = read(int)
+        if a % b == 0:
+            print("#{} : {}".format(i, a))
+        else:
+            print("#{} : {}".format(i, ((a // b) + 1) * b))
+        i += 1
+
+
+main()
+
+from easyinput import read
+
+def main():
+    a, b = read(int, int)
+    i = 1;
+    while b is not None:
+        if a % b == 0:
+            multiple = a
+        else:
+            multiple = a + b - a % b
+
+        print('#', i, ' : ', multiple, sep='')
+        a, b = read(int, int)
+        i += 1
+
+main()
+
+from easyinput import read
+
+
+def main():
+    count = 0
+    a = read(int)
+    b = read(int)
+    while a is not None and b is not None:
+        count += 1
+        print("#", count, " : ", sep="", end="")
+        if a%b == 0:
+            print(a)
+        else:
+            print(b*(a//b + 1))
+        a = read(int)
+        b = read(int)
+
+
+main()
+
+from easyinput import read
+
+def main(x, y, count):
+    multiples = []
+    m = x
+    if y == 1 or x == y:
+        print(f"#{count} : {x}")
+        return
+
+    if y > x:
+        m = y
+    for i in range(m-2, m+50):
+        if i % y == 0:
+            multiples.append(i)
+
+    arr = 0
+
+    if len(multiples) == 1:
+        arr = multiples[0]
+    else:
+        for i in range(len(multiples)-1):
+            if multiples[i] >= x:
+                arr = multiples[i]
+                break
+        
+    print(f"#{count} : {arr}")
+
+count = 1
+while True:
+    try:
+        x, y = map(int, input().split())
+        main(x, y, count)
+        count += 1
+    except:
+        break
+
+
+from easyinput import read
+
+def main(x, y, count):
+    multiples = []
+    if y == 1 or x == y:
+        print(f"#{count} : {x}")
+        return
+
+    for i in range(x-2, x+50):
+        if i % y == 0:
+            multiples.append(i)
+
+    arr = 0
+
+    if len(multiples) == 1 and multiples[0] >= x:
+        arr = multiples[0]
+    else:
+        for i in range(len(multiples)-1):
+            if multiples[i] >= x:
+                arr = multiples[i]
+                break
+        
+    print(f"#{count} : {arr}")
+
+count = 1
+while True:
+    try:
+        x, y = map(int, input().split())
+        main(x, y, count)
+        count += 1
+    except:
+        break
+
+
+from easyinput import read
+
+def main(x, y, count):
+    multiples = []
+    mm = 0
+    m = 0
+    if y == 1 or x == y:
+        print(f"#{count} : {x}")
+        return
+
+    if x < y:
+        m = x
+        mm = y
+    else:
+        m = x
+        mm = x
+
+    for i in range(m-2, mm+50):
+        if i % y == 0:
+            multiples.append(i)
+
+    arr = 0
+
+    if len(multiples) == 1 and multiples[0] >= x:
+        arr = multiples[0]
+    else:
+        for i in range(len(multiples)-1):
+            if multiples[i] >= x:
+                arr = multiples[i]
+                break
+        
+    print(f"#{count} : {arr}")
+
+count = 1
+while True:
+    try:
+        x, y = map(int, input().split())
+        main(x, y, count)
+        count += 1
+    except:
+        break
+
+
+from easyinput import read
+
+def main(x, y, count):
+    mm = 0
+    m = 0
+    if y == 1 or x == y:
+        print(f"#{count} : {x}")
+        return
+
+    if x < y:
+        m = x
+        mm = y
+    else:
+        m = x
+        mm = x
+
+    if x != 0 and len(str(y)) >= 8:
+        print(f"#{count} : {y}")
+        return
+    for i in range(m-2, mm+20):
+        if i % y == 0 and i >= x:
+            print(f"#{count} : {i}")
+            break
+
+a,b = read(int, int)
+count = 1
+while a is not None:
+    main(a, b, count)
+    count += 1
+    a,b = read(int, int)
+
+from easyinput import read
+
+def main(a, b, count):
+    if a == 0:
+        print(f"#{count} : {a}")
+        return
+    if a < b:
+        print(f"#{count} : {b}")
+        return
+
+    i = a
+    while True:
+        if i % b == 0:
+            break
+        i += 1
+    print(f"#{count} : {i}")
+
+# print(f"#{count} : {x}")
+
+a,b = read(int, int)
+count = 1
+while a is not None:
+    main(a, b, count)
+    count += 1
+    a,b = read(int, int)
+#include <iostream>
+
+using namespace std;
+
+int main(){
+	int a, b;
+
+	while(cin >> a >> b){
+		int i = a;
+
+		while(i % b != 0){
+			i++;
+		}
+
+		cout << i << endl;
+	}
+	return 0;
+}
+from yogi import scan
+
+def main() -> None:
+    a, b = scan(int),scan(int)
+    c = 1
+    while a is not None:
+        while (a%b != 0):
+            a = a + 1
+        print(F'#{c} : {a}')
+        c = c+1
+        a,b =scan(int),scan(int)
+if __name__=='__main__':
+    main()
+from yogi import scan
+
+a = scan(int)
+b = scan(int)
+
+repeticio = 0
+while a is not None:
+    repeticio = repeticio + 1
+    while a % b != 0:
+        a = a + 1
+    print('#' + str(repeticio) + ' : ' + str(a))
+    a = scan(int)
+    b = scan(int)
+from yogi import *
+
+n=scan(int)
+m=scan(int)
+i=1
+
+
+
+def ajuda(n:int,m:int)->str:
+    d=0
+    i=1
+    while m*i<n:
+            i=i+1
+    
+    return m*i
+
+d=0
+while n and m is not None:
+    d=d+1
+    print("#"+str(d),":",str(ajuda(n,m)))
+    n=scan(int)
+    m=scan(int)
+
+
+from yogi import scan
+
+a = scan(int)
+b = scan(int)
+
+repeticio = 0
+while a is not None:
+    repeticio = repeticio + 1
+    if a%b == 0:
+        print('#' + str(repeticio) + ' : ' + str(a))
+    else:
+        multiplica = a // b + 1
+        final = b * multiplica
+        print('#' + str(repeticio) + ' : ' + str(final))
+
+    a = scan(int)
+    b = scan(int)
+
+from yogi import scan
+
+def multiple_mes_petit(a:int,b:int):
+    i =1
+    m = b
+    if b == 1:
+        return a
+    while b < a:
+        b = b+m
+        i +=1
+        
+    return b 
+
+def main():
+    x = scan(int)
+    y = scan(int)
+    i =1
+    while x is not None and y is not None:
+        
+        print(f"#{i} : {multiple_mes_petit(x,y)}")
+        i +=1
+        x = scan(int)
+        y = scan(int)
+main()
+
+
+
+from yogi import scan
+
+def multiple_mes_petit(a:int,b:int):
+    i =1
+    m = b
+    if b == 1:
+        return a
+    if a % b == 0:
+        return a
+    else:
+        return b*(a//b+1)
+def main():
+    x = scan(int)
+    y = scan(int)        
+    i =1
+
+    while x is not None and y is not None:
+        print(f"#{i} : {multiple_mes_petit(x,y)}")
+        i +=1
+        x = scan(int)
+        y = scan(int)
+main()
+
+
+from yogi import read, scan
+
+def mini_mult(a:int, b:int)->int:
+    trobat = False
+    while not trobat:
+        if a % b == 0:
+            trobat = True
+        else: a = a+1
+    return a
+
+def main():
+    a = scan(int)
+    b = scan(int)
+
+    i = 1
+    while a is not None:
+        print("#" +str(i) + " : " + str(mini_mult(a,b)))
+        a = scan(int)
+        b = scan(int)
+        i = i +1
+
+main()
+
+import yogi
+
+def multiple(a: int, b: int) -> int:
+    m = 1
+    
+    while (m*b < a):
+        m += 1
+    return (m*b)
+
+def main():
+    a = yogi.scan(int)
+    c = 1
+    while a is not None:
+        b = yogi.read(int)
+        print(F'#{c} : {multiple(a,b)}')
+        c += 1
+        a = yogi.scan(int)
+
+if __name__ == '__main__':
+    main()
+from lib2to3.pgen2 import token
+from pickle import TRUE
+from yogi import *
+
+
+def run(a,b):
+    i = a
+    while i % b != 0:
+        i += 1
+    print(i)
+
+
+
+while TRUE:
+    a=read(int)
+    b=read(int)
+    run(a,b)
+
+
+
+
+from lib2to3.pgen2 import token
+from pickle import TRUE
+from yogi import *
+
+
+def run(a,b):
+    x = 1
+    i = a
+    while i % b != 0:
+        i += 1
+    print('#',x,' ',':',' ',i,sep='')
+    x += 1
+
+
+
+while TRUE:
+    a=read(int)
+    b=read(int)
+    run(a,b)
+
+
+
+
+from lib2to3.pgen2 import token
+from pickle import TRUE
+from yogi import *
+
+
+def run(a,b):
+    x = 0
+    i = a
+    while i % b != 0:
+        i += 1
+        i = 0
+        x += 1
+    print('#',x,' ',':',' ',i,sep='')
+    
+
+
+
+while TRUE:
+    a=read(int)
+    b=read(int)
+    run(a,b)
+
+
+
+
+from yogi import *
+
+
+def run(a,b, cont):
+    x = 1
+    i = a
+    while i % b != 0:
+        i += 1
+    print('#',cont,' ',':',' ',i,sep='')
+    
+a = scan(int)
+i = 1
+while a is not None: 
+    b=scan(int)
+    print (a, b)
+    run(a,b, i)
+    i += 1
+    a =scan(int)
+
+
+
+
+from yogi import *
+
+
+def run(a,b, cont):
+    x = 1
+    i = a
+    while i % b != 0:
+        i += 1
+    print('#',cont,' ',':',' ',i,sep='')
+    
+a = scan(int)
+i = 1
+while a is not None: 
+    b=scan(int)
+    run(a,b, i)
+    i += 1
+    a =scan(int)
+
+
+
+
+from yogi import *
+
+
+def run(a,b, cont):
+    x = 1
+    i = a
+    bo = False
+    while i * i <= b and bo == False:
+        if b % i == 0:
+            print('#',cont,' ',':',' ',i,sep='')
+            bo = True
+        i += 1
+        
+a = scan(int)
+i = 1
+while a is not None: 
+    b=scan(int)
+    run(a,b, i)
+    i += 1
+    a =scan(int)
+
+
+
+
+from yogi import *
+
+
+def run(a,b, cont):
+    i = a
+    while i % b != 0:
+        i += 1
+    print('#',cont,' ',':',' ',i,sep='')
+a = scan(int)
+i = 1
+
+if __name__=='__main__':
+    while a is not None: 
+        b=scan(int)
+        run(a,b, i)
+        i += 1
+        a =scan(int)
+
+
+
+
+from yogi import tokens, read
+
+n = 1
+for a in tokens(int):
+    b = read(int)
+    if b == 1:
+        print('#', n, sep='', end='')
+        print('', ':', end='')
+        print('', a)
+        n = n + 1
+    else: 
+        if a % b == 0:
+            print('#', n, sep='', end='')
+            print('', ':', end='')
+            print('', a)
+            n = n + 1
+        else:
+            x = a
+            while x % b != 0:
+                x = x + 1
+            print('#', n, sep='', end='')
+            print('', ':', end='')
+            print('', x)
+            n = n + 1
+import yogi
+
+def multiple_petit(a: int, b: int) -> int:
+    
+    m = a
+    
+    while m % b != 0:
+        m += 1
+    return m
+    
+    
+def main():
+    c = 1   
+    for a in yogi.tokens(int):
+        b = yogi.read(int)
+        print(F'#{c} : {multiple_petit(a,b)}')
+        c += 1
+
+if __name__ == '__main__':
+    main()
+from yogi import tokens, read
+from typing import Optional
+
+
+def multiple(m:int, b: int) -> bool:
+    """Diu si m és multiple de b"""
+
+    return m % b == 0
+
+
+def multip_mes_petit(a:int, b: int)-> Optional[int|None]:
+    """
+    Retorn el natural més petit que és més gran que a i alhora multiple de b
+    Inicialitzem el bucle a a
+    """
+    torbat = False
+    i = a
+    while not torbat:
+        if multiple(i,b):
+            torbat = True 
+            return i
+        i += 1
+
+
+
+def main() -> None:
+    idx = 1
+    for a in tokens(int):
+        b = read(int)
+        print(f"#{idx}",":",multip_mes_petit(a,b))
+        idx += 1
+
+if __name__ == "__main__":
+    main()
+from yogi import tokens, read
+from typing import Optional
+
+
+def multiple(m:int, b: int) -> bool:
+    """Diu si m és multiple de b"""
+
+    return m % b == 0
+
+
+def main() -> None:
+    idx = 1
+    for a in tokens(int):
+        b = read(int)
+        torbat = False
+        
+        i = a
+        while not torbat:
+            if multiple(i,b):
+                torbat = True 
+                print(f"#{idx}",":",i)
+            i += 1
+        idx += 1
+
+if __name__ == "__main__":
+    main()
+from yogi import *
+
+cas = 1
+a, b = scan(int),scan(int)
+while a is not None:
+  print("#" + str(cas) + " : ", end = '')
+  cas += 1
+  if a % b == 0: print(a)
+  else: print((a // b + 1) * b)
+  a, b = scan(int),scan(int)
+
+
+from yogi import*
+contador=0
+for a in tokens(int):
+    b=read(int)
+    contador=contador+1
+    multiple=False
+    while multiple is False:
+        if a%b==0:
+            mult_petit=a
+            multiple=True
+            print(f'#{contador} : {mult_petit}')
+        else:
+            a=a+1
+
+    
+from yogi import*
+contador=0
+for a in tokens(int):
+    b=read(int)
+    contador=contador+1
+    multiplicar=0
+    multiple=False
+    while multiple==False:
+        mult_petit=(multiplicar+1)*b
+        if a<=mult_petit:
+            multiple=True
+        else:
+            multiplicar=multiplicar+1
+        
+    print(f'#{contador} : {mult_petit}')
+       
+
+    
+from yogi import*
+contador=0
+for a in tokens(int):
+    b=read(int)
+    contador=contador+1
+    
+    divisio=a%b
+    if divisio==0:
+        mult_petit=(a//b)*b
+    else:
+        mult_petit=(a//b +1)*b
+        
+    print(f'#{contador} : {mult_petit}')
+       
+
+    
+from yogi import read
+
+
+def trobar_nombre (a: int, b:int) -> int:
+    found = False
+    m = 1
+    while found == False:
+        if m * b < a:
+            m += 1
+        else:
+            found = True
+            return m * b
+    
+
+def main():
+    a = 0
+    c = 1
+    while a != None:
+        a = read(int)
+        b = read(int)
+        x = trobar_nombre(a,b)
+        print(f'#{c} : {x}')
+        c += 1
+
+main()
+from yogi import read
+
+
+# def trobar_nombre (a: int, b:int):
+#     found = False
+#     m = 1
+#     while found == False:
+#         if m * b < a:
+#             m += 1
+#         else:
+#             found = True
+#             return m * b
+
+
+# def trobar(a:int, b:int, m:int):
+#     x = m * b
+#     if x >= a:
+#         return x
+#     else:
+#         return trobar(a, b, m + 1)
+
+
+
+def siguiente_multiplo_mayor(a, b):
+    cociente = a // b
+    siguiente_mayor = (cociente + 1) * b if a % b != 0 else a
+    return siguiente_mayor
+
+
+
+def main():
+    c = 1
+    a = read(int)
+    while a != None:
+        b = read(int)
+        x = siguiente_multiplo_mayor(a,b)
+        print(f'#{c} : {x}')
+        c += 1
+        a = read(int)
+
+main()
+from yogi import*
+numero = 0
+for x in tokens (int):
+    y = read (int)
+    numero += 1
+    i = 1
+    while y * i <= x:
+        i += 1
+    print (f"#{numero} : {y * i}")
+
+
+from yogi import*
+numero = 0
+for x in tokens (int):
+    y = read (int)
+    numero += 1
+    if y * (x // y) == x:
+        z = x
+    else:
+        z = y * ((x // y) + 1)
+    print (f"#{numero} : {z}")
+
+
+import yogi
+
+index = 1
+for a in yogi.tokens(int):
+    b = yogi.read(int)
+    q = 1
+    x = 0
+    while True:
+        if b * q >= a:
+            x = b * q
+            break
+        q += 1
+    print(f"#{index} : {x}")
+    index += 1
+
+import yogi
+
+index = 1
+for a in yogi.tokens(int):
+    b = yogi.read(int)
+    m = 1
+    while True:
+        q = b * m
+        if q >= a:
+            break
+        m += 1
+    print(f"#{index} : {q}")
+    index += 1
+
+from yogi import *
+
+def multiple(a: int, b: int, contador: int) -> None:
+    while a % b != 0:
+        a += 1
+    print(f"#{contador} : {a}")
+
+def main() -> None:
+    contador = 1
+    for a in tokens(int):
+        b = read(int)
+        multiple(a, b, contador)
+        contador += 1
+
+main()
+import yogi
+
+cas = 1
+
+while cas>=1:
+    a, b = map(yogi.read(int).split())
+    m = (a + b - 1) // b
+    x = m * b
+    print("#{} : {}".format(cas, x))
+    cas += 1
+
+
+cas = 1
+
+while cas>=1:
+    a, b = map(int,input().split())
+    m = (a + b - 1) // b
+    x = m * b
+    print("#{} : {}".format(cas, x))
+    cas += 1
+
+casos = int(input())
+i = 1
+
+while i <= casos:
+    entrada = input().split()
+    a = int(entrada[0])
+    b = int(entrada[1])
+    x = a + (b - a % b) % b
+    print("#{} : {}".format(i, x))
+    i += 1
+
+from yogi import read
+
+casos = read(int)
+i = 1
+
+while i <= casos:
+    a = read(int)
+    b = read(int)
+    x = a + (b - a % b) % b
+    print("#{} : {}".format(i, x))
+    i += 1
+
+from yogi import read
+
+casos = read(int)
+i = 1
+
+while i <= casos:
+    a = read(int)
+    b = read(int)
+    x = (a + b - 1) // b * b
+    print("#{} : {}".format(i, x))
+    i += 1
+
+from yogi import read
+
+casos = read(int)
+
+for i in range(1, casos + 1):
+    a = read(int)
+    b = read(int)
+    x = (a + b - 1) // b * b if a % b != 0 else a
+    print(f"#{i} : {x}")
+
+from yogi import read
+
+casos = read(int)
+
+for i in range(1, casos + 1):
+    a, b = read(int), read(int)
+    x = a - a % b + b * (a % b > 0)
+    print(f"#{i} : {x}")
+
+def encontrar_menor_multiplo(a, b):
+    m = (a + b - 1) // b  # Redondea hacia arriba dividiendo a entre b
+    return m * b
+
+def main():
+    casos = int(input("Ingrese el número de casos de prueba: "))
+    
+    for i in range(1, casos + 1):
+        a, b = map(int, input().split())
+        resultado = encontrar_menor_multiplo(a, b)
+        print(f"#{i} : {resultado}")
+
+if __name__ == "__main__":
+    main()
+
+from yogi import *
+
+
+def multiple(a: int, b: int, contador: int) -> None:
+    if a % b == 0:
+        return a
+    else:
+        return b * (a // b + 1)
+
+
+def main() -> None:
+    contador = 1
+    for a in tokens(int):
+        b = read(int)
+        mcm = multiple(a, b, contador)
+        print(f"#{contador} : {mcm}")
+        contador += 1
+
+main()
+
+#from yogi import read
+#
+#n = read(int)
+#valor= '*'
+#
+#for i in range(1, n + 1):
+#    print(valor * i)
+
+
+from yogi import read
+
+
+casos = read(int)
+
+
+for i in range(1, casos + 1):
+   a = read(int)
+   b = read(int)
+   x = (a + b - 1) // b * b
+   print(f"#{i} : {x}")
+#from yogi import read
+#
+#n = read(int)
+#valor= '*'
+#
+#for i in range(1, n + 1):
+#    print(valor * i)
+
+
+from yogi import read
+
+
+for i in range(1, 3 + 1):
+   a = read(int)
+   b = read(int)
+   x = (a + b - 1) // b * b
+   print(f"#{i} : {x}")
+# Programa que calcule potencias 
+# L'entrada consisteix en 2 numeros parells a i b
+# Cada parell a, b , a es elevat al valor de b
+
+def potencia(a, b):
+    if b == 0:
+        return 1
+    elif b == 1:
+        return a
+    else:
+        return a * potencia(a, b - 1)
+
+
+def main():
+    while True:
+        a, b = map(int, input().split())
+        if a == 0 and b == 0:
+            break
+        print(potencia(a, b))
+
+
+
+
+
+from yogi import *
+
+def multiple_petit(x: int, y: int) -> int:
+    '''
+    busca i + petit tq:
+        - i >= x
+        - i = m
+    '''
+    if x % y == 0:
+        return x
+    else:
+        i = x + (y - (x % y))
+        return i
+
+def main() -> None:
+    cas = 1
+    for x in tokens(int):
+        y = read(int)
+        i = multiple_petit(x, y)
+        print(f'#{cas} : {i}')
+        cas += 1
+
+if __name__ == "__main__":
+    main()
+from yogi import *
+
+
+def funcio(a: int, b: int) -> int:
+    j = 0
+    while j*b < a:
+        j += 1
+
+    return j*b
+    
+
+
+def main() -> None:
+    i = 0
+    for a in tokens(int):
+        i += 1
+        print( f'#{i} : {funcio(a,read(int))}')
+
+
+main()
+                

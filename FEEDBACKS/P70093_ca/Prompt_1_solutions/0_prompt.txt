@@ -1,0 +1,93 @@
+
+                Write a feedback text for the following program that solves the problem described below.
+                
+                                Fusió de taules
+
+Feu una funció que fusioni els vectors ordenats @v1@ i @v2@ i en retorni
+el resultat, sense eliminar els elements repetits. Per exemple, el
+resultat de fusionar una taula amb 2, 3 i 5 amb una taula amb 3, 5, 5 i
+7 és una taula amb 2, 3, 3, 5, 5, 5 i 7.
+
+Interfície
+
++-------:+:------------------------------------------------------------------------------+
+| C++    |     vector<double> fusio(const vector<double>& v1, const vector<double>& v2); |
++--------+-------------------------------------------------------------------------------+
+| Java   |     public static double[] fusio(double[] v1, double[] v2);                   |
++--------+-------------------------------------------------------------------------------+
+| Python |     fusio(v1, v2)  # returns list                                             |
++--------+-------------------------------------------------------------------------------+
+| MyPy   |     fusio(v1: list[float], v2: list[float]) -> list[float]                    |
++--------+-------------------------------------------------------------------------------+
+
+Precondició
+
+@v1@ i @v2@ estan ordenats de petit a gran.
+
+Observació
+
+Només cal enviar el procediment demanat; el programa principal serà
+ignorat.
+
+Autor
+
+Salvador Roura
+
+© Jutge.org, 2006–2025.
+
+
+                
+
+                This is the program:
+
+                def  fusio(v1: list[float], v2: list[float]) -> list[float]:
+    fusionada = []
+    i = 0
+    j = 0
+    if len(v1) == 0:
+        return v2
+    elif len(v2) == 0:
+        return v1
+    while i <= len(v1)-1 and j <= len(v2)-1:
+        if v1[i]<= v2[j]:
+            fusionada.append(v1[i])
+            i +=1
+        else:
+            fusionada.append(v2[j])
+            j +=1
+    if i == len(v1):
+        for _ in range(len(v2)-j):
+            fusionada.append(v2[j])
+            j +=1
+    else:
+        for _ in range(len(v1)-i):
+            fusionada.append(v1[i])
+    return fusionada
+
+
+
+
+
+                The result of the program is: Wrong Answer
+
+                The feedback should include:
+                - A brief summary of the problem and the solution approach.
+                - An analysis of the code's strengths and weaknesses.
+                - Suggestions for improvement, if any.
+
+                You can rely on the following other possible solutions to the same problem for reference:
+                def fusio(v1, v2):
+	fusionada = []
+	for i in range(max(len(v1),len(v2))):
+		try:
+			fusionada.append(v1[i])
+		except:
+			pass
+		try:
+			fusionada.append(v2[i])
+		except:
+			pass
+	return fusionada
+			
+
+                

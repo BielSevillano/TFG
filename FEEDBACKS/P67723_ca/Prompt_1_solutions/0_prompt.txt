@@ -1,0 +1,95 @@
+
+                Write a feedback text for the following program that solves the problem described below.
+                
+                                Màxim comú divisor
+
+Feu un programa que calculi el màxim comú divisor de dos nombres.
+
+Entrada
+
+L’entrada consisteix en dos naturals estrictament positius a i b.
+
+Sortida
+
+Cal escriure el màxim comú divisor de a i b.
+
+Observació
+
+Encara que la solució d’aquest exercici no cal que sigui gaire eficient,
+tampoc no hauria de ser excessivament lenta.
+
+Autor
+
+Jordi Petit
+
+© Jutge.org, 2006–2025.
+
+
+                
+
+                This is the program:
+
+                import yogi
+# mcd = mayor número que divide exactamente a dos o más números a la vez.
+
+a = yogi.read(int)
+b = yogi.read(int)
+c = b
+d = a
+
+while b > 0:
+    if a > b:
+        r = a % b
+        z = b - r 
+        b = r
+    else:
+        r = b % a
+        z = b - r 
+        b = r        
+
+
+print("El mcd de", d, "i", c, "es", z, end =".")
+print()
+
+
+
+                The result of the program is: Wrong Answer
+
+                The feedback should include:
+                - A brief summary of the problem and the solution approach.
+                - An analysis of the code's strengths and weaknesses.
+                - Suggestions for improvement, if any.
+
+                You can rely on the following other possible solutions to the same problem for reference:
+                #include <iostream>
+
+using namespace std;
+
+//EUCLIDES: dividir gran (a) entre petit (b)
+int mcd(int a, int b)
+{
+    int auxiliar;
+    if (b > a) {
+        auxiliar = a;
+        a = b;
+        b = auxiliar;
+    }
+
+    if (b == 0) {
+        return a;
+    }
+    if (a % b == 0) {
+        return b;
+    } else {
+        return mcd(b, a % b);
+    }
+}
+
+int main()
+{
+    int a, b;
+    cin >> a >> b;
+    cout << "El mcd de " << a << " i " << b << " es " << mcd(a, b) << "." << endl;
+}
+
+                

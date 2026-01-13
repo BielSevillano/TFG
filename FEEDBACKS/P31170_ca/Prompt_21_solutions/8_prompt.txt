@@ -1,0 +1,285 @@
+
+                Write a feedback text for the following program that solves the problem described below.
+                
+                Taula de multiplicar
+
+Feu un programa que llegeixi un nombre n i que escrigui la “taula de
+multiplicar” de n.
+
+Entrada
+
+L’entrada consisteix en un natural n entre 1 i 9.
+
+Sortida
+
+Cal escriure la “taula de multiplicar” de n.
+
+Autor
+
+Salvador Roura
+
+© Jutge.org, 2006–2025.
+
+
+               
+
+                This is the program:
+
+                from yogi import read
+
+n = read(int)
+a = 1           
+
+while (a<=9):
+    print(str(n)+"*"+str(a)+" = "+str((n*a)))
+    a = a+1
+
+
+                The result of the program is: Wrong Answer
+
+                The feedback should include:
+                - A brief summary of the problem and the solution approach.
+                - An analysis of the code's strengths and weaknesses.
+                - Suggestions for improvement, if any.
+
+                You can rely on the following other possible solutions to the same problem for reference:
+                from easyinput import read
+
+
+def escriu_taules(num):
+    for i in range(1,11):
+        print (num, "*", i, " = ", num*i, sep = "")
+
+
+def main():
+    num = read(int)
+    escriu_taules(num)
+
+
+main()
+
+from easyinput import read
+
+n = read(int)
+
+print(n, "*1 = ", n*1, sep='')
+print(n, "*2 = ", n*2, sep='')
+print(n, "*3 = ", n*3, sep='')
+print(n, "*4 = ", n*4, sep='')
+print(n, "*5 = ", n*5, sep='')
+print(n, "*6 = ", n*6, sep='')
+print(n, "*7 = ", n*7, sep='')
+print(n, "*8 = ", n*8, sep='')
+print(n, "*9 = ", n*9, sep='')
+print(n, "*10 = ", n*10, sep='')
+
+from easyinput import read
+
+def tabla_de_multiplicar(a):
+    """accion que imprimer la tabla de multiplicar de un entero entre 1 y 9"""
+
+    for i in range(1, 11):
+        print(a, "*", i, " ", "=", " ", a*i, sep = "" )
+
+def main():
+    """programa principal"""
+
+    a = read(int)
+    tabla_de_multiplicar(a)
+
+main()
+
+from easyinput import *
+
+
+def main():
+
+    y = 1
+    x = read(int)
+
+    while y <= 10:
+        print(x, "*", y, " = ", x*y, sep='')
+        y = y + 1
+
+
+main()
+
+from easyinput import read
+
+
+def main():
+    '''programa principal'''
+    n = read(int)
+    i = 1
+    for i in range (1, 11):
+        print(n, "*", i, end = ' ', sep="")
+        print("=", i*n)  #perque quedin be els espais...
+
+main()
+
+n = int(input())
+
+for i in range(1, 11):
+    print(n, '*', i, ' = ', n*i, sep='')
+
+import easyinput
+
+
+def taules_multiplicar(n):
+    for i in range(1, 10):
+        print(n, "*", i, "=", n*i)
+
+
+n = easyinput.read(int)
+taules_multiplicar(n)
+
+
+nombre = int(input())
+
+for i in range (1,11):
+    print(f'{nombre}*{i} = {i*nombre}')
+from easyinput import*
+
+
+for n in read_many(int):
+    print(f'{n}*1 = {n*1}')
+    print(f'{n}*2 = {n*2}')
+    print(f'{n}*3 = {n*3}')
+    print(f'{n}*4 = {n*4}')
+    print(f'{n}*5 = {n*5}')
+    print(f'{n}*6 = {n*6}')
+    print(f'{n}*7 = {n*7}')
+    print(f'{n}*8 = {n*8}')
+    print(f'{n}*9 = {n*9}')
+    print(f'{n}*10 = {n*10}')
+
+
+from easyinput import*
+for n in read_many(int):
+    for i in range (1,11):
+        print(n,"*",i,"=",n*i)
+        
+
+#Aquest programa llegeix un nombre i retorna la seva taula de multiplicar
+from easyinput import read
+
+n = read(int)
+print(n, "* 1 = ", n);
+print(n, "* 2 = ", n*2);
+print(n, "* 3 = ", n*3);
+print(n, "* 4 = ", n*4);
+print(n, "* 5 = ", n*5);
+print(n, "* 6 = ", n*6);
+print(n, "* 7 = ", n*7);
+print(n, "* 8 = ", n*8);
+print(n, "* 9 = ", n*9);
+print(n, "* 10 = ", n*10);
+
+#Aquest programa llegeix un nombre i retorna la seva taula de multiplicar
+from easyinput import read
+
+n = read(int)
+print(n, "*1 =", n)
+print(n, "*2 =", n*2)
+print(n, "*3 =", n*3)
+print(n, "*4 =", n*4)
+print(n, "*5 =", n*5)
+print(n, "*6 =", n*6)
+print(n, "*7 =", n*7)
+print(n, "*8 =", n*8)
+print(n, "*9 =", n*9)
+print(n, "*10 =", n*10)
+
+#Aquest programa llegeix un nombre i retorna la seva taula de multiplicar
+from easyinput import read
+
+n = read(int)
+print(n, "*1 = ", n, sep="")
+print(n, "*2 = ", n*2, sep="")
+print(n, "*3 = ", n*3, sep="")
+print(n, "*4 = ", n*4, sep="")
+print(n, "*5 = ", n*5, sep="")
+print(n, "*6 = ", n*6, sep="")
+print(n, "*7 = ", n*7, sep="")
+print(n, "*8 = ", n*8, sep="")
+print(n, "*9 = ", n*9, sep="")
+print(n, "*10 = ", n*10, sep="")
+
+exponent = 1
+suma = 0
+
+for i in range (0, 1):
+	numero = int(input())
+	valor = numero ** exponent
+	exponent =  exponent + 1
+	suma = suma + 1
+	
+print (suma)
+
+
+# Online Python - IDE, Editor, Compiler, Interpreter
+
+a = int(input())
+b = 1
+while b <= 10:
+    multiplicació = a*b
+    print(a, end="")
+    print("*", end="")
+    print(b,end=" ")
+    print("=", end =" ")
+    print(multiplicació)
+    b = b + 1 
+
+
+n = int(input())
+for i in range (1, 11, 1):
+    m = n*i
+    print(n,"*",i, " = ", m, sep="")
+from yogi import read
+
+n=read(int)
+i=1
+
+while i<=10:
+	print(f'{n}*{i} = {n*i}')
+	i=i+1
+from yogi import read
+
+n = read(int)
+
+print(F"{n}*{1} = {n*1}")
+print(F"{n}*{2} = {n*2}")
+print(F"{n}*{3} = {n*3}")
+print(F"{n}*{4} = {n*4}")
+print(F"{n}*{5} = {n*5}")
+print(F"{n}*{6} = {n*6}")
+print(F"{n}*{7} = {n*7}")
+print(F"{n}*{8} = {n*8}")
+print(F"{n}*{9} = {n*9}")
+print(F"{n}*{10} = {n*10}")
+
+from yogi import read
+
+n = read(int)
+
+for i in range (n, n+1):
+    for j in range (1, 11):
+        print (f'{i:d}*{j:d} = {i*j}')
+    if i!=n:
+        print()
+from yogi import read
+n=read(int)
+for i in range(1,11):
+    print(n,"*",i," = ",sep="",end="")
+    print(i*n)
+#include <iostream>
+using namespace std;
+
+int main() {
+    int n;
+    cin >> n;
+    for (int i = 1; i<=10; i++) {
+        cout<<n<<"*"<<i<<" = "<<i*n<<endl;
+    }
+}
+                

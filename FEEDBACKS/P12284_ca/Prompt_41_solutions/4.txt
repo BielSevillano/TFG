@@ -1,0 +1,70 @@
+### Feedback on "Paraules més freqüents" Program
+
+**1. Summary of Problem and Solution Approach**
+
+The problem asks to read a sequence of `n` words and then output the `k` most frequent words. In case of a tie in frequency, the words should be sorted alphabetically (lexicographically) in ascending order. Each case's output should be followed by a line of ten hyphens.
+
+The provided Python program attempts to solve this problem by:
+1.  Using a dictionary (`dic`) to store the frequency of each word encountered.
+2.  After reading all `n` words for a case, it tries to sort the dictionary items first by word (alphabetically), then by frequency (descending).
+3.  Finally, it iterates through the sorted words and prints the first `k` of them.
+
+**2. Analysis of Code's Strengths and Weaknesses**
+
+**Strengths:**
+*   **Appropriate Data Structure:** The use of a dictionary (`dic`) to count word frequencies is a very efficient and suitable choice for this problem.
+*   **Pythonic Sorting Mechanism:** The code demonstrates familiarity with Python's `sorted()` function and `lambda` expressions for custom sorting keys, which is a powerful and idiomatic Python feature.
+
+**Weaknesses:**
+
+*   **Major Logical Error: Dictionary Not Reset (Likely Cause of "Execution Error"):** The `dic` variable is initialized outside the main input loop (`for n in tokens(int):`). This means that for multiple test cases, word counts from previous cases will persist and accumulate in `dic`. This will lead to incorrect frequency counts for subsequent test cases, making the program's output invalid and potentially causing runtime issues (e.g., trying to access elements with an incorrect `k` relative to the current input, or unexpected behavior leading to "Execution Error").
+*   **Incorrect Sorting Logic for Tie-breaking:** The two-step sorting approach is flawed for implementing the required tie-breaking rule.
+    *   `dict(sorted(dic.items(), key = lambda x: x[0]))` sorts by word (alphabetically).
+    *   `dict(sorted(quasi_sorted_dict.items(), key=lambda x: x[1], reverse=True))` then sorts by frequency (descending) on the *already alphabetically sorted* result.
+    This sequence does not guarantee the correct order for ties. For example, if "banana" (5) and "apple" (5) are present, sorting alphabetically first will put "apple" before "banana". If the second sort (by frequency) is stable, this order might be preserved, which would yield "apple" before "banana" (correct). However, if there are words like "zebra" (5) and "apple" (5), the first sort would put "apple" before "zebra", and the second stable sort would maintain that, which is incorrect if "zebra" should be ordered *before* "apple" based on some other criteria. The standard requirement "smallest in order lexicographical" for ties means if both have frequency 5, "apple" should come before "banana". The current sorting logic might produce `("banana", 5)` before `("apple", 5)` if `quasi_sorted_dict` had `{"banana":5, "apple":5}` and the second sort by frequency was unstable or had an unexpected result. The most reliable way to handle this is a single sort key.
+*   **Inefficient Intermediate Dictionary Conversions:** Converting the result of `sorted()` (which is a list of tuples) back into a dictionary (`dict(...)`) is generally unnecessary if the goal is just to iterate over the sorted items. It adds a slight overhead without providing a clear benefit for this specific use case.
+
+**3. Suggestions for Improvement**
+
+To fix the "Execution Error" and produce correct output, consider the following improvements:
+
+1.  **Reset Dictionary for Each Test Case:** Initialize `dic = {}` *inside* the main input loop to ensure each test case starts with a fresh count. A more Pythonic and efficient approach for frequency counting is to use `collections.Counter`.
+
+    ```python
+    from yogi import *
+    from collections import Counter # Import Counter
+
+    def main():
+        # A more robust input loop for competitive programming with multiple test cases
+        while True:
+            try:
+                n = read(int)
+                k = read(int)
+            except EOFError: # Catch end of input
+                break
+            except Exception: # Catch any other input errors
+                break
+
+            dic = Counter() # Initialize Counter for each test case
+            for _ in range(n): # Use _ if loop variable i is not needed
+                word = read(str)
+                dic[word] += 1
+            
+            # ... rest of the logic
+            print("----------") # Ensure this is always printed at the end of a case
+    ```
+
+2.  **Correct Sorting Logic with a Single Key:** Use a single `key` function for `sorted()` that returns a tuple. Python sorts tuples element-wise. By returning `(-item[1], item[0])`, you ensure sorting by frequency in *descending* order (due to the negative sign) and then by word in *ascending* alphabetical order for ties.
+
+    ```python
+    # After filling the dictionary `dic`:
+    sorted_items = sorted(dic.items(), key=lambda item: (-item[1], item[0]))
+
+    # Print the top k words
+    for word, _ in sorted_items[:k]: # Efficiently get the first k elements
+        print(word)
+    ```
+
+3.  **Direct Iteration on Sorted List:** As shown above, iterate directly over the list of `(word, frequency)` tuples returned by `sorted()`. This avoids the unnecessary conversion back to `dict`. Also, use slicing `[:k]` to get only the first `k` items, making the loop more efficient.
+
+By implementing these changes, especially resetting the dictionary and correcting the sorting key, the program should produce the correct output and resolve the "Execution Error."

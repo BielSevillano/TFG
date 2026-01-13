@@ -1,0 +1,69 @@
+Aquí tienes un feedback sobre tu programa para el problema "Nombre de dígits (1)".
+
+---
+
+### Feedback para el programa "Nombre de dígits (1)"
+
+**1. Resumen del problema y enfoque de la solución:**
+
+El problema "Nombre de dígits (1)" pide leer un número natural `n` y determinar cuántos dígitos tiene.
+
+Tu programa aborda este problema de la siguiente manera:
+*   Lee el número entero `n`.
+*   Maneja el caso especial de `n = 0` directamente, asignándole 1 dígito.
+*   Para números `n` distintos de cero, utiliza un bucle `while` que divide repetidamente `n` por 10 (división entera) hasta que `n` se convierte en 0. En cada iteración, incrementa un contador de dígitos.
+*   Finalmente, imprime el número original y el contador de dígitos.
+
+**2. Análisis de las fortalezas y debilidades del código:**
+
+**Fortalezas:**
+*   **Lógica Correcta para la mayoría de los casos:** La implementación de la división entera (`// 10`) y el incremento del contador es una forma estándar y eficiente de contar dígitos para números positivos.
+*   **Manejo del caso `n = 0`:** Tu código identifica correctamente que el número 0 tiene 1 dígito, lo cual es una consideración importante.
+*   **Claridad de variables:** El uso de `n2` para almacenar el valor original de `n` antes de modificarlo en el bucle es una buena práctica.
+
+**Debilidades:**
+*   **Error de Salida Duplicada (Causa del "Wrong Answer"):** La principal debilidad, y probable razón del "Wrong Answer", es que el programa imprime el resultado *dos veces* cuando la entrada es `n = 0`.
+    *   Cuando `n = 0`, el bloque `if n == 0:` se ejecuta y realiza una impresión.
+    *   Después de este bloque, hay otra sentencia `print` que se ejecuta siempre, independientemente de si `n` era 0 o no. Esto lleva a una salida como:
+        ```
+        El nombre de digits de 0 es 1
+        El nombre de digits de 0 es 1
+        ```
+    cuando la salida esperada es solo una línea. Los jueces automáticos suelen considerar esto un error de formato.
+
+*(Nota: Las "otras posibles soluciones" proporcionadas parecen ser para un problema diferente (conteo de frecuencias de palabras), por lo que no son directamente útiles para comparar enfoques en este problema de conteo de dígitos.)*
+
+**3. Sugerencias para la mejora:**
+
+1.  **Corregir la salida duplicada:** La forma más sencilla de solucionar el problema de la doble impresión es mover la última sentencia `print` fuera del `if/else` de modo que se ejecute solo una vez, después de que se haya determinado el valor de `d`.
+
+    ```python
+    from yogi import read
+
+    n = read(int)
+    n2 = n # Guarda el valor original para la impresión
+
+    d = 0 # Inicializa el contador de dígitos
+
+    if n == 0:
+        d = 1 # Si el número es 0, tiene 1 dígito
+    else:
+        while n != 0:
+            n = n // 10 # Elimina el último dígito
+            d = d + 1   # Incrementa el contador
+            
+    # Imprime el resultado una única vez
+    print('El nombre de digits de', n2, 'es', d)
+    ```
+
+2.  **Solución más concisa (alternativa Pythonica):** En Python, una forma muy concisa y a menudo preferida para contar dígitos es convertir el número a una cadena y obtener su longitud. Esto maneja automáticamente el caso `0` y números más grandes sin un bucle explícito.
+
+    ```python
+    from yogi import read
+
+    n = read(int)
+    print('El nombre de digits de', n, 'es', len(str(n)))
+    ```
+    Esta solución es más simple, más corta y menos propensa a errores. Sin embargo, tu enfoque actual con el bucle `while` es perfectamente válido y una buena práctica en muchos otros lenguajes de programación donde la conversión a string puede ser menos eficiente o más compleja.
+
+En resumen, tu lógica de conteo es sólida, pero el problema radica en la forma en que se imprime el resultado para el caso de `n = 0`. Corrigiendo esto, tu programa debería pasar las pruebas.

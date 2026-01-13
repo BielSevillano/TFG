@@ -1,0 +1,64 @@
+Here's a feedback text for your program solving the "Múltiple més petit" problem:
+
+---
+
+**Feedback for "Múltiple més petit" Program**
+
+**Summary of the Problem and Solution Approach:**
+
+The problem "Múltiple més petit" (Smallest Multiple) requires reading pairs of natural numbers `a` and `b` (where `b >= 1`). For each pair, the task is to find and print the smallest natural number `x` that satisfies two conditions: `x` must be greater than or equal to `a`, and `x` must be a multiple of `b`. The output for each pair should follow the format "Case # : x", with case numbers starting sequentially from 1.
+
+Your Python program attempts to solve this by:
+1.  Assuming the first line of input provides an integer representing the total number of test cases (`casos`).
+2.  Iterating a `while` loop for `casos` times.
+3.  Inside the loop, reading each pair `a` and `b` from a new line.
+4.  Calculating the desired `x` using the formula `x = (a + b - 1) // b * b`.
+5.  Printing the result in the specified format, incrementing a case counter `i`.
+
+**Analysis of the Code's Strengths and Weaknesses:**
+
+**Strengths:**
+
+*   **Correct Calculation Logic:** The formula `(a + b - 1) // b * b` is an elegant and mathematically correct way to find the smallest multiple of `b` that is greater than or equal to `a` for positive integers `a` and `b`. This part of your solution is robust.
+*   **Clear Output Formatting:** The program correctly implements the specified output format `"#{} : {}".format(i, x)`, ensuring the case number and result are presented as required.
+*   **Efficient Input Parsing:** Using `map(int, input().split())` is an efficient and Pythonic way to read multiple integers from a single line of input.
+
+**Weaknesses (Reason for "Wrong Answer"):**
+
+*   **Incorrect Input Reading Mechanism:** The most significant issue, and the likely cause of the "Wrong Answer," lies in how the program handles the input stream. The problem description states: "L’entrada consisteix en una seqüència de parells de naturals a i b..." This phrasing typically indicates that the program should read pairs of `a` and `b` *until there is no more input (End-Of-File - EOF)*, rather than being told in advance how many pairs to expect. Your program's initial `casos = int(input())` line expects a specific count of test cases, which doesn't align with the problem's typical "read until EOF" input style for sequences. If the judge system does not provide an initial `casos` value, this line will either fail (if it tries to read `a` as `casos`) or misinterpret the first actual data line, leading to incorrect execution.
+
+**Suggestions for Improvement:**
+
+The main improvement required is to adapt your input loop to read pairs `a` and `b` continuously until the end of the input stream.
+
+1.  **Modify Input Loop to Read Until EOF:** Remove the line `casos = int(input())` and change your `while` loop to repeatedly try reading input until an `EOFError` occurs. This is the standard pattern for problems that specify "a sequence of" inputs.
+
+Here's how you can modify your code to implement this:
+
+```python
+i = 1 # Initialize case counter
+
+# Loop indefinitely, reading pairs of a and b until End-Of-File
+while True:
+    try:
+        line = input() # Attempt to read a line
+        a, b = map(int, line.split()) # Parse a and b from the line
+        
+        # Your original calculation, which is correct
+        x = (a + b - 1) // b * b
+        
+        # Print the result in the specified format
+        print("#{} : {}".format(i, x))
+        
+        i += 1 # Increment case counter for the next pair
+    except EOFError:
+        # Break the loop when no more input is available (End-Of-File)
+        break
+    except ValueError:
+        # This catch is good practice for robust programs,
+        # but for competitive programming, input format is usually guaranteed.
+        # It handles cases where input might be an empty string or not parseable.
+        break
+```
+
+By making this change to how you handle input, your program will correctly adhere to the problem's input specification and should produce the correct output for all test cases. The core calculation is already well-implemented.

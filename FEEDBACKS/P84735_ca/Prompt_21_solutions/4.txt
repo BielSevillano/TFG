@@ -1,0 +1,55 @@
+Here's a feedback text for the provided Python program:
+
+---
+
+**Feedback for "Múltiple més petit" Program**
+
+**1. Problem Summary and Solution Approach:**
+
+The problem "Múltiple més petit" (Smallest Multiple) requires finding the smallest natural number `x` that is both greater than or equal to a given natural number `a`, and simultaneously a multiple of another given natural number `b` (where `b` is guaranteed to be `b >= 1`). The program needs to process a sequence of such `(a, b)` pairs and output the result for each case, preceded by a case number.
+
+The program implements a common and efficient mathematical approach to solve this: `x = (a + b - 1) // b * b`. This formula effectively calculates `ceil(a / b) * b` using integer division.
+*   If `a` is already a multiple of `b` (e.g., `a=10, b=5`), the formula yields `(10 + 5 - 1) // 5 * 5 = 14 // 5 * 5 = 2 * 5 = 10`, which is correct.
+*   If `a` is not a multiple of `b` (e.g., `a=7, b=3`), the formula yields `(7 + 3 - 1) // 3 * 3 = 9 // 3 * 3 = 3 * 3 = 9`, which is the smallest multiple of 3 greater than or equal to 7.
+
+**2. Analysis of the Code's Strengths and Weaknesses:**
+
+**Strengths:**
+*   **Correct Mathematical Logic:** The core formula `(a + b - 1) // b * b` is mathematically sound and correctly solves the problem for the given constraints (`a >= 0, b >= 1`). It's an elegant and efficient one-liner for the calculation.
+*   **Clear Variable Names:** Variables like `a`, `b`, `x`, `casos` (though `casos` is problematic, see weaknesses) and `i` are standard and easy to understand.
+*   **Correct Output Formatting:** The `print("#{} : {}".format(i, x))` statement precisely matches the specified output format, including the case number.
+*   **Concise and Idiomatic Python:** The code is written in a clear and Pythonic way.
+
+**Weaknesses:**
+*   **Incorrect Input Handling:** The primary weakness, and very likely the reason for the "Wrong Answer" verdict, lies in the input loop structure. The problem description states, "L’entrada consisteix en una seqüència de parells de naturals a i b," which typically implies that the program should read pairs of `a` and `b` until the end of the input stream (EOF), *without* a preceding integer specifying the total number of test cases.
+    The current code starts with `casos = int(input())`, assuming the first line contains the number of cases. If the actual input format does not include this leading number, this line will either:
+    1.  Attempt to parse the first `a` value of the first `(a, b)` pair as `casos`, leading to an incorrect `casos` count and misalignment in subsequent input reads.
+    2.  Fail if the first `a` value cannot be interpreted as a single integer for `casos` (e.g., if the first line is `7 3` and it tries to read `7` as `casos`, then `3` is consumed later as `a` and `b` will be missing).
+    This mismatch between expected and actual input format is a common cause of "Wrong Answer" or runtime errors in competitive programming.
+
+**3. Suggestions for Improvement:**
+
+1.  **Correct the Input Loop for EOF:** To correctly handle a sequence of pairs until EOF, you should remove the `casos = int(input())` line and wrap the `while` loop with a `try-except EOFError` block. This ensures the program gracefully stops when there's no more input.
+
+    ```python
+    i = 1
+    try:
+        while True:
+            # Read a line, split it into two integers for a and b
+            a, b = map(int, input().split())
+            
+            # Calculate the smallest multiple
+            x = (a + b - 1) // b * b
+            
+            # Print the result in the specified format
+            print("#{} : {}".format(i, x))
+            
+            # Increment case counter
+            i += 1
+    except EOFError:
+        # End of input reached, exit the loop
+        pass
+    ```
+    This change addresses the most critical flaw and should allow the program to process the input as intended by the problem statement.
+
+---

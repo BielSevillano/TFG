@@ -1,0 +1,45 @@
+### Feedback for "Fusió de taules"
+
+**1. Problem Summary and Solution Approach**
+
+The problem requires implementing a function, `fusio`, that merges two already sorted lists (`v1` and `v2`) of numbers into a single sorted list. Duplicate elements should be preserved. For example, merging `[2, 3, 5]` and `[3, 5, 5, 7]` should result in `[2, 3, 3, 5, 5, 5, 7]`. The precondition is that both input lists are sorted in ascending order.
+
+The provided Python program implements the `fusio` function using a standard two-pointer merge algorithm. It iterates through both input lists simultaneously, comparing elements and appending the smaller one to a new result list. Once one list is exhausted, it efficiently appends any remaining elements from the other list to the result.
+
+**2. Code Analysis**
+
+*   **Strengths:**
+    *   **Correct Algorithm:** The `fusio` function correctly implements the two-pointer merge algorithm, which is highly efficient for this problem with a time complexity of O(N+M) (where N and M are the lengths of the input lists).
+    *   **Handles Edge Cases:** The use of `llista_definitiva.extend(v1[i1:])` and `llista_definitiva.extend(v2[i2:])` correctly handles cases where one list is longer than the other and still has elements remaining after the main `while` loop finishes.
+    *   **Readability:** The code within the `fusio` function is clear, well-structured, and uses descriptive variable names (`i1`, `i2`, `llista_definitiva`).
+    *   **Type Hinting:** The `fusio` function includes type hints (`v1: list[float], v2: list[float]) -> list[float]`), which is good practice for code clarity and maintainability, aligning with the MyPy interface specification.
+
+*   **Weaknesses:**
+    *   **Presentation Error (Critical):** The primary reason for the "Presentation Error" is likely due to the "Observació" (observation) in the problem description: "Només cal enviar el procediment demanat; el programa principal serà ignorat." This means **only the `fusio` function definition should be submitted**. The current submission includes the `from yogi import read` import, `llegir_dades` function, `main` function, and `main()` call, which are extraneous to the requested procedure.
+    *   **Minor Type Inconsistency (in `llegir_dades`, which should be removed anyway):** The `llegir_dades` function is annotated to return `list[int]` but reads `float` values using `read(float)`. This is a small inconsistency, although the function itself should not be part of the submission.
+
+**3. Suggestions for Improvement**
+
+*   **Crucial for Correction:** To resolve the "Presentation Error" and correctly submit the solution, **remove all code except the `fusio` function definition**. This includes:
+    *   `from yogi import read`
+    *   The `llegir_dades` function.
+    *   The `main` function.
+    *   The `main()` call.
+
+    Your submitted file should *only* contain:
+    ```python
+    def fusio(v1: list[float], v2: list[float]) -> list[float]:
+        i1 = 0
+        i2 = 0
+        llista_definitiva = []
+        while i1 < len(v1) and i2 < len(v2):
+            if v1[i1] < v2[i2]:
+                llista_definitiva.append(v1[i1])
+                i1 += 1
+            else:
+                llista_definitiva.append(v2[i2])
+                i2 += 1
+        llista_definitiva.extend(v1[i1:])
+        llista_definitiva.extend(v2[i2:])
+        return llista_definitiva
+    ```

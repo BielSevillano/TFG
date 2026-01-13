@@ -1,0 +1,106 @@
+
+                Write a feedback text for the following program that solves the problem described below.
+                
+                                Fusió de taules
+
+Feu una funció que fusioni els vectors ordenats @v1@ i @v2@ i en retorni
+el resultat, sense eliminar els elements repetits. Per exemple, el
+resultat de fusionar una taula amb 2, 3 i 5 amb una taula amb 3, 5, 5 i
+7 és una taula amb 2, 3, 3, 5, 5, 5 i 7.
+
+Interfície
+
++-------:+:------------------------------------------------------------------------------+
+| C++    |     vector<double> fusio(const vector<double>& v1, const vector<double>& v2); |
++--------+-------------------------------------------------------------------------------+
+| Java   |     public static double[] fusio(double[] v1, double[] v2);                   |
++--------+-------------------------------------------------------------------------------+
+| Python |     fusio(v1, v2)  # returns list                                             |
++--------+-------------------------------------------------------------------------------+
+| MyPy   |     fusio(v1: list[float], v2: list[float]) -> list[float]                    |
++--------+-------------------------------------------------------------------------------+
+
+Precondició
+
+@v1@ i @v2@ estan ordenats de petit a gran.
+
+Observació
+
+Només cal enviar el procediment demanat; el programa principal serà
+ignorat.
+
+Autor
+
+Salvador Roura
+
+© Jutge.org, 2006–2025.
+
+
+                
+
+                This is the program:
+
+                from yogi import read
+
+
+def fusio(v1: list[float], v2: list[float]) -> list[float]:
+    i,j = 0,0
+    L:list[float]=list()
+    l1 = len(v1)
+    l2 = len(v2)
+    while i < l1 and j < l2:
+        if v1[i] <= v2[j]:
+            L.append(v1[i])
+            i+=1
+        else:
+            L.append(v2[j])
+            j+=1
+    L.extend(v1[i:])
+    L.extend(v2[j:])
+    return L
+
+def main() -> None:
+    n1 = read(int)
+    v1:list[float]=list()
+    v2:list[float]=list()
+
+
+    for _ in range(n1):
+        v1.append(read(float))
+    
+    n2 = read(int)
+
+    for _ in range(n2):
+        v2.append(read(float))
+    
+    v3 = fusio(v1,v2)
+    print(v3)
+
+
+if __name__=='__main__': 
+    main()
+
+
+                The result of the program is: Accepted
+
+                The feedback should include:
+                - A brief summary of the problem and the solution approach.
+                - An analysis of the code's strengths and weaknesses.
+                - Suggestions for improvement, if any.
+
+                You can rely on the following other possible solutions to the same problem for reference:
+                def fusio(v1, v2):
+	fusionada = []
+	for i in range(max(len(v1),len(v2))):
+		try:
+			fusionada.append(v1[i])
+		except:
+			pass
+		try:
+			fusionada.append(v2[i])
+		except:
+			pass
+	return fusionada
+			
+
+                

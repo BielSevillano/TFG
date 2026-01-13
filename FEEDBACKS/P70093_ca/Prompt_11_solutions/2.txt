@@ -1,0 +1,70 @@
+This feedback addresses your Python program for the "Fusió de taules" problem, which resulted in a "Presentation Error".
+
+---
+
+### Feedback for 'Fusió de taules' Program
+
+**1. Problem Summary and Solution Approach**
+
+The problem requires implementing a function, `fusio`, that merges two already sorted lists (`v1` and `v2`) into a single new sorted list, preserving all duplicate elements. For example, merging `[2, 3, 5]` and `[3, 5, 5, 7]` should result in `[2, 3, 3, 5, 5, 5, 7]`. The input lists are guaranteed to be sorted in ascending order.
+
+Your solution employs a standard two-pointer (or merge) algorithm. It initializes two pointers (`i1` and `i2`), one for each input list, and an empty list (`llista_definitiva`) to store the result. It then iteratively compares the elements pointed to by `i1` and `i2`, appending the smaller one to the result list and advancing its respective pointer. After one of the lists is exhausted, it efficiently appends any remaining elements from the other list to the result.
+
+**2. Code Strengths and Weaknesses**
+
+**Strengths:**
+
+*   **Correct Algorithm:** The `fusio` function correctly implements the merge algorithm for two sorted lists, including the handling of duplicate elements as specified. This is a standard and efficient approach for this problem.
+*   **Time Complexity:** The algorithm runs in linear time, O(N + M), where N and M are the lengths of `v1` and `v2` respectively. This is optimal as every element from both lists must be processed.
+*   **Readability:** The variable names like `i1`, `i2`, and `llista_definitiva` are clear and easy to understand within the context of the algorithm.
+*   **Completeness of `fusio`:** The `fusio` function itself is well-structured and robust, handling both the main merging logic and the tail-end elements.
+
+**Weaknesses (and reason for "Presentation Error"):**
+
+*   **Violation of Submission Requirements:** The problem statement explicitly says: "Només cal enviar el procediment demanat; el programa principal serà ignorat." This means you should **only submit the `fusio` function itself**, without any `main` function, input reading (`read`, `llegir_dades`), or output printing (`print`). The "Presentation Error" indicates that your program produced output that was not expected by the judging system. The system likely calls your `fusio` function with test inputs and checks its return value, without expecting any console output from your submitted code.
+*   **Unnecessary I/O in `main`:** Your `main` function reads input using `yogi.read`, calculates `n1+n2`, and prints it, followed by the merged list elements. This output is extraneous and directly causes the "Presentation Error".
+*   **Redundant Input Reading Functions:** The `llegir_dades` and `main` functions, while functional for local testing, are not part of the required submission.
+
+**3. Suggestions for Improvement**
+
+The `fusio` function itself is excellent and requires no algorithmic or logical changes. The only crucial improvement for successful submission is to adhere strictly to the problem's interface requirements:
+
+1.  **Remove `main` and all I/O:** Delete the `main` function, `llegir_dades` function, and any calls to `read` or `print`. Your submission should solely consist of the `fusio` function definition.
+
+    ```python
+    # from yogi import read # Remove this line
+    def fusio(v1: list[float], v2: list[float]) -> list[float]:
+        i1 = 0
+        i2 = 0
+        llista_definitiva=[]
+        while i1 < len(v1) and i2 < len(v2):
+            if v1[i1] < v2[i2]:
+                llista_definitiva.append(v1[i1])
+                i1 += 1
+            else: # Handles v1[i1] >= v2[i2], ensuring stability and duplicate preservation
+                llista_definitiva.append(v2[i2])
+                i2 += 1
+        llista_definitiva.extend(v1[i1:])
+        llista_definitiva.extend(v2[i2:])
+        return llista_definitiva
+    
+    # Remove the following lines:
+    # def llegir_dades(n:int)->list[int]:
+    #     """Llegeix tots els nombres i els afegeix a la llista"""
+    #     L = []
+    #     for i in range(n):
+    #         x = read(float)
+    #         L.append(x)
+    #     return L
+    # def main():
+    #     n1 = read(int)
+    #     v1 = llegir_dades(n1)
+    #     n2 = read(int)
+    #     v2 = llegir_dades(n2)
+    #     print(n1+n2)
+    #     print(" ",end="")
+    #     print(*fusio(v1,v2))
+    # main()
+    ```
+
+By making this change, your submission will conform to the problem's specifications, and the excellent `fusio` function will likely pass the tests.

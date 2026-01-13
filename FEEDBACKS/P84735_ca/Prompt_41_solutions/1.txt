@@ -1,0 +1,48 @@
+```markdown
+### Feedback on "Múltiple més petit" Program
+
+**Problem Summary:**
+The problem "Múltiple més petit" (Smallest Multiple) asks the programmer to read pairs of natural numbers `a` and `b` (where `b >= 1`). For each pair, the task is to find and output the smallest natural number `x` that is both greater than or equal to `a` and a multiple of `b`. The output should be formatted as "#case_number : x", starting with case 1.
+
+**Solution Approach:**
+The provided Python program adopts a direct mathematical approach. For each pair `(a, b)`, it calculates `x` using the formula `(a + b - 1) // b * b`. This formula correctly determines the smallest multiple of `b` that is greater than or equal to `a` by effectively "rounding up" `a` to the nearest multiple of `b` using integer division (`//`).
+
+**Code Analysis:**
+
+*   **Strengths:**
+    *   **Correct Logic:** The core mathematical formula `(a + b - 1) // b * b` is an elegant and correct solution for finding the smallest multiple of `b` that is greater than or equal to `a`. It handles both cases where `a` is already a multiple of `b` and where it is not.
+    *   **Efficiency:** The solution performs a constant number of arithmetic operations for each input pair, making it highly efficient (O(1) complexity per test case).
+    *   **Readability:** The code is concise and easy to understand, clearly reflecting the intended calculation.
+    *   **Output Format:** The `print("#{} : {}".format(i, x))` statement correctly adheres to the specified output format, including the case number.
+
+*   **Weaknesses:**
+    *   **Input Handling Mismatch:** The primary reason for the "Wrong Answer" verdict is almost certainly an incorrect assumption about the input format. The problem description typically implies that pairs of `a` and `b` are read continuously until the End Of File (EOF). However, your program starts by trying to read an integer `casos` (number of test cases) from the first line using `casos = int(input())`. If the input does not begin with such a count (e.g., if the first line is directly `a b`), this will lead to a `ValueError` or incorrect program behavior, resulting in a "Wrong Answer".
+
+**Suggestions for Improvement:**
+
+The mathematical logic is perfect, so the main improvement needed is to adjust how the program reads input to match the problem's standard.
+
+1.  **Remove Initial Test Case Count:** Delete the line `casos = int(input())`.
+2.  **Read Input Until EOF:** Modify the loop to continuously read `a` and `b` pairs until no more input is available. A robust way to do this in Python for competitive programming is using `sys.stdin`:
+
+    ```python
+    import sys
+
+    case_num = 1
+    # Iterate over each line from standard input
+    for line in sys.stdin:
+        # Split the line into two strings and convert them to integers
+        a, b = map(int, line.split())
+        
+        # Calculate the smallest multiple of 'b' greater than or equal to 'a'
+        # The formula (a + b - 1) // b * b is correct for the problem
+        x = (a + b - 1) // b * b
+        
+        # Print the result in the specified format
+        print("#{} : {}".format(case_num, x))
+        
+        # Increment the case number for the next pair
+        case_num += 1
+    ```
+
+By making this change to the input reading, your program should correctly process all test cases as intended by the problem statement and achieve an "Accepted" verdict.

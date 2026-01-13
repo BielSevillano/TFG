@@ -1,0 +1,73 @@
+Here's a feedback text for your program:
+
+---
+
+### Feedback: Paraules més freqüents (Most Frequent Words)
+
+**Summary of the Problem:**
+The problem asks to read a sequence of `n` words and identify the `k` most frequent ones. In cases of a tie in frequency, words should be sorted alphabetically in ascending order. The output should be these `k` words, one per line, followed by a separator (`----------`). This process should repeat for multiple test cases.
+
+**Solution Approach:**
+The program attempts to solve this problem by:
+1.  Reading `n` and `k`, then all `n` words into a list `P`.
+2.  Sorting the list `P` alphabetically. This is a good first step, as it groups identical words together, making frequency counting efficient.
+3.  Iterating through the sorted `P` to count the frequency of each unique word. These unique words and their counts are stored in `Info` objects (`par` for word, `num` for count) in a list `V`.
+4.  Sorting the list `V` (containing `Info` objects) using a custom comparison logic to achieve the desired order: descending by frequency, then ascending alphabetically by word.
+5.  Printing the `par` attribute (the word) of the first `k` elements from the sorted `V`.
+6.  Printing the `----------` separator and continuing to read for more test cases.
+
+**Analysis of Strengths:**
+*   **Clear Data Structure:** The `Info` class effectively encapsulates a word (`par`) and its frequency (`num`), making the data easy to manage.
+*   **Efficient Frequency Counting:** Sorting the initial list of words (`P.sort()`) allows for a linear scan (using `while i < n` and `while j < n and P[j] == P[i]`) to accurately count frequencies, which is an efficient approach (O(N log N) for initial sort + O(N) for counting).
+*   **Correct Comparison Logic (Conceptual):** The logic defined in the `comp` function (`if a.num != b.num: return a.num > b.num` and `return a.par < b.par`) correctly expresses the problem's sorting criteria: prioritize higher frequency, then smaller alphabetical word.
+
+**Analysis of Weaknesses and Reason for "Wrong Answer":**
+
+The primary issue lies in how the `comp` function is used with Python's `list.sort()` method.
+
+1.  **Incorrect Use of `key` Argument:** In standard Python 3, the `key` argument for `list.sort()` expects a function that takes *one* argument (an element from the list) and returns a "key" value to be used for comparison. Your `comp` function, however, is defined to take *two* arguments (`a` and `b`) and return a boolean (`True` or `False`).
+    *   Directly passing `comp` to `key` as `V.sort(key=comp, reverse=True)` will result in a `TypeError` because Python will try to call `comp` with only one argument.
+    *   The "Wrong Answer" verdict suggests that the specific environment where this code was run might handle this `TypeError` differently (e.g., by implicitly wrapping `comp` or having a non-standard `sort` implementation that might then lead to incorrect sorting results rather than a crash).
+
+2.  **Comparison Function Return Values:** Even if `comp` were correctly used as a *comparison function* (e.g., via `functools.cmp_to_key`), standard comparison functions should return -1 (if `a < b`), 0 (if `a == b`), or 1 (if `a > b`). Your `comp` returns `True` or `False`, which Python interprets as 1 or 0, respectively. This can lead to subtle bugs in the comparison logic, as `False` (0) would be treated as equal, even if `a.num < b.num`.
+
+**Suggestions for Improvement:**
+
+To fix the "Wrong Answer" and make the code idiomatic Python 3, you should use the `key` argument correctly. There are two common ways to do this:
+
+1.  **Using a `lambda` function for `key`:** This is often the most concise way for custom sorting.
+    The `key` function should return a tuple where the elements are ordered by their sort priority, and their signs adjusted for ascending/descending order. For descending frequency (`num`) and then ascending word (`par`):
+    ```python
+    # Remove the 'comp' function definition, it's no longer needed.
+
+    # In main():
+    # ...
+    # V.sort(key=comp, reverse=True)  <-- Change this line
+    V.sort(key=lambda x: (-x.num, x.par))
+    # ...
+    ```
+    Here, `-x.num` ensures that larger frequencies come first (since negative numbers are sorted ascendingly). `x.par` then handles alphabetical order for ties. No `reverse=True` is needed in this case as the key itself dictates the order.
+
+2.  **Implementing `__lt__` in the `Info` class:** This makes `Info` objects directly comparable, allowing `V.sort()` without a `key` argument.
+    ```python
+    class Info:
+      def __init__(self, par, num):
+        self.par = par
+        self.num = num
+
+      def __lt__(self, other):
+        # We want 'self' to be considered "less than" 'other' if:
+        # 1. self.num > other.num (descending frequency)
+        # 2. OR if self.num == other.num AND self.par < other.par (ascending alphabetical)
+        if self.num != other.num:
+          return self.num > other.num
+        return self.par < other.par
+
+    # In main():
+    # ...
+    # V.sort(key=comp, reverse=True)  <-- Change this line
+    V.sort() # No 'key' or 'reverse' needed as __lt__ defines the order
+    # ...
+    ```
+
+Either of these approaches will correctly implement the sorting logic and resolve the `TypeError` (or incorrect sorting behavior) caused by the current misuse of the `key` argument. The first option (using `lambda`) is generally simpler when the custom comparison is only needed for one specific sort.
